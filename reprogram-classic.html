@@ -1,0 +1,4852 @@
+<!DOCTYPE html>
+<html>
+<!-- 
+
+╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮
+╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃
+╭━┳━━┳━━┳━┳━━┳━━┳━┳━━┳╮╭╮╭━━┫┃╭━━┳━━┳━━┳┳━━╮
+┃╭┫┃━┫╭╮┃╭┫╭╮┃╭╮┃╭┫╭╮┃╰╯┃┃╭━┫┃┃╭╮┃━━┫━━╋┫╭━╯
+┃┃┃┃━┫╰╯┃┃┃╰╯┃╰╯┃┃┃╭╮┃┃┃┃┃╰━┫╰┫╭╮┣━━┣━━┃┃╰━╮
+╰╯╰━━┫╭━┻╯╰━━┻━╮┣╯╰╯╰┻┻┻╯╰━━┻━┻╯╰┻━━┻━━┻┻━━╯
+╱╱╱╱╱┃┃╱╱╱╱╱╱╭━╯┃
+╱╱╱╱╱╰╯╱╱╱╱╱╱╰━━╯
+
+
+For best exprience, add the following to the end of the url
+?width=800&height=800&editor=no
+
+ - - - - - - - - - - - - UPDATE LOG - - - - - - - - - - - - -
+v1.0.0 - April 2nd, 2024: Finally Released.
+
+ - - - - - - - - - - - - CREDITS - - - - - - - - - - - - -
+
+This game was inspired by @Infinite coder's "Code a Platformer" game.
+I highly reccomend checking out after playing this game.
+(or before, doesn't matter that much :] )
+https://www.khanacademy.org/computer-programming/code-a-platformer-the-game-of-programming-and-logic-khantober/6219245406699520?qa_expand_key=ag5zfmtoYW4tYWNhZGVteXJBCxIIVXNlckRhdGEiHmthaWRfMzYyMzk4MjE5MjY2NjQyMjI4OTA1MjI5NwwLEghGZWVkYmFjaxiAgPPpht2KCww&qa_expand_type=reply
+
+https://www.khanacademy.org/computer-programming/code-a-platformer-the-game-of-programming-and-logic-khantober/6219245406699520?qa_expand_key=ag5zfmtoYW4tYWNhZGVteXJBCxIIVXNlckRhdGEiHmthaWRfMzYyMzk4MjE5MjY2NjQyMjI4OTA1MjI5NwwLEghGZWVkYmFjaxiAgPPpht2KCww&qa_expand_type=reply
+
+p5js code exported to HTML using @MushyAvocado's KA Project Exporter
+https://www.khanacademy.org/computer-programming/ka-project-exporter/5195486791385088
+
+Jingle Sound created by @Henry's Music Program
+It utilizes the allowed oscilator api to generate sounds.
+https://www.khanacademy.org/computer-programming/i/6312259968614400
+-->
+	
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>𝕣𝕖𝕡𝕣𝕠𝕘𝕣𝕒𝕞</title>
+	<style>
+		
+		
+		/* Change the color as you want */
+		:root {
+			--background-color: #000000;
+		}
+		
+		
+		html, body, #wrapper {
+			overflow: hidden;
+			width: 100%;
+		    height: 100%;
+			margin: 0px;
+			padding: 0px;
+		    width: calc(100% + 1px);
+		}
+		
+		body {
+		    background-color: var(--background-color);
+		}
+		
+		
+		canvas {
+			width: fit-content;
+			height: fit-content;
+		}
+		
+		canvas:focus {
+			outline: none;
+		}
+		
+		/* Automatically fits to the remaining height and centers the canvas it contains */
+		#wrapper {
+			padding: 0px;
+			margin: 0px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+		}
+		
+</style>
+</head>
+<body id="wrapper">
+
+    <script type = 'module'>
+    	var settings = {
+    tempo: 115,
+    instNames: '1',
+    instTypes: 'square',
+    track: 'Infinity,,,Infinity,3.2,2,3.2,3.2,-5,Infinity,1.4545454545454546,-1,2,1.4545454545454546,-8',
+};
+
+        var loadMain = function() {
+        	
+        }
+        
+        import AP from 'https://cdn.jsdelivr.net/gh/StapleCactus764/AP.js/ka-pre1.js';
+        
+        const instruments = [],
+            ac = new (window.AudioContext || window.webkitAudioContext)(),
+            types = settings.instTypes.split(','),
+            notes = settings.track.split(';');
+            
+        for (let i = 0; i < types.length; i ++) {
+            const ap = new AP({instrument: types[i]}, ac);
+            ap.bpm = settings.tempo;
+            
+            const newArr = notes[i].split(',').map(el => +el);
+            newArr[1] = newArr[2] = null;
+            
+            ap.loadNotes(newArr);
+            
+            instruments.push(ap);
+        }
+        
+        window.play = function() {
+            for (const ap of instruments) ap.play();
+        };
+</script>
+
+    <!-- Canvases with a class of "sketch" are applied to the program in the order importPJS() is called. -->
+    <canvas class="sketch"></canvas>
+	<!-- Load the PJS library -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Khan/processing-js@master/processing.js"></script>
+	<!-- The exporter script must be loaded before the program script -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Mushy-Avocado/KA-exporter@main/exporter.js"></script>
+	<!-- Run Khan Academy program and import PJS -->
+	<script type="application/javascript">
+		
+		
+		function program() {
+		    
+		    title("ℝ𝕣𝕖𝕡𝕣𝕠𝕘𝕣𝕒𝕞");
+		    size(800, 800);
+		    
+		    // All code goes here
+			/** INTRO **/
+			pushMatrix();
+			scale(width/400);
+			var INTRO = {
+			    on: false,
+			    t: -80,
+			    
+			    font:createFont("Verdana Bold Italics",40),
+			    appear: 255,
+			    
+			    img: (function() {
+			        /** BoredGuy Assets **/
+			        var rotateElip = function(x,y,w,h,r) {
+			        pushMatrix();
+			            translate(x,y);
+			            rotate(r);
+			            ellipse(0,0,w,h);
+			        popMatrix();
+			    };
+			        var boredGuyHead = function(x,y,s,r) {
+			            pushMatrix();
+			            translate(x,y);
+			            scale(s);
+			            rotate(r);
+			                beginShape();
+			                curveVertex(-45,62); curveVertex(-78,69); curveVertex(-64,30); curveVertex(-85,38); curveVertex(-67,6); curveVertex(-45,-14); curveVertex(-14,-73); curveVertex(-4,-115); curveVertex(5,-73); curveVertex(33,-15); curveVertex(58,5); curveVertex(76,36); curveVertex(53,28); curveVertex(62,66); curveVertex(29,61); curveVertex(10,86); curveVertex(-24,85); curveVertex(-45,62); curveVertex(-78,69); curveVertex(-64,30); /**/
+			                endShape();
+			            popMatrix();
+			        };
+			        var boredGuyOuterArm1 = function(x,y,s,r) {
+			            pushMatrix();
+			            translate(x,y);
+			            scale(s);
+			            rotate(r);
+			                beginShape();
+			                curveVertex(-115,-8); curveVertex(-29,-56); curveVertex(73,-71); curveVertex(154,-24); curveVertex(142,56); curveVertex(83,20); curveVertex(26,-7); curveVertex(-33,-3); curveVertex(-118,39); curveVertex(-163,33); curveVertex(-166,-6); curveVertex(-115,-8); curveVertex(-29,-56); curveVertex(73,-71); /**/
+			                endShape();
+			            popMatrix();
+			        };
+			        var boredGuyOuterArm2 = function(x,y,s,r) {
+			            pushMatrix();
+			            translate(x,y);
+			            scale(s);
+			            rotate(r);
+			                beginShape();
+			                curveVertex(-59,-149); curveVertex(-72,-79); curveVertex(-29,-56); curveVertex(73,-71); curveVertex(154,-24); curveVertex(142,56); curveVertex(83,20); curveVertex(26,-7); curveVertex(-33,-3); curveVertex(-94,-4); curveVertex(-147,-35); curveVertex(-111,-132); curveVertex(-59,-149); curveVertex(-72,-79); curveVertex(-29,-56); /**/
+			                endShape();
+			            popMatrix();
+			        };
+			        var boredGuyRightLeg = function(x,y,sx, sy,r) {
+			            pushMatrix();
+			            translate(x,y);
+			            scale(sx, sy);
+			            rotate(r);
+			                beginShape();
+			                curveVertex(14,32); curveVertex(39,24); curveVertex(2,24); curveVertex(-143,11); curveVertex(-125,-72); curveVertex(66,-39); curveVertex(100,34); curveVertex(69,115); curveVertex(40,124); curveVertex(11,110); curveVertex(14,32); curveVertex(39,24); curveVertex(2,24); /**/
+			                endShape();
+			            popMatrix();
+			        };
+			        var boredGuyFoot = function(x,y,sx,sy,r) {
+			            pushMatrix();
+			            translate(x,y);
+			            scale(sx,sy);
+			            rotate(r);
+			                beginShape();
+			                curveVertex(-45,34); curveVertex(-47,-95); curveVertex(-24,-64); curveVertex(-8,-102); curveVertex(6,-62); curveVertex(29,-93); curveVertex(22,32); curveVertex(-10,61); curveVertex(-45,34); curveVertex(-47,-95); curveVertex(-24,-64); /**/
+			                endShape();
+			            popMatrix();
+			        };
+			        var boredGuyTail = function(x,y,s,r) {
+			            pushMatrix();
+			            translate(x,y);
+			            scale(s);
+			            rotate(r);
+			                beginShape();
+			                curveVertex(-137,77); curveVertex(-64,45); curveVertex(-6,-33); curveVertex(56,-141); curveVertex(148,-164); curveVertex(161,-116); curveVertex(154,-67); curveVertex(99,-24); curveVertex(53,35); curveVertex(-19,97); curveVertex(-132,117); curveVertex(-184,71); curveVertex(-137,77); curveVertex(-64,45); curveVertex(-6,-33); /**/
+			                endShape();
+			            popMatrix();
+			        };
+			        
+			        /** Drawing **/
+			        background(255, 0);
+			        
+			        // Tail
+			        fill(44, 101, 186); stroke(15, 85, 105); strokeWeight(7);
+			        pushMatrix(); translate(160, 285); rotate(-61);
+			            boredGuyTail(0,8,0.34,34);
+			            fill(58, 178, 230); strokeWeight(7);
+			            boredGuyTail(0,0,0.34,41);
+			        popMatrix();
+			        
+			        // Right Leg
+			        fill(58, 178, 230); strokeWeight(7);
+			        boredGuyFoot(280,307,0.38,0.32,103);
+			        boredGuyRightLeg(260,249,0.31,- 0.32,-270);
+			        
+			        // Torso
+			        pushMatrix(); translate(1, -87);
+			            fill(58, 178, 230); strokeWeight(3);
+			            ellipse(193,304,50,76);
+			            fill(44, 101, 186);
+			            ellipse(200,304,42,44);
+			        popMatrix();
+			        
+			        // Left Leg
+			        fill(58, 178, 230); strokeWeight(7);
+			        boredGuyFoot(230,317,-0.38,0.40,-155);
+			        strokeWeight(3);
+			        rotateElip(201,276,79,33,-122);
+			        
+			        // Inner Arms
+			        fill(44, 101, 186); strokeWeight(3);
+			        rotateElip(196,242,83,33,20);
+			        rotateElip(234,154,87,29,-37);
+			        
+			        // Outer Arms
+			        fill(58, 178, 230); strokeWeight(7);
+			        boredGuyOuterArm2(193,238,0.33,10);
+			        boredGuyOuterArm1(238,147,0.32,-29);
+			        
+			        // Head
+			        pushMatrix(); translate(0,-100);
+			            fill(17, 88, 158); strokeWeight(5);
+			            boredGuyHead(200,253,0.5,0);
+			            fill(58, 178, 230);
+			            boredGuyHead(200,248,0.5,0);
+			            
+			            // Nostrils
+			            fill(19, 61, 120); noStroke();
+			            ellipse(191,285,4,4); ellipse(202,285,4,4);
+			            
+			            // Eyes
+			            rotateElip(186,265,13,8,46);
+			            rotateElip(207,265,13,8,-46);
+			            
+			            fill(255);
+			            ellipse(187,265,5,5);
+			            ellipse(206,265,5,5);
+			        popMatrix();
+			        
+			        return get();
+			    })()
+			};
+			popMatrix();
+			background(0); // Avoid CreepyPasta during asset-editing
+			
+			/** Fonts & Assets **/
+			
+			// FONTS
+			var VerdItal = createFont("Verdana Italics",18);
+			var MonoBold = createFont("Monospace Bold",20);
+			var VerdBold = createFont("Verdana Bold",18);
+			var SansBoldItalic = createFont("Comic Sans MS Bold Italics",20);
+			
+			// SOUNDS
+			{
+			var Blip = getSound("rpg/hit-whack");
+			Blip.audio.playbackRate = 4;
+			Blip.audio.preservesPitch = true;
+			Blip.audio.volume = 0.4;
+			
+			var Jump = getSound("retro/jump1");
+			Jump.audio.playbackRate = 0.9;
+			Jump.audio.preservesPitch = false;
+			Jump.audio.volume = 0.8;
+			
+			var Land = getSound("rpg/step-heavy");
+			Land.audio.playbackRate = 0.7;
+			Land.audio.preservesPitch = true;
+			
+			var Clop = getSound("rpg/hit-clop");
+			
+			var Hurt = getSound("rpg/giant-no");
+			Hurt.audio.playbackRate = 3;
+			Hurt.audio.preservesPitch = false;
+			
+			var Doc1 = getSound("retro/thruster-short");
+			Doc1.audio.playbackRate = 2; Doc1.audio.preservesPitch = true;
+			Doc1.audio.volume = 0.7; Doc1.audio.currentTime = 0.60;
+			
+			var Doc2 = getSound("rpg/step-heavy");
+			Doc2.audio.playbackRate = 2; Doc2.audio.preservesPitch = true;
+			Doc2.audio.volume = 0.7; Doc2.audio.currentTime = 1.20;
+			
+			var Woosh = getSound("rpg/battle-swing");
+			Woosh.audio.playbackRate = 2; Woosh.audio.preservesPitch = true;
+			
+			var Coin = getSound("retro/coin");
+			
+			var WrongCode = getSound("retro/laser2");
+			
+			var Win = getSound("rpg/battle-spell");
+			}
+			
+			// GRAPHICS
+			pushMatrix();
+			scale(width/400);
+			// PLAYER ASSETS
+			{
+			var PlayerPal = [
+			    color(245, 17, 48),color(89, 13, 46),
+			    color(250, 240, 250), color(38, 34, 41)
+			];
+			var PlayerHeadBase = function(x,y,sx,sy,r,sw){
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    
+			    strokeWeight(sw*0.7);
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]);
+			    ellipse(-20,41,180,86);
+			    
+			    strokeWeight(sw); fill(PlayerPal[0]); stroke(PlayerPal[1]);
+			    
+			    beginShape();
+			    curveVertex(-66,-44); curveVertex(-26,-18); curveVertex(34,-19); curveVertex(89,-11); curveVertex(89,30); curveVertex(38,35); curveVertex(-10,56); curveVertex(-45,44); curveVertex(-43,44); curveVertex(-53,11); curveVertex(-45,45); curveVertex(-115,52); curveVertex(-139,4); curveVertex(-114,-38); curveVertex(-66,-44); curveVertex(-26,-18); curveVertex(34,-19); /**/
+			    endShape();
+			    
+			    //eyes
+			    strokeWeight(sw*0.7);
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]);
+			    ellipse(10,-38,65,55);
+			    ellipse(-30,-38,65,55);
+			    
+			    // nostrils
+			    ellipse(60,-5,1,1);
+			    ellipse(75,-5,1,1);
+			    
+			    // teeth
+			    pushMatrix();translate(-42,48);scale(0.8);triangle(0,0,50,0,25,30);popMatrix();
+			    pushMatrix();translate(22,38);scale(0.8);triangle(0,0,50,0,25,30);popMatrix();
+			    
+			    popStyle();
+			    popMatrix();
+			};
+			var PlayerArm = function(x,y,r,sw) {
+			    pushStyle(); pushMatrix(); translate(x,y); rotate(r);
+			        fill(PlayerPal[0]); stroke(PlayerPal[1]); strokeWeight(sw);
+			        ellipse(0,0,101,145);
+			        
+			        fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(sw*0.8);
+			        pushMatrix();translate(-27,62);rotate(14);scale(1.2);
+			        triangle(0,0,30,0,15,25);popMatrix();
+			        pushMatrix();translate(10,69);rotate(-29);scale(1.2);
+			        triangle(0,0,30,0,15,25);popMatrix();
+			    popMatrix(); popStyle();
+			};
+			var PlayerLeg = function(x,y,sx,r1,r2,sw) {
+			    pushMatrix(); pushStyle(); translate(x,y); rotate(r1); scale(sx,1);
+			        fill(PlayerPal[0]); stroke(PlayerPal[1]); strokeWeight(sw);
+			        ellipse(0,0,108,125);
+			        
+			        pushMatrix(); translate(8,8); rotate(r2);
+			            rect(-70,32,105,40,10);
+			            
+			            fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(sw*0.6);
+			            
+			            pushMatrix();translate(-98,74);scale(1.2);
+			            triangle(0,0,30,0,22,-25);popMatrix();
+			            pushMatrix();translate(-72,74);scale(1.2);
+			            triangle(0,0,30,0,22,-25);popMatrix();
+			            pushMatrix();translate(-42,74);scale(1.2);
+			            triangle(0,0,30,0,22,-25);popMatrix();
+			        popMatrix();
+			        
+			        
+			    popMatrix(); popStyle();
+			};
+			var PlayerBottomTail = function(x,y,sx,sy,r,sw){
+			    // That was a close one :(
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    strokeWeight(sw); fill(PlayerPal[2]); stroke(PlayerPal[3]);
+			    beginShape();
+			    curveVertex(-42,-27); curveVertex(4,-75); curveVertex(23,-39); curveVertex(16,10); curveVertex(-23,40); curveVertex(-77,24); curveVertex(-81,-28); curveVertex(-42,-27); curveVertex(4,-75); curveVertex(23,-39); /**/
+			    endShape();
+			    popStyle();
+			    popMatrix();
+			};
+			var PlayerTail = function(x,y,sx,sy,r,sw){
+			    PlayerBottomTail(x,y,sx,sy,r,sw);
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    strokeWeight(sw); fill(PlayerPal[0]); stroke(PlayerPal[1]);
+			    beginShape();
+			    curveVertex(-42,-27); curveVertex(4,-75); curveVertex(17,-42); curveVertex(1,-15); curveVertex(-27,11); curveVertex(-69,3); curveVertex(-81,-28); curveVertex(-42,-27); curveVertex(4,-75); curveVertex(17,-42); /**/
+			    endShape();
+			    popStyle();
+			    popMatrix();
+			};
+			
+			var ASSET_PLAYER_IDLE = (function() {
+			    background(255,0);
+			    
+			    PlayerTail(108,328,1.2,1.5,0,10);
+			    PlayerArm(275,263,-14,12);
+			    PlayerLeg(248,315,-1,0,0,12);
+			    
+			    // Underbelly
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(200,290,150,150);
+			    
+			    // Head
+			    PlayerHeadBase(240,120,1.3,1.5,0,10);
+			    
+			    // Pupils
+			    noFill(); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(212,70,13,33);
+			    ellipse(252,70,13,33);
+			    
+			    PlayerLeg(124,315,1,0,0,12);
+			    
+			    PlayerArm(96,264,21,12);
+			    
+			    return get();
+			})();
+			var ASSET_PLAYER_RUN1 = (function() {
+			    background(255,0);
+			    pushMatrix(); translate(0,-10);
+			    
+			    PlayerTail(108,298,1.2,1.5,15,10);
+			    PlayerArm(286,254,-62,12);
+			    PlayerLeg(265,315,-1,-11,45,12);
+			    
+			    // Underbelly
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(200,290,150,150);
+			    
+			    // Head
+			    PlayerHeadBase(240,120,1.3,1.5,0,10);
+			    
+			    // Pupils
+			    noFill(); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(212,70,13,33);
+			    ellipse(252,70,13,33);
+			    
+			    PlayerLeg(122,315,-1,24,-79,12);
+			    
+			    PlayerArm(99,255,60,12);
+			    popMatrix();
+			    
+			    return get();
+			})();
+			var ASSET_PLAYER_RUN2 = (function() {
+			    background(255,0);
+			    
+			    PlayerTail(108,298,1.2,1.5,15,10);
+			    PlayerArm(286,254,-62,12);
+			    PlayerLeg(260,315,-1,8,8,12);
+			    
+			    // Underbelly
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(200,290,150,150);
+			    
+			    // Head
+			    PlayerHeadBase(240,120,1.3,1.5,0,10);
+			    
+			    // Pupils
+			    noFill(); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(212,70,13,33);
+			    ellipse(252,70,13,33);
+			    
+			    PlayerLeg(122,315,-1,15,15,12);
+			    
+			    PlayerArm(99,255,60,12);
+			    
+			    return get();
+			})();
+			var ASSET_PLAYER_RUN3 = (function() {
+			    background(255,0);
+			    pushMatrix(); translate(0,-10);
+			    
+			    PlayerTail(108,298,1.2,1.5,15,10);
+			    PlayerArm(286,254,-62,12);
+			    PlayerLeg(260,315,-1,42,-80,12);
+			    
+			    // Underbelly
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(200,290,150,150);
+			    
+			    // Head
+			    PlayerHeadBase(240,120,1.3,1.5,0,10);
+			    
+			    // Pupils
+			    noFill(); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(212,70,13,33);
+			    ellipse(252,70,13,33);
+			    
+			    PlayerLeg(136,315,-1,-27,28,12);
+			    
+			    PlayerArm(99,255,60,12);
+			    popMatrix();
+			    
+			    return get();
+			})();
+			var ASSET_PLAYER_JUMP = (function() {
+			    background(255,0);
+			    pushMatrix(); translate(0,-16);
+			    
+			    PlayerTail(104,301,1.2,1.5,24,10);
+			    PlayerArm(275,188,-172,12);
+			    PlayerLeg(248,315,-1,-26,8,12);
+			    
+			    // Underbelly
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(200,290,150,150);
+			    
+			    // Head
+			    PlayerHeadBase(240,120,1.3,1.5,0,10);
+			    
+			    // Pupils
+			    noFill(); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(212,70,13,33);
+			    ellipse(252,70,13,33);
+			    
+			    PlayerLeg(124,315,1,30,49,12);
+			    
+			    PlayerArm(100,188,165,12);
+			    
+			    popMatrix();
+			    return get();
+			})();
+			var ASSET_PLAYER_LETS_SIT_DOWN1 = (function() {
+			    background(255,0);
+			    pushMatrix(); translate(0,10);
+			    
+			    PlayerTail(108,328,1.2,1.5,0,10);
+			    //PlayerArm(275,263,-14,12);
+			    PlayerLeg(248,340,-1,-90,-11,12);
+			    
+			    // Underbelly
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(200,290,150,150);
+			    
+			    // Head
+			    PlayerHeadBase(240,120,1.3,1.5,0,10);
+			    
+			    // Pupils
+			    noFill(); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(212,80,13,33);
+			    ellipse(252,80,13,33);
+			    
+			    pushMatrix(); translate(202,189);
+			        fill(87, 143, 199); stroke(12, 41, 69); strokeWeight(10);
+			        rect(-50,110,100,40);
+			    popMatrix();
+			    
+			    PlayerArm(124,264,-45,12);
+			    
+			    pushMatrix(); translate(202,189);
+			        fill(87, 143, 199); stroke(12, 41, 69); strokeWeight(10);
+			        rect(0,0,180,150);
+			        
+			        fill(16, 36, 89); textFont(SansBoldItalic,60);
+			        text("DUM",20,100);
+			        
+			    popMatrix();
+			    
+			    PlayerLeg(124,340,-1,-90,-11,12);
+			    
+			    popMatrix();
+			    return get();
+			})();
+			var ASSET_PLAYER_LETS_SIT_DOWN2 = (function() {
+			    background(255,0);
+			    pushMatrix(); translate(0,10);
+			    
+			    PlayerTail(108,328,1.2,1.5,0,10);
+			    //PlayerArm(275,263,-14,12);
+			    PlayerLeg(248,340,-1,-90,-11,12);
+			    
+			    // Underbelly
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(200,290,150,150);
+			    
+			    // Head
+			    PlayerHeadBase(240,120,1.3,1.5,0,10);
+			    
+			    // Pupils
+			    noFill(); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(212,80,13,33);
+			    ellipse(252,80,13,33);
+			    
+			    pushMatrix(); translate(202,189);
+			        fill(87, 143, 199); stroke(12, 41, 69); strokeWeight(10);
+			        rect(-50,110,100,40);
+			    popMatrix();
+			    
+			    PlayerArm(135,248,-71,12);
+			    
+			    pushMatrix(); translate(202,189);
+			        fill(87, 143, 199); stroke(12, 41, 69); strokeWeight(10);
+			        rect(0,0,180,150);
+			        
+			        fill(16, 36, 89); textFont(SansBoldItalic,60);
+			        text("DUM",20,100);
+			        
+			    popMatrix();
+			    
+			    PlayerLeg(124,340,-1,-90,-11,12);
+			    
+			    popMatrix();
+			    return get();
+			})();
+			var ASSET_PLAYER_LETS_SIT_DOWN3 = (function() {
+			    background(255,0);
+			    pushMatrix(); translate(0,10);
+			    
+			    PlayerTail(108,328,1.2,1.5,0,10);
+			    //PlayerArm(275,263,-14,12);
+			    PlayerLeg(248,340,-1,-90,-11,12);
+			    
+			    // Underbelly
+			    fill(PlayerPal[2]); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(200,290,150,150);
+			    
+			    // Head
+			    PlayerHeadBase(240,120,1.3,1.5,0,10);
+			    
+			    // Pupils
+			    noFill(); stroke(PlayerPal[3]); strokeWeight(15);
+			    ellipse(212,80,13,33);
+			    ellipse(252,80,13,33);
+			    
+			    pushMatrix(); translate(186,199);
+			        fill(191, 128, 61); stroke(61, 37, 6); strokeWeight(10);
+			        rect(0,0,180,120);
+			        line(90,0,90,120);
+			        
+			        pushMatrix(); translate(100,5); rotate(90);
+			        fill(87, 41, 16); textFont(SansBoldItalic,40);
+			        text("DOCs",0,0);
+			        popMatrix();
+			        
+			    popMatrix();
+			    
+			    PlayerArm(133,259,-68,12);
+			    PlayerLeg(124,340,-1,-90,-11,12);
+			    
+			    popMatrix();
+			    return get();
+			})();
+			var playerSprs = [
+			    ASSET_PLAYER_IDLE,
+			    ASSET_PLAYER_RUN1,ASSET_PLAYER_RUN2,ASSET_PLAYER_RUN3,ASSET_PLAYER_RUN2,
+			    ASSET_PLAYER_JUMP,
+			    ASSET_PLAYER_LETS_SIT_DOWN1,
+			    ASSET_PLAYER_LETS_SIT_DOWN2,
+			    ASSET_PLAYER_LETS_SIT_DOWN3
+			];
+			}
+			
+			// LEVEL ASSETS
+			{
+			var ASSET_BLANK = (function() {
+			    background(255,0);
+			    return get();
+			})();
+			var ASSET_BLOCK1 = (function() {
+			    background(255,0);
+			    
+			    fill(40, 74, 224); stroke(24, 37, 87); strokeWeight(30);
+			    rect(12,12,376,376);
+			    
+			    // Texture :3
+			    strokeWeight(10);
+			    for (var i=0; i<200; i++) {
+			        var n = noise(i*2.29)*2;
+			        stroke(21-n*20, 29-n*20, 87-n*80, n*30);
+			        point(i*2,n*400-200);
+			    }
+			    return get();
+			})();
+			var ASSET_BLOCK_OUTSIDE1 = (function() {
+			    background(255,0);
+			    
+			    noStroke();
+			    rectMode(CENTER);
+			    
+			    for (var i=0; i<50; i++) {
+			        fill(21, 37, 97, 10);
+			        rect(200,200,400-i,400-i);
+			    }
+			    
+			    rectMode(CORNER);
+			    return get();
+			})();
+			var ASSET_BLOCK2 = (function() {
+			    background(255,0);
+			    
+			    fill(30, 161, 48); stroke(12, 74, 10); strokeWeight(30);
+			    rect(12,12,376,376);
+			    
+			    // Texture :3
+			    strokeWeight(7);
+			    for (var i=0; i<100; i++) {
+			        var n = noise(i*2.29)*2;
+			        stroke(11-n*10, 66-n*60, 34-n*35, n*70);
+			        point(i*4,n*400-200);
+			    }
+			    return get();
+			})();
+			var ASSET_BLOCK_OUTSIDE2 = (function() {
+			    background(255,0);
+			    
+			    noStroke();
+			    rectMode(CENTER);
+			    
+			    for (var i=0; i<50; i++) {
+			        fill(18, 66, 16, 10);
+			        rect(200,200,400-i,400-i);
+			    }
+			    
+			    rectMode(CORNER);
+			    return get();
+			})();
+			var ASSET_BLOCK3 = (function() {
+			    background(255,0);
+			    
+			    fill(99, 39, 196); stroke(19, 11, 56); strokeWeight(30);
+			    rect(12,12,376,376);
+			    
+			    // Texture :3
+			    strokeWeight(7);
+			    for (var i=0; i<400; i++) {
+			        var n = noise(i*2.29)*2;
+			        stroke(11-n*10, 66-n*60, 34-n*35, n*70);
+			        point(i,n*400-200);
+			    }
+			    return get();
+			})();
+			var ASSET_BLOCK_OUTSIDE3 = (function() {
+			    background(255,0);
+			    
+			    noStroke();
+			    rectMode(CENTER);
+			    
+			    for (var i=0; i<50; i++) {
+			        fill(56, 16, 64, 10);
+			        rect(200,200,400-i,400-i);
+			    }
+			    
+			    rectMode(CORNER);
+			    return get();
+			})();
+			var ASSET_BLOCK4 = (function() {
+			    background(255,0);
+			    
+			    fill(222, 186, 27); stroke(148, 123, 31); strokeWeight(30);
+			    rect(12,12,376,376);
+			    
+			    // Texture :3
+			    strokeWeight(7);
+			    for (var i=0; i<100; i++) {
+			        var n = noise(i*2.29)*2;
+			        stroke(11-n*10, 66-n*60, 34-n*35, n*30);
+			        point(i*4,n*400-200);
+			    }
+			    return get();
+			})();
+			var ASSET_BLOCK_OUTSIDE4 = (function() {
+			    background(255,0);
+			    
+			    noStroke();
+			    rectMode(CENTER);
+			    
+			    for (var i=0; i<50; i++) {
+			        fill(117, 81, 13, 10);
+			        rect(200,200,400-i,400-i);
+			    }
+			    
+			    rectMode(CORNER);
+			    return get();
+			})();
+			var ASSET_BLOCK_LONE = (function() {
+			    // Tile code
+			    var tile = "3333333333341111114331233332133131111313313132131331312213133131111313312333321334222222433333333333";
+			    var pal = [null,color(19,60,13),color(34,97,23),color(129,171,122),color(7,13,6)];
+			    
+			    // Electric Dolphin's Image Init code from Lone
+			    background(0, 0);
+			    noStroke();
+			    for (var j=0; j<10; j++) {
+			        for (var i=0; i<10; i++) {
+			            var blk=tile[i+j*10];
+			            fill(pal[blk]);
+			            if (blk>0) {rect(0+i*40,0+j*40,40,40);}
+			        }
+			    }
+			    
+			    return get();
+			})();
+			
+			var blockPals = {
+			    inner:[null,ASSET_BLOCK1,ASSET_BLOCK2,ASSET_BLOCK3,ASSET_BLOCK4,ASSET_BLOCK_LONE],
+			    outer:[null,ASSET_BLOCK_OUTSIDE1,ASSET_BLOCK_OUTSIDE2,ASSET_BLOCK_OUTSIDE3,ASSET_BLOCK_OUTSIDE4,ASSET_BLANK]
+			};
+			
+			var ASSET_SPIKE_AIR = (function() {
+			    background(255,0);
+			    
+			    fill(217, 228, 235); stroke(82, 95, 110); strokeWeight(30);
+			    for (var i=0; i<360; i+=45) {pushMatrix(); translate(200,200); rotate(i);
+			    triangle(-100,120,100,120,0,-160);
+			    popMatrix();}
+			    ellipse(200,200,200,200);
+			    
+			    return get();
+			})();
+			var ASSET_SPIKE_GROUND = (function() {
+			    background(255,0);
+			    
+			    fill(217, 228, 235); stroke(82, 95, 110); strokeWeight(30);
+			    triangle(0,400,200,400,100,0);
+			    triangle(200,400,400,400,300,0);
+			    
+			    return get();
+			})();
+			var ASSET_GOAL = (function() {
+			    background(255,0);
+			    fill(217, 205, 37); noStroke();
+			    //rect(0,0,400,400);
+			    
+			    textFont(MonoBold,400); textAlign(CENTER,CENTER);
+			    text("✨",200,200);
+			    textAlign(CORNER);
+			    
+			    return get();
+			})();
+			var ASSET_GOAL_GREY = (function() {
+			    background(255,0);
+			    
+			    image(ASSET_GOAL,0,0,400,400);
+			    filter(INVERT);
+			    
+			    return get();
+			})();
+			}
+			
+			// OTHER ASSETS
+			{
+			var tylerPal = [null,color(25, 77, 17),color(34,97,23),color(129,171,122),color(7,13,6)];
+			var TylerThinkHand = function(x,y,sx,sy,r,fc,sc,sw){
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    fill(fc);
+			    stroke(sc);
+			    strokeWeight(sw);
+			    beginShape();
+			    curveVertex(-53,-47); curveVertex(-45,-88); curveVertex(-26,-84); curveVertex(-26,-48); curveVertex(-2,-37); curveVertex(26,-42); curveVertex(94,-55); curveVertex(113,-44); curveVertex(38,-14); curveVertex(55,2); curveVertex(38,18); curveVertex(54,32); curveVertex(36,47); curveVertex(36,65); curveVertex(-56,53); curveVertex(-65,-10); curveVertex(-53,-47); curveVertex(-45,-88); curveVertex(-26,-84); /**/
+			    endShape();
+			    popStyle();
+			    popMatrix();
+			};
+			var TylerThinkMask = function(x,y,sx,sy,r,fc,sc,sw){
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    fill(fc);
+			    stroke(sc);
+			    strokeWeight(sw);
+			    beginShape();
+			    curveVertex(-147,-17); curveVertex(-130,-17); curveVertex(-101,-9); curveVertex(-74,-8); curveVertex(-17,-23); curveVertex(38,-7); curveVertex(91,-12); curveVertex(161,-22); curveVertex(160,45); curveVertex(110,125); curveVertex(3,162); curveVertex(-100,128); curveVertex(-142,34); curveVertex(-147,-17); curveVertex(-130,-17); curveVertex(-101,-9); /**/
+			    endShape();
+			    popStyle();
+			    popMatrix();
+			};
+			var ASSET_TYLER_THINK = (function() {
+			    background(255,0);pushMatrix(); translate(0,12);
+			    
+			    // Head
+			    fill(tylerPal[3]); 
+			    stroke(tylerPal[1]); strokeWeight(10);
+			    ellipse(200,200,340,340);
+			    
+			    // Mask
+			    TylerThinkMask(190,226,1.1,0.9,0,
+			    tylerPal[2],tylerPal[4],10);
+			    
+			    // Hair
+			    fill(tylerPal[1]); noStroke();
+			    ellipse(201,58,297,143);
+			    ellipse(324,144,134,184);
+			    ellipse(68,116,129,167);
+			    
+			    // Eyes
+			    fill(tylerPal[4]); noStroke();
+			    rect(125,100,20,80,50);
+			    rect(219,116,20,80,50);
+			    stroke(tylerPal[4]); strokeWeight(20);
+			    line(214,118,265,110);
+			    noFill(); arc(127,115,80,57,-134,-45);
+			    
+			    TylerThinkHand(110,320,1,1,0,tylerPal[3],tylerPal[1],8);
+			    
+			    popMatrix();
+			    return get();
+			})();
+			
+			var ɹǝlʎʇPal = [null, color(242, 163, 44), color(255, 205, 69), color(130, 65, 19),color(66, 31, 9)];
+			var ɹǝlʎʇHeadBase = function(x,y,sx,sy,r,sw){
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    fill(ɹǝlʎʇPal[1]);
+			    stroke(ɹǝlʎʇPal[3]);
+			    strokeWeight(sw);
+			    
+			    triangle(
+			        -25, -15,
+			        52, -9,
+			        25, -90
+			    );
+			    
+			    beginShape();
+			    curveVertex(-106,-8); curveVertex(-72,-99); curveVertex(-57,-86); curveVertex(-33,-45); curveVertex(7,-40); curveVertex(50,-19); curveVertex(65,26); curveVertex(109,35); curveVertex(103,92); curveVertex(45,101); curveVertex(-88,86); curveVertex(-106,-8); curveVertex(-72,-99); curveVertex(-57,-86); /**/
+			    endShape();
+			    
+			    fill(ɹǝlʎʇPal[3]); stroke(ɹǝlʎʇPal[4]);
+			    rect(-103,-20,167,25);
+			    
+			    fill(0); noStroke();
+			    triangle(
+			        61, 43,
+			        97, 43,
+			        87, 57
+			    );
+			    
+			    popStyle();
+			    popMatrix();
+			};
+			var ɹǝlʎʇeye = function(x,y,sx,sy,r,sw) {
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    fill(0);
+			    noStroke();
+			    
+			    ellipse(0,0,15,25);
+			    
+			    popStyle();
+			    popMatrix();
+			};
+			var ASSET_FLOOF_REGISTERS = (function() {
+			    background(255,0);
+			    
+			    fill(ɹǝlʎʇPal[3]); stroke(ɹǝlʎʇPal[4]); strokeWeight(10);
+			    
+			    // a r m
+			    pushMatrix();
+			        translate(153,411);
+			        rotate(-95);
+			        rect(0,0,70,25);
+			    popMatrix();
+			    
+			    // jacket thing
+			    rect(76,350,86,78);
+			    
+			    fill(ɹǝlʎʇPal[2]); strokeWeight(6);
+			    triangle(
+			        113,355,
+			        139,361,
+			        133,381
+			    );
+			    stroke(0); line(133,381,133,412);
+			    
+			    // m o r e   a r m
+			    fill(ɹǝlʎʇPal[3]); stroke(ɹǝlʎʇPal[4]); strokeWeight(10);
+			    pushMatrix();
+			        translate(87,353);
+			        rotate(95);
+			        rect(0,0,70,25);
+			    popMatrix();
+			    
+			    // the head thing-a-ma-jig
+			    ɹǝlʎʇHeadBase(125,281,0.8,0.8,0,10);
+			    ɹǝlʎʇeye(115,298,1,1,0,10);
+			    ɹǝlʎʇeye(153,299,1,1,0,10);
+			    
+			    stroke(0); strokeWeight(10);
+			    line(100,290,121,292);
+			    line(161,290,146,292);
+			    
+			    // colon three moment
+			    line(192,328,176,335);
+			    line(192,328,202,335);
+			    line(176,335,152,335);
+			    line(152,335,146,331);
+			    
+			    stroke(0); strokeWeight(8);
+			    line(203,282,257,222);
+			    
+			    return get();
+			})();
+			
+			}
+			background(0);
+			popMatrix();
+			
+			/** Input **/
+			// Arrows - U-38 D-40 L-37 R-39
+			var keys = []; for (var i=0; i<127; i++) {keys[i]=0;}
+			var keyDown = []; for (var i=0; i<127; i++) {keyDown[i]=0;}
+			var mousePos = {x:null, y:null, tileX:null, tileY:null};
+			var mouse;
+			cursor(CROSS);
+			
+			/** Levels **/
+			var BRUSHTABLE = [".","X","^","*","","","","","",""];
+			var LEVELTABLE = [null,
+			    /** Intro **/
+			    { name:"Booting Up", password:"000000",
+			      dia:"Alright, I'm inside. This place urges desire to\nbe fixed upon. We'll see if I can deal with it.\n(Use WASD to move around, P to pause)",
+			      blockPalVal:1,
+			      spawn:{x:90,y:390,d:1}, allowed:{txt:"None",list:[],regs:[]}, maxLines:0,
+			      goal:{x:45,y:200}, startingCode:[""], noEdit:[],
+			      knowFlag:0, tipFlag:0,
+			      
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX..........XXXXX",
+			        "XXX..............XXX",
+			        "XX................XX",
+			        "XX................XX",
+			        "X.........XX.......X",
+			        "X..................X",
+			        "XXXXX..XX^^^^XX....X",
+			        "XXX.....XXXXXX.....X",
+			        "XX........XX.......X",
+			        "XX...............XXX",
+			        "X.................XX",
+			        "X.................XX",
+			        "XXXXXX.........X...X",
+			        "XXXXXX.....XX..X...X",
+			        "XXXXXX.....XX^^X^^^X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    
+			    /** Level Manipulation **/
+			    { name:"Cheater", password:"W26KY0",
+			      dia:"Great, giant gap... I won't be able to get across with\nthe body shape I have. I'm gonna have to use the DUM.\nWith this, I can type lines to shape the level to will...\n(Read the Docs to figure out the workings of DUM)",
+			      blockPalVal:1,
+			      spawn:{x:45,y:300,d:1}, allowed:{txt:"pbk",list:["pbk"],regs:[]}, maxLines:2,
+			      goal:{x:525,y:280}, startingCode:[""], noEdit:[],
+			      knowFlag:1, tipFlag:0,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXX...XXXXXX...XXXX",
+			        "XXX.....XXXX.....XXX",
+			        "XX.......XX.......XX",
+			        "XX.......XX.......XX",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "XXXXXX........XXXXXX",
+			        "XXXXX..........XXXXX",
+			        "XXXX............XXXX",
+			        "XXXX^^........^^XXXX",
+			        "XXXXXX........XXXXXX",
+			        "XXXXXX^^^^^^^^XXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Overwrite", password:"B44IAC",
+			      dia:"Seems to be a lot of spikes...\nYet, my line capacity can't cover them all.",
+			      blockPalVal:1,
+			      spawn:{x:255,y:180,d:1}, allowed:{txt:"pbk",list:["pbk"],regs:[]}, maxLines:1,
+			      goal:{x:60,y:120}, startingCode:[""], noEdit:[],
+			      knowFlag:2, tipFlag:1,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX...XXXX..XXX..XXXX",
+			        "X.....XX....X....XXX",
+			        "X.....XX....X....XXX",
+			        "X......X....X.....XX",
+			        "XXXX...X..........XX",
+			        "XX.X...XXXXX^XXXX.XX",
+			        "XX.X.....XXXXXX....X",
+			        "XX.X......XXXX.....X",
+			        "XX.X......^........X",
+			        "XX.X..........^....X",
+			        "XX.X..X...^XXXXXXXXX",
+			        "XX.X..XXX..X.......X",
+			        "XX.X^^X.X..X.XXXXX.X",
+			        "XX.XXXX.XXXX.XXXXX.X",
+			        "XX.................X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"No Spanish", password:"DUOAS3",
+			      dia:"", blockPalVal:1,
+			      spawn:{x:100,y:150,d:1}, allowed:{txt:"ers",list:["ers"],regs:[]}, maxLines:2,
+			      goal:{x:515,y:240}, startingCode:[""], noEdit:[],
+			      knowFlag:2, tipFlag:1,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX..^.XXXXXXXXXXXXXX",
+			        "X.....^XXXXX.....XXX",
+			        "X......XXXX.......XX",
+			        "X......XXX.........X",
+			        "X......XXX...^.....X",
+			        "XXXXXXXXXX...X.....X",
+			        "XX....XXXX...X^....X",
+			        "X......XXX...XXX...X",
+			        "X............XXX...X",
+			        "X.......^....XXX...X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX.....XXXX.......XX",
+			        "X.......XX.........X",
+			        "X..X.X..XX..X.X.X..X",
+			        "X.X.X.X.XX.X.X.X.X.X",
+			        "X.......XX.........X",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Superman", password:"L7K6NG",
+			      dia:"Alright, what the dump is this now?",
+			      blockPalVal:1,
+			      spawn:{x:120,y:150,d:1}, allowed:{txt:"ers",list:["ers"],regs:[]}, maxLines:1,
+			      goal:{x:300,y:430}, startingCode:[""], noEdit:[],
+			      knowFlag:2, tipFlag:1,
+			      lvl:[
+			        "....................",
+			        "....................",
+			        "....................",
+			        "....................",
+			        "....................",
+			        "....................",
+			        "...XXXXXX...........",
+			        "...X....X...........",
+			        "...X.^^.X...........",
+			        "...X....X...XXXXXX..",
+			        "...X.^^.X^^^X....X..",
+			        "...X....X^^^X.^^.X..",
+			        "...X.^^.X^^^X....X..",
+			        "...X....X...X.^^.X..",
+			        "...X....X...X....X..",
+			        "...X....X...X....X..",
+			        "^^^X.XX.X^^^X.XX.X^^",
+			        "XXXX.XX.XXXXX.XX.XXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"4th D Slip", password:"PK5293",
+			      dia:"Huh, what an odd goal position. I wonder why...",
+			      blockPalVal:1,
+			      spawn:{x:60,y:480,d:1}, allowed:{txt:"pbk, eral",list:["pbk","eral"],regs:[]}, 
+			      maxLines:2, startingCode:[""], noEdit:[],
+			      goal:{x:575,y:90},
+			      knowFlag:2, tipFlag:1,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX....XXXXXX.....",
+			        "XXX........XXX......",
+			        "XX..........XX......",
+			        "XX..........XX......",
+			        "XXX........XXXX.....",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX^^^^^^^^^^XXXXX",
+			        "XXX..............XXX",
+			        "XX................XX",
+			        "XX................XX",
+			        "X..................X",
+			        "X.........XX.......X",
+			        "XXXXX..............X",
+			        "X...X..............X",
+			        "X...X..XX.........^X",
+			        "X...X^^XX^^^^^^^^^XX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Inflation", password:"VGP6ZT",
+			      dia:"So now I need enough coins to acess the goal...",
+			      blockPalVal:1,
+			      spawn:{x:255,y:240,d:1}, allowed:{txt:"sti",list:["sti"],regs:[]}, maxLines:2,
+			      coinsNeeded: 5,
+			      
+			      goal:{x:500,y:300}, startingCode:[""], noEdit:[],
+			      knowFlag:2, tipFlag:1,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX...XXX....XXXXX",
+			        "XXX......X.......XXX",
+			        "XX.......^........XX",
+			        "XX.....*...*......XX",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X....XXXXXXXX......X",
+			        "X.....X.X...X......X",
+			        "X.....^.^.*.X......X",
+			        "XXXX........X...XXXX",
+			        "...X....^...X^^^X...",
+			        ".X.XXXXXXXXXXXXXX.X.",
+			        ".X.X............X.X.",
+			        ".X.X.XXXXXXXXXX.X.X.",
+			        "...X............X...",
+			        "....................",
+			        "...................."
+			    ]},
+			    
+			    /** Registers **/
+			    { name:"Letter R", password:"T6EIFO",
+			      dia:"Hmm, it seems like not only I can't edit red lines...\nBut it seems I will have to resort to Registers as well.\n(Read the Docs to learn about registers)",
+			      blockPalVal:2,
+			      spawn:{x:60,y:300,d:1}, goal:{x:500,y:230},
+			      
+			      allowed:{txt:"rset",
+			               list:["rset"],
+			               regs:[0]
+			      },
+			      
+			      startingCode:["","pbk r0 10"],
+			      noEdit:[1],
+			      
+			      maxLines:2,
+			      knowFlag:3, tipFlag:1,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXX....XXXXXXXX",
+			        "XXXXX..........XXXXX",
+			        "XXX......XX......XXX",
+			        "XX.......^^.......XX",
+			        "XX................XX",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "XXXXXXX......XXXXXXX",
+			        "X.....X......X.....X",
+			        "X.XXX.X......X.XXX.X",
+			        "X.X.X.X^^^^^^X.X.X.X",
+			        "X.XXX.XXXXXXXX.XXX.X",
+			        "X.XX..X.X..X.X..XX.X",
+			        "X.X.X.X.X..X.X.X.X.X",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Up to 10", password:"WNAI6O",
+			      dia:"I don't seem to see the significance of this.",
+			      blockPalVal:2,
+			      spawn:{x:300,y:150,d:1}, goal:{x:300,y:330},
+			      
+			      allowed:{txt:"radd",
+			               list:["radd"],
+			               regs:[0]
+			      },
+			      
+			      startingCode:["rset 0 3","","ers r0 6"],
+			      noEdit:[0,2],
+			      
+			      maxLines:3,
+			      knowFlag:3, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX...XXXX...XXX...XX",
+			        "X..^..XX.....X..^..X",
+			        "X.XXX.XX.....X.XXX.X",
+			        "X.XXX..XX...XX.XXX.X",
+			        "X.XXX...XXXXX..XXX.X",
+			        "X.XXX....X.X...XXX.X",
+			        "X........^.^.......X",
+			        "X..................X",
+			        "X..X^...^...^..^X..X",
+			        "X..X^..^X...X^.^X..X",
+			        "X^.....^X...X^....^X",
+			        "XX......XXXXX.....XX",
+			        "XX^.....XX.XX^...^XX",
+			        "XXX^^..^X...XX^^^XXX",
+			        "XXXXX^^XX...XXXXXXXX",
+			        "XXXXXXXXX...XXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Broken Block", password:"OHX5YB",
+			      dia:"", blockPalVal:2,
+			      spawn:{x:100,y:420,d:1}, goal:{x:540,y:360},
+			      
+			      allowed:{txt:"rmut",
+			               list:["rmut"],
+			               regs:[0,1]
+			      },
+			      
+			      startingCode:["rset 0 2","rset 1 2","","","rmut r0 r1 1","pbk r0 r1"],
+			      noEdit:[0,1,4,5],
+			      
+			      maxLines:5,
+			      knowFlag:3, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX........XXXX...",
+			        "XXX............XX.X.",
+			        "XX.....XXXXX....X.X.",
+			        "XX.......XXXXX..X...",
+			        "X..........XXXX.X.X.",
+			        "X...X.......XXX.X...",
+			        "X^^^X..^....XXX.X.X.",
+			        "XXXXXXXX.....XX.X.X.",
+			        ".......X.....XX.X...",
+			        "XXXXXXXX.....XX.XXXX",
+			        "XX...........XX.X...",
+			        "X.....^.....XXX.X...",
+			        "X.....XXXXXXXXX.X...",
+			        "XX....X.......X.....",
+			        "XXXXXXX.XXXXX.X^XXXX",
+			        "X.......X...X.XXXXXX",
+			        "X.XXXXXXX.X.X.XXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Saftey Net", password:"HLHCIE",
+			      dia:"...What's up with that face?", blockPalVal:2,
+			      spawn:{x:100,y:390,d:1}, goal:{x:520,y:160},
+			      
+			      allowed:{txt:"rsub",
+			               list:["rsub"],
+			               regs:[0,128,129]
+			      },
+			      
+			      startingCode:["","pbk r128 r0"],
+			      noEdit:[1],
+			      
+			      maxLines:2,
+			      knowFlag:3, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX............XXX",
+			        "XXX....^...^......XX",
+			        "XX.....XXXXX.......X",
+			        "XX.....X.X.X.......X",
+			        "X......XXXXX.......X",
+			        "X......X^^^X.......X",
+			        "X......X^^^X....XXXX",
+			        "X......XXXXX....X..X",
+			        "X...............X..X",
+			        "X...............X..X",
+			        "X...............X..X",
+			        "X...............X..X",
+			        "X...............X..X",
+			        "XXXXXXX.........X..X",
+			        "X.....X.........X..X",
+			        "X.....X^^XX^^^^^X..X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Jail Cross", password:"90Q2UQ",
+			      dia:"Wow, these corridors are getting real tight...",
+			      blockPalVal:2,
+			      spawn:{x:100,y:420,d:1}, goal:{x:510,y:115},
+			      
+			      allowed:{txt:"errw, ercl",
+			               list:["errw","ercl"],
+			               regs:[128,129]
+			      },
+			      
+			      startingCode:[""],
+			      noEdit:[],
+			      
+			      maxLines:2,
+			      knowFlag:3, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXX...XXXXXXXXXXXXXX",
+			        "XXX.X.XXXXXXXXXX...X",
+			        "XXX.X.XXXXXXXXXX...X",
+			        "XXX.X.XXXXXXXXXX...X",
+			        "XXX...X...XXXXXXXXXX",
+			        "XXXXXXX.X.XXXXXXXXXX",
+			        "XXXXXXX...XXXXXX...X",
+			        "XXXXXXX...XXXXXX.X.X",
+			        "XXXXXXX...XXXXXX...X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXX...XXXXXXXXXX",
+			        "XXXXXXX.X.XXXXXXXXXX",
+			        "XX...XX...XXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Gram is Tele", password:"QPFPCR",
+			      dia:"Seems to be a lot of vertical shafts...",
+			      blockPalVal:2,
+			      spawn:{x:80,y:450,d:1}, goal:{x:510,y:115},
+			      
+			      allowed:{txt:"yset",
+			               list:["yset"],
+			               regs:[]
+			      },
+			      
+			      startingCode:[""],
+			      noEdit:[],
+			      
+			      maxLines:1,
+			      knowFlag:3, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXX....XXXXX......XX",
+			        "XX.......XX........X",
+			        "X.........X........X",
+			        "X.........X........X",
+			        "X....^....X........X",
+			        "X.XX.XXXXXX.XX..X..X",
+			        "X.XX.X..........X..X",
+			        "X....X..........X..X",
+			        "X....X..........X..X",
+			        "X....X..........X..X",
+			        "X....X.XX.^.....X..X",
+			        "X....X....X.....^..X",
+			        "X....X....X........X",
+			        "X....X^^^^X^XX^^^^^X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Bottom Curse", password:"6O5X4V",
+			      dia:"Hmm, this one seems tough. Is there a mechanic\nthat can be exploited here?", blockPalVal:2,
+			      spawn:{x:300,y:420,d:1}, goal:{x:285,y:60},
+			      
+			      allowed:{txt:"pbk, ers, radd",
+			               list:["pbk","ers","radd"],
+			               regs:[0,128,129]
+			      },
+			      
+			      startingCode:["","","yset 14"],
+			      noEdit:[2],
+			      
+			      maxLines:3,
+			      knowFlag:3, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXX......XXXXXXX",
+			        "XXXXXX........XXXXXX",
+			        "XXXXX..X....X..XXXXX",
+			        "XXXXX..........XXXXX",
+			        "XXXX............XXXX",
+			        "XX................XX",
+			        "X..................X",
+			        "X....^........^....X",
+			        "X^...X...XX...X...^X",
+			        "XX...XX......XX...XX",
+			        "XXX...XXXXXXXXX..XXX",
+			        "XXX....XXXXXX....XXX",
+			        "XX.......XX.......XX",
+			        "XX................XX",
+			        "XX^.....XXXX.....^XX",
+			        "XXX^....XXXX....^XXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Shutting Down", password:"UV5FVC",
+			      dia:"This doesn't seem too bad... Unless...\nOh.",
+			      blockPalVal:2,
+			      spawn:{x:90,y:400,d:1}, goal:{x:45,y:200},
+			      
+			      allowed:{txt:"spst",
+			               list:["spst"],
+			               regs:[]
+			      },
+			      
+			      startingCode:["rpsw","ercl 6","","eral"],
+			      noEdit:[0,1,3],
+			      
+			      maxLines:5,
+			      knowFlag:3, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX..........XXXXX",
+			        "XXX..............XXX",
+			        "XX................XX",
+			        "XX................XX",
+			        "X.........XX.......X",
+			        "X..................X",
+			        "XXXXX..XX^^^^XX....X",
+			        "XXX.....XXXXXX.....X",
+			        "XX....^...XX.......X",
+			        "XX....X..........XXX",
+			        "X.....X...........XX",
+			        "X.....X...........XX",
+			        "XXXXXXX........X...X",
+			        "XXXXXXX....XX..X...X",
+			        "XXXXXXX....XX^^X^^^X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    
+			    /** Jumps and Loops **/
+			    { name:"Jumper", password:"AFN7CH",
+			      dia:"Ok, there is a halt optcode I can't delete.\nI'm just gonna have to jump over it.",
+			      blockPalVal:3,
+			      spawn:{x:120,y:330,d:1}, goal:{x:470,y:300},
+			      coinsNeeded: 2,
+			      
+			      allowed:{txt:"jto, sti",
+			               list:["jto","sti"],
+			               regs:[]
+			      },
+			      
+			      startingCode:["","halt","",""],
+			      noEdit:[1],
+			      
+			      maxLines:4,
+			      knowFlag:4, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXX............XXXX",
+			        "XXXX............XXXX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XXXXXXX......XXXXXXX",
+			        "XXXXXXX......XXXXXXX",
+			        "XX...XX^....^XX...XX",
+			        "XX...XXX^^^^XXX...XX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Lost Episode", password:"0641G4",
+			      dia:"Hmm, it seems like I have to run the code\nmutiple times, and yet, I only have 2 lines avaliable...\n",
+			      blockPalVal:3,
+			      spawn:{x:60,y:450,d:1}, goal:{x:500,y:230},
+			      
+			      allowed:{txt:"yset, jto",
+			            list:["yset","jto"],
+			            regs:[]
+			      },
+			      
+			      startingCode:[""],
+			      noEdit:[],
+			      
+			      maxLines:2,
+			      knowFlag:4, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXX.^..X..X..^.XXXX",
+			        "XX......^..^......XX",
+			        "XX................XX",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X........^....XXXX.X",
+			        "X........X.....XX..X",
+			        "X........X.........X",
+			        "X........X........^X",
+			        "X........X........XX",
+			        "X........X^......^XX",
+			        "XXXXXXXXXXX^^^^^^XXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Blockchain", password:"GEN55H",
+			      dia:"Well that's just an absurd price...",
+			      blockPalVal:3,
+			      spawn:{x:75,y:390,d:1}, goal:{x:470,y:400},
+			      coinsNeeded: 20,
+			      
+			      allowed:{txt:"sti, jto",
+			               list:["sti","jto"],
+			               regs:[128,129]
+			      },
+			      
+			      startingCode:[""],
+			      noEdit:[],
+			      
+			      maxLines:2,
+			      knowFlag:4, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXX............XXXX",
+			        "XXXX.X.X.XX.X.X.XXXX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX...........^^^^^XX",
+			        "XX...........XXXXXXX",
+			        "XX...........X....XX",
+			        "XX...........X....XX",
+			        "XXXX.........X....XX",
+			        "XXXX.........X....XX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Construction", password:"VSWB3L",
+			      dia:"Wonder if I can fix it?\nCan I?...",
+			      blockPalVal:3,
+			      spawn:{x:150,y:300,d:1}, goal:{x:100,y:110},
+			      
+			      allowed:{txt:"jto, radd, rset",
+			               list:["jto","radd","rset"],
+			               regs:[0,1]
+			      },
+			      
+			      startingCode:["","","","pbk r0 r1",""],
+			      noEdit:[3],
+			      
+			      maxLines:5,
+			      knowFlag:4, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXX.........X....XXX",
+			        "XX..........^.....XX",
+			        "XX................XX",
+			        "XXXXXXXXXXX^.....XXX",
+			        "XXXXXXXXXX........XX",
+			        "XXXXXX..XX^^......XX",
+			        "XXXX.....XXX....XXXX",
+			        "XXX......^.^.....XXX",
+			        "XXX...............XX",
+			        "XXXXXXX^....^XXXXXXX",
+			        "XXXXXXX......XXXXXXX",
+			        "XX...XX......XX...XX",
+			        "XX.^.XX^....^XX.^.XX",
+			        "XX...XXX^^^^XXX...XX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Exercise", password:"1PY5DT",
+			      dia:"",
+			      blockPalVal:3,
+			      spawn:{x:120,y:450,d:1}, goal:{x:480,y:160},
+			      
+			      allowed:{txt:"jto, radd, rset",
+			               list:["jto","radd","rset"],
+			               regs:[0,1]
+			      },
+			      
+			      startingCode:["","","","","pbk r0 r1",""],
+			      noEdit:[4],
+			      
+			      maxLines:6,
+			      knowFlag:4, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX............XXX",
+			        "XXX...............XX",
+			        "XXX...............XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX............XXXXXX",
+			        "XX..............XXXX",
+			        "XX...............XXX",
+			        "XX...............XXX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX...........^....XX",
+			        "XX......^..^.X....XX",
+			        "XXXXXXXXXXXXXX....XX",
+			        "XXXXXXXXXXXXXX....XX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Big Un-Bang", password:"2DLAKC",
+			      dia:"Why do I keep finding myself enclosed in something?",
+			      blockPalVal:3,
+			      spawn:{x:288,y:60,d:1}, goal:{x:285,y:466},
+			      
+			      allowed:{txt:"jto, radd, errw",
+			               list:["errw","radd","jto"],
+			               regs:[0]
+			      },
+			      
+			      startingCode:["rset 0 1","","",""],
+			      noEdit:[0],
+			      
+			      maxLines:4,
+			      knowFlag:4, tipFlag:2,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXX..XXXXXXXXX",
+			        "XXXXXXXXX..XXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXX..XXXXXXXXX",
+			        "XXXXXXXXX..XXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    
+			    // I WANT TO JUM!!!
+			    { name:"Air Valve", password:"72I0EB",
+			      dia:"",
+			      blockPalVal:3,
+			      spawn:{x:90,y:450,d:1}, goal:{x:480,y:160},
+			      
+			      allowed:{txt:"ers, jto, jum",
+			               list:["ers","jto","jum"],
+			               regs:[128]
+			      },
+			      
+			      startingCode:["rspw","","","","","","pbk 12 9"],
+			      noEdit:[0,6],
+			      
+			      maxLines:7,
+			      knowFlag:4, tipFlag:3,
+			      lvl:[
+			        "....................",
+			        "..XXXXXXXXXX..XXXXX.",
+			        ".XXXX^^^^XXXXXXX.XXX",
+			        "XXX^^....^^XXXX...XX",
+			        "XXX........XXXX...XX",
+			        "XX^........^XXX...XX",
+			        "XX..........XXX...XX",
+			        "XX..........XXX...XX",
+			        "XX..........X.X...XX",
+			        "XX...X........X...XX",
+			        "XXX..X.....XXXXXXXXX",
+			        "XX...X.....XXX...XXX",
+			        "XX...X.....XX..X..XX",
+			        "XX..XX.....XX.XXX.XX",
+			        "XX...X.....XX.XXX.XX",
+			        "XX...X^^^^^XX..X..XX",
+			        "XXXXXXXXXXXXXX...XXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Input & Output", password:"BW2QOK",
+			      dia:"",
+			      blockPalVal:3,
+			      spawn:{x:90,y:150,d:1}, goal:{x:465,y:255},
+			      coinsNeeded: 3,
+			      
+			      allowed:{txt:"yset, jto, jum",
+			               list:["yset","jto","jum"],
+			               regs:[134]
+			      },
+			      
+			      startingCode:["rspw","","",""],
+			      noEdit:[0,6],
+			      
+			      maxLines:4,
+			      knowFlag:4, tipFlag:3,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX^.X.^XX^.......XXX",
+			        "XX..^..X^....X....XX",
+			        "XX.....X.....X.X..XX",
+			        "XX.....X.*.*.X....XX",
+			        "XXXXXXXX.....X....XX",
+			        "XXX...XXXXXXXX..X.XX",
+			        "XX...........X....XX",
+			        "XX...........X....XX",
+			        "XX...........X.X..XX",
+			        "XX.*...XXX...X....XX",
+			        "XX......XX...X....XX",
+			        "XX.X.....X^^^X..X.XX",
+			        "XX.......X........XX",
+			        "XX.......X........XX",
+			        "XX....X..X.XXXXX..XX",
+			        "XX.......X.X...X..XX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Jumming Mission", password:"JQEN6I",
+			      dia:'Ok, what the dump even IS a "Jumming Mission?"',
+			      blockPalVal:3,
+			      spawn:{x:120,y:450,d:1}, goal:{x:480,y:160},
+			      
+			      allowed:{txt:"jum, rsub",
+			               list:["jum","rsub"],
+			               regs:[0, 129, 130]
+			      },
+			      
+			      startingCode:["rspw","spst 0","rset 0 15","","","yset r0","jto 3"],
+			      noEdit:[0,1,2,5,6],
+			      
+			      maxLines:7,
+			      knowFlag:4, tipFlag:3,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX^^^^^^^X^^^^^^^^XX",
+			        "XX.......X........XX",
+			        "XX.......X........XX",
+			        "XX.......X........XX",
+			        "XX.......X........XX",
+			        "XX.......X........XX",
+			        "XX....^..^..^.....XX",
+			        "XX....X.....X.....XX",
+			        "XX....X.....X.....XX",
+			        "XX....X.....X.....XX",
+			        "XX....X.....X.XXX.XX",
+			        "XX....X.....X.....XX",
+			        "XX....X.....X^...^XX",
+			        "XX....X..^..XX^^^XXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"ReadingTheRoom", password:"JQEN6I",
+			      dia:"Hmm, must erase the spikes to proceed it seems.",
+			      coinsNeeded: 4,
+			      blockPalVal:3,
+			      spawn:{x:75,y:390,d:1}, goal:{x:495,y:375},
+			      
+			      allowed:{txt:"rset, radd, rti,\njto, jum",
+			               list:["rset","radd","rti","jto","jum"],
+			               regs:[0, 1]
+			      },
+			      
+			      startingCode:[
+			          "spst 0",
+			          "",
+			          "",
+			          "",
+			          "",
+			          "ers r0 13",
+			          ""
+			        ],
+			      noEdit:[0,5],
+			      
+			      maxLines:7,
+			      knowFlag:4, tipFlag:3,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXX........XXXXXX",
+			        "XXXX............XXXX",
+			        "XXX..............XXX",
+			        "XXX...X......X...XXX",
+			        "XX................XX",
+			        "XX......XXXX......XX",
+			        "XX....X..XX..X....XX",
+			        "XX.....XX..XX.....XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX................XX",
+			        "XX...^*^^^*^^**^..XX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXX...........XXXX",
+			        "XXXX.............XXX",
+			        "XXXX.............XXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Diggy Hole", password:"CGLUIK",
+			      dia:"I better get digging.\nThe coins are probably underground.",
+			      blockPalVal:3,
+			      spawn:{x:60,y:300,d:1}, goal:{x:345,y:255},
+			      coinsNeeded: 3,
+			      
+			      allowed:{txt:"radd, ers,\njto, jum",
+			               list:["radd","ers","jto","jum"],
+			               regs:[0, 128, 129, 130, 131]
+			      },
+			      
+			      startingCode:["rspw","spst 0","","","",""],
+			      
+			      noEdit:[0,1],
+			      
+			      maxLines:6,
+			      knowFlag:4, tipFlag:3,
+			      lvl:[
+			        "XXX..............XXX",
+			        "XXX..............XXX",
+			        "XXX..............XXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX..XX...XX.......XX",
+			        "X...X.....X........X",
+			        "X...X.....XXXXXX...X",
+			        "X...X.....XXXXXX...X",
+			        "X...X.....X..XX....X",
+			        "X...X....XX..X....XX",
+			        "X...X...^XXXXX....XX",
+			        "XXXXXX..XXXXX.....XX",
+			        "XXXXX...XXX......XXX",
+			        "X...X...XX^....XXXXX",
+			        "X...^..XX......X...X",
+			        "X.......X.....XX...X",
+			        "X.......X.....XX***X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    
+			    /** Challenge Levels **/
+			    { name:"Target Practice", password:"VUHLHM",
+			      dia:"Uh, Ok... What is this?... Where am I?\n(Goal: Get the spikey ball to the target.)",
+			      blockPalVal:4,
+			      spawn:{x:60,y:450,d:1}, goal:{x:180,y:400},
+			      
+			      allowed:{txt:"jum, radd, rsub",
+			               list:["jum","radd","rsub"],
+			               regs:[0, 1, 2, 3]
+			      },
+			      
+			      startingCode:[
+			            "spst 0",
+			            "rset 0 3",
+			            "rset 1 4",
+			            "",
+			            "",
+			            "",
+			            "",
+			            "",
+			            "",
+			            "sti r0 r1 2",
+			            "rti 16 8 4",
+			            "jum r4 2 14",
+			            "jto 4",
+			            "ers 3 15",
+			            "jum r4 2 17",
+			            "halt",
+			            "ers 4 15",
+			        ],
+			      noEdit:[0,1,2, 9,10,11,12,13,14,15,16],
+			      
+			      maxLines:17,
+			      knowFlag:4, tipFlag:3,
+			      lvl:[
+			        "....................",
+			        "....................",
+			        "....................",
+			        "....................",
+			        "...^................",
+			        "....................",
+			        "....................",
+			        "....................",
+			        "................X...",
+			        "....................",
+			        "....................",
+			        "..XXXXXXXXX.....X...",
+			        ".XXXX...XXXX...XXX..",
+			        ".XXX.....XXX..XXXXX.",
+			        ".XXX.....XXX....X...",
+			        ".X.XX...XXXX....X...",
+			        "..XXXXXXXXX...XXX...",
+			        "....................",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Maw of Fibon", password:"Y3I6DS",
+			      dia:"",
+			      blockPalVal:4,
+			      spawn:{x:190,y:240,d:-1}, goal:{x:480,y:260},
+			      coinsNeeded: 7,
+			      
+			      allowed:{txt:"rset, radd",
+			               list:["rset","radd"],
+			               regs:[0,1,2]
+			      },
+			      
+			      startingCode:[
+			        "rpsw",
+			        "spst 0",
+			        "rset 1 1",
+			        "",
+			        "",
+			        "",
+			        "ers r2 12",
+			        "jto 4",
+			      ],
+			      noEdit:[0,1,2, 6,7],
+			      
+			      maxLines:8,
+			      knowFlag:4, tipFlag:3,
+			      lvl:[
+			        "X..................X",
+			        "XX................XX",
+			        "XX................XX",
+			        "XXX..............XXX",
+			        "XXXXX..........XXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX^.....XXXXXXXXXXXX",
+			        "X^.......XXXXXX...XX",
+			        "X........XXXXX.....X",
+			        "X..XXXXXXXXXXX.....X",
+			        "X..XXX..XX..XX.....X",
+			        "X..^.^..^....^.....X",
+			        "X^^^*^**^****^.....X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX....XXX..XXX....XX",
+			        "X......X....X......X",
+			        "X......X....X......X",
+			        "X^....^X^..^X^....^X",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Shaft", password:"R8CKWA",
+			      dia:"",
+			      blockPalVal:4,
+			      spawn:{x:60,y:450,d:1}, goal:{x:480,y:400},
+			      coinsNeeded: 7,
+			      
+			      allowed:{txt:"Any",
+			               list:["pbk","rset","rsub","jum","jto"],
+			               regs:[0,134]
+			      },
+			      
+			      startingCode:[""],
+			      
+			      noEdit:[],
+			      maxLines:5,
+			      knowFlag:4, tipFlag:4,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XX....*X..........XX",
+			        "XX^XXXXX..XXXXXX*XXX",
+			        "XX............X...XX",
+			        "XX^XXXXXXXX...X...XX",
+			        "XX.XX^...XX.*.X...XX",
+			        "XX.X......X...X...XX",
+			        "XX.X^.....X^^^X...XX",
+			        "XX.....^.*X...X...XX",
+			        "XX^XXXXXXXX.*.X...XX",
+			        "XX............X...XX",
+			        "XX^XXXXXXXXXXXX...XX",
+			        "XX.XX........XX...XX",
+			        "XX.X......*...X...XX",
+			        "X*............X^^^XX",
+			        "XXXXXXXXXXXX..XXXXXX",
+			        "XXXXXXXXXXXX^^XXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Creative Mode", password:"C08JWA",
+			      dia:"Alright, what does this level think I am?\nA bird or something?",
+			      blockPalVal:4,
+			      spawn:{x:90,y:450,d:1}, goal:{x:480,y:415},
+			      coinsNeeded: 3,
+			      
+			      allowed:{txt:"spst, rset, radd\nyset, jto, jum",
+			               list:["spst","rset","radd","yset","jto","jum"],
+			               regs:[0, 129, 130, 131]
+			      },
+			      
+			      startingCode:[""],
+			      noEdit:[],
+			      
+			      maxLines:9,
+			      knowFlag:4, tipFlag:3,
+			      lvl:[
+			        "XX^.^.....XXXXXXXXXX",
+			        "X^..X.....^^^XX^^^^^",
+			        "X.*.X........^X.....",
+			        "^...X.........^...*.",
+			        "...^X..^^...........",
+			        "...XX..XX^..........",
+			        "^..^^..^XX.........^",
+			        "X.......^X^^^^^...^X",
+			        "X^.......XXXXXX^.^XX",
+			        "XX.......^^^XXX...^X",
+			        "XX^^^^.....^XX^....X",
+			        "XXXXXX....*^X^.....^",
+			        "^^^^^^.....^X...^...",
+			        ".........^^^X.......",
+			        ".........XXXX.......",
+			        ".........X..X.......",
+			        "XXXXX...^X..X.XXXXX.",
+			        ".X.X....XX..X..X.X..",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Conjecture", password:"MJ1WWB",
+			      dia:"These just keep getting weirder...",
+			      blockPalVal:4,
+			      spawn:{x:45,y:120,d:1}, goal:{x:515,y:430},
+			      coinsNeeded: 8,
+			      
+			      allowed:{txt:"radd,rmut,rdiv,\njto,jum",
+			               list:["radd","rmut","rdiv","jto","jum"],
+			               regs:[0, 1, 2, 3]
+			      },
+			      
+			      startingCode:[
+			          "rspw",
+			          "spst 0",
+			          "rset 0 3",
+			          "ers 13 r0",
+			          "",
+			          "",
+			          "",
+			          "",
+			          "",
+			          "",
+			          "",
+			          "",
+			          "",
+			      ],
+			      
+			      noEdit:[0, 1, 2, 3],
+			      maxLines:13,
+			      knowFlag:4, tipFlag:4,
+			      lvl:[
+			        "XX..................",
+			        "XX...........^......",
+			        "X...........XXX.....",
+			        "X...........XXX....^",
+			        "X...........XXX....X",
+			        "XXX.......XXXXX....X",
+			        "XXXX.....XXXX*X....X",
+			        "XXXXXXXXXXXXX*X^..^X",
+			        "XX^....^XXXXXXXX^^XX",
+			        "X^......^^XXX*XXXXXX",
+			        "X.........^XXXXXXXXX",
+			        "X..........XX*XX..XX",
+			        "X^.........^X*X....X",
+			        "XX..........X*X....X",
+			        "XX^.........X*X....X",
+			        "XXX^^......^X*^....X",
+			        "XXXXX^....^XXX.....X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    
+			    /** Sandbox **/
+			    { name:"Sandbox", password:"THEEND",
+			      dia:"Alright, that gotta do it. The system should be fine now\nand my work here is done for now... I guess I can go\nplay around for a little before I leave.",
+			      blockPalVal:1,
+			      spawn:{x:300,y:480,d:1}, goal:{x:285,y:90},
+			      coinsNeeded: 0,
+			      
+			      allowed:{txt:"Any",
+			               list:["ANY"],
+			               regs:["Any"]
+			      },
+			      
+			      startingCode:[""],
+			      
+			      noEdit:[],
+			      maxLines:99,
+			      knowFlag:4, tipFlag:4,
+			      
+			      returnOnComplete: 1,
+			      lvl:[
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    
+			    /** Bonus and Secret Content **/
+			    { name:"Bounce Game", password:"BALL45",
+			      dia:"\nBonus Level, use WASD to move the paddle.\nBounce the ball 5 times to win.",
+			      blockPalVal:1,
+			      spawn:{x:300,y:0,d:1}, goal:{x:300,y:0},
+			      coinsNeeded: 5,
+			      
+			      allowed:{txt:"Any",
+			               list:["ANY"],
+			               regs:["Any"]
+			      },
+			      
+			      startingCode:[
+			          "spst 0",
+			          "rspw",
+			          "rset 0 10",
+			          "rset 2 10",
+			          "rset 3 14",
+			          "rset 4 255",
+			          "rset 5 255",
+			          
+			          "jum r132 0 15",
+			          "rsub r0 1 0",
+			          "rsub r0 2 1",
+			          "pbk r1 16",
+			          "radd r1 5 1",
+			          "ers r1 16",
+			          "jto 21",
+			          
+			          "jum r133 0 21",
+			          "radd r0 1 0",
+			          "radd r0 2 1",
+			          "pbk r1 16",
+			          "rsub r1 5 1",
+			          "ers r1 16",
+			          
+			          "rset 6 r2",
+			          "rset 7 r3",
+			          "radd r2 r4 2",
+			          "jum r2 1 27",
+			          "jum r2 18 29",
+			          "jto 30",
+			          
+			          "rset 4 1", // 27
+			          "jto 30",
+			          "rset 4 255",
+			          
+			          "radd r3 r5 3", // 30
+			          "jum r3 3 33",
+			          "jto 34",
+			          "rset 5 1",
+			          
+			          "jum r3 16 36", // 34
+			          "jto 43",
+			          "",
+			          "rti r2 r3 8",
+			          "jum r8 1 40",
+			          "halt",
+			          "rset 3 14",
+			          "rset 5 255",
+			          "sti 10 0 3",
+			          
+			          "ers r6 r7", // 43
+			          "sti r2 r3 3",
+			          "jto 8",
+			      ],
+			      
+			      noEdit:[],
+			      maxLines:99,
+			      knowFlag:4, tipFlag:0,
+			      
+			      returnOnComplete: 1,
+			      lvl:[
+			        "XXXXXXXXXX.XXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X.........*........X",
+			        "X..................X",
+			        "X.......XXXXX......X",
+			        "X..................X",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Falling Content", password:"2OUCH5",
+			      dia:"! Bonus Level !\n- Dodge spikes\n- Climb to reach\nthe goal.",
+			      blockPalVal:1,
+			      spawn:{x:30,y:30,d:1}, goal:{x:285,y:120},
+			      coinsNeeded: 0,
+			      
+			      allowed:{txt:"Any",
+			               list:["ANY"],
+			               regs:["Any"]
+			      },
+			      
+			      startingCode:[
+			          // Init
+			          "spst 0",
+			          "xset 10",
+			          "yset 15",
+			          
+			          // Spawn Spike on Player
+			          "rset 0 r128",
+			          "rset 1 0",
+			          
+			          // Loop
+			          // Failed?
+			          "jum r128 1 8",
+			          "jto 9",
+			          "halt",
+			          
+			          // Init past Position
+			          "rset 2 r0",
+			          "rset 3 r1",
+			          
+			          // Fall
+			          "radd r1 1 1",
+			          
+			          // In Block?
+			          "rti r0 r1 4",
+			          "jum r4 0 17",
+			          
+			          // Set Spike to Block
+			          "rsub r1 1 1",
+			          "pbk r0 r1",
+			          "jto 4",
+			          
+			          // Update Tile and loop back
+			          "ers r2 r3", // 16
+			          "sti r0 r1 2",
+			          "jto 6"
+			      ],
+			      
+			      noEdit:[],
+			      maxLines:99,
+			      knowFlag:4, tipFlag:0,
+			      
+			      returnOnComplete: 1,
+			      lvl:[
+			        "XXX...X......X...XXX",
+			        "X.XXXXX......XXXXX.X",
+			        "XXX...X......X...XXX",
+			        ".X..X.X......X.X..X.",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        "^X.XX.X......X.XX.X^",
+			        ".X..X.X......X.X..X.",
+			        "XXX...X......X...XXX",
+			        "X.XXXXXXXXXXXXXXXX.X",
+			        "XXX^^^XXXXXXXX^^^XXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    { name:"Lonely", password:"TYLER",
+			      dia:"...\nI feel like I shouldn't be here...",
+			      blockPalVal:5,
+			      spawn:{x:60,y:390,d:1}, goal:{x:90,y:90},
+			      coinsNeeded: 2,
+			      
+			      allowed:{txt:"None",
+			               list:[],
+			               regs:[]
+			      },
+			      
+			      startingCode:[""],
+			      
+			      noEdit:[],
+			      maxLines:0,
+			      knowFlag:0, tipFlag:0,
+			      
+			      returnOnComplete: 1,
+			      lvl:[
+			        "XXXXXXXXXXXXX.....XX",
+			        "XX^......XXX.......X",
+			        "X^.......XXX..X..X..",
+			        "X.........XX...X....",
+			        "X.....X^*^XX.X.X.X..",
+			        "X.........XX..X.X...",
+			        "X.X^.......XX......X",
+			        "X...........XXXXXXXX",
+			        "X^^^..........XXXXXX",
+			        "XXXXX....X^...X..XXX",
+			        "X^.^X.........^...XX",
+			        "X...XX............XX",
+			        "X......^...........X",
+			        "X..................X",
+			        "XXXXXX...X.......*.X",
+			        "X....X...X....X....X",
+			        "XXXX.X^^^X^^^^X^^.^X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "....................",
+			        "...................."
+			    ]},
+			    
+			];
+			
+			/** Constants and Settings**/
+			var CANVAS_MULTIPLIER = 1/(width/600);
+			var Settings_sounds = true;
+			var Settings_enableParticles = true;
+			
+			/** Variables **/
+			var MENU = -1;
+			var pause = 0;
+			
+			var Gravity = 1;
+			var globalTick=0;
+			
+			var Lvl = 1;
+			var level;
+			var Player = {
+			    x:300, y:300,
+			    vx: 0, vy: 0,
+			    d: 1,
+			    
+			    speed: 4, friction:0.65,
+			    ground:0, move:0
+			};
+			var Code = [""];
+			var blockPalSelected = 1;
+			
+			var codeWindow = 0;
+			var codeWindowFrame = 0;
+			
+			var docs = 0;
+			var docsFrame = 0;
+			var docPage = 0;
+			var docFlip = 0;
+			var docBounds = {l:0, h:0};
+			
+			var Registers = []; for (var i=0; i<255; i++) {Registers[i]=0;}
+			var parameter1;
+			var parameter2;
+			var parameter3;
+			
+			var allowedCode;
+			var allowedCodeTxt;
+			var errors = "";
+			var gotError = 0;
+			
+			var runningCode = 0;
+			var runningCodeTick = 0;
+			var codeLine;
+			var reader;
+			var readerStr;
+			var codePage = 0;
+			
+			var textScroll = 0;
+			
+			var codeEditorLine = 0;
+			var codeEditorLineIndex = 0;
+			
+			var coins = 0;
+			
+			var levelEditor = 0;
+			var levelEditorBrush = 0;
+			
+			var loadScreenOn = false;
+			var loadScreen;
+			var loadScreenMenu;
+			var loadScreenSpeed;
+			var loadScreenFunc = null;
+			
+			var passScreen = false;
+			var passScreenAni = 0;
+			var passcode = "";
+			var passError = 0;
+			
+			var winTime = 0;
+			
+			/** Functions **/
+			var soundToggle = function() {
+			    if (Settings_sounds) {
+			        Blip.audio.volume = 0.4;
+			        Jump.audio.volume = 0.8;
+			        Land.audio.volume = 1;
+			        Clop.audio.volume = 1;
+			        Hurt.audio.volume = 1;
+			        Doc1.audio.volume = 0.7;
+			        Doc2.audio.volume = 0.7;
+			        Woosh.audio.volume = 1;
+			        Coin.audio.volume = 1;
+			        WrongCode.audio.volume = 1;
+			        Win.audio.volume = 1;
+			    } else {
+			        Blip.audio.volume = 0;
+			        Jump.audio.volume = 0;
+			        Land.audio.volume = 0;
+			        Clop.audio.volume = 0;
+			        Hurt.audio.volume = 0;
+			        Doc1.audio.volume = 0;
+			        Doc2.audio.volume = 0;
+			        Woosh.audio.volume = 0;
+			        Coin.audio.volume = 0;
+			        WrongCode.audio.volume = 0;
+			        Win.audio.volume = 0;
+			    }
+			};
+			var outlineText = function(txt, x, y, color, stroke, thickness, increment) {
+			    fill(stroke);
+			    for (var i=0; i<360; i+=increment) {
+			        text(txt, x + sin(i)*thickness, y + cos(i)*thickness);
+			    }
+			    
+			    fill(color);
+			    text(txt, x, y);
+			};
+			var searchPasscode = function() {
+			    for (var i=1; i<LEVELTABLE.length; i++) {
+			        if (LEVELTABLE[i].password===passcode) {
+			            return i;
+			        }
+			    }
+			    return -1;
+			};
+			var loadToMenu = function(m, s, other) {
+			    loadScreenOn = true;
+			    loadScreen = 0;
+			    loadScreenSpeed = s;
+			    loadScreenMenu = m;
+			    if (other !== undefined) {loadScreenFunc = other;}
+			    else {loadScreenFunc = null;}
+			};
+			var input = function(k,v) {
+			    return keyDown[k]===v;
+			};
+			
+			var strIsInt = function(str) { return (/^\d+$/.test(str)); };
+			var strInsert = function(str, index, string) {
+			  if (index > 0)
+			  {
+			    return str.substring(0, index) + string + str.substring(index, str.length);
+			  }
+			
+			  return string + str;
+			};
+			var stringReplace = function(string, index, replacement) {
+			    return string.substring(0, index) + replacement + string.substring(index + replacement.length);
+			};
+			var strBackspace = function(str,index) {
+			      return str.slice(0,index) + str.slice(index+1);
+			};
+			
+			var xor = function(a,b) {
+			    return (a||b) && (a!==b);
+			};
+			var rngInt = function(min,max) {
+			    return floor(random(min,max));
+			};
+			
+			var mouseInBox = function(x,y,w,h) {
+			    return mousePos.x>x&&mousePos.x<x+w&&mousePos.y>y&&mousePos.y<y+h;
+			};
+			var quickBtn = function(pos,style,txt,onClick) {
+			    if (mouseInBox(pos.x,pos.y,pos.w,pos.h)){
+			        if (mouse===1) {onClick();}
+			    }
+			    pushStyle();
+			        fill(style.f); stroke(style.sc); strokeWeight(style.sw);
+			        if (!style.sw) {noStroke();}
+			        rect(pos.x,pos.y,pos.w,pos.h,style.cve);
+			        textAlign(CENTER,CENTER);
+			        fill(txt.f); textFont(txt.fnt);
+			        text(txt.t,pos.x+pos.w/2,pos.y+pos.h/2);
+			    popStyle();
+			    
+			};
+			var quickTxtBtn = function(pos,style,txt,onClick,offset) {
+			    var h=0;
+			    if (mouseInBox(pos.x+offset.x,pos.y+offset.y,pos.w,pos.h)){
+			        if (mouse===1) {onClick();}
+			        h=1;
+			    }
+			    pushStyle();
+			        noFill(); stroke(255,0); strokeWeight(style.sw);
+			        if (!style.sw) {noStroke();}
+			        if (h) {stroke(0,150);}
+			        rect(pos.x,pos.y,pos.w,pos.h,style.cve);
+			        textAlign(CENTER,CENTER);
+			        fill(txt.f); textFont(txt.fnt);
+			        text(txt.t,pos.x+pos.w/2,pos.y+pos.h/2);
+			    popStyle();
+			    
+			};
+			
+			var docsContentsPage = function() {
+			    // Main Page
+			    if (LEVELTABLE[Lvl].knowFlag>0) {
+			        {// Introducion
+			        quickTxtBtn({x:25,y:60,w:120,h:20},
+			            {sw:3, cve:5},
+			            {t:"Introduction", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=1; docBounds = {l:1, h:3};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			        {// First Program
+			        quickTxtBtn({x:25,y:85,w:130,h:20},
+			            {f:color(255,0), sc:color(1,0), sw:3, cve:5},
+			            {t:"First Program", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=4; docBounds = {l:4, h:5};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			    }
+			    
+			    if (LEVELTABLE[Lvl].knowFlag>1) {
+			        {// Level Optcodes
+			        quickTxtBtn({x:18,y:145,w:160,h:20},
+			            {sw:3, cve:5},
+			            {t:"Level Optcodes", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=6; docBounds = {l:6, h:9};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			        
+			    }
+			    
+			    if (LEVELTABLE[Lvl].knowFlag>2) {
+			        {// About Registers
+			        quickTxtBtn({x:20,y:110,w:160,h:20},
+			            {sw:3, cve:5},
+			            {t:"About Registers", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=11; docBounds = {l:11, h:12};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			        
+			        {// Register Optcodes
+			        quickTxtBtn({x:20,y:170,w:180,h:20},
+			            {sw:3, cve:5},
+			            {t:"Register Optcodes", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=14; docBounds = {l:14, h:16};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			        
+			    }
+			    
+			    if (LEVELTABLE[Lvl].knowFlag>3) {
+			        {// Control Optcodes
+			        quickTxtBtn({x:25,y:193,w:160,h:20},
+			            {sw:3, cve:5},
+			            {t:"Control Optcodes", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=17; docBounds = {l:17, h:18};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			        {// Enviroment Optcodes
+			        quickTxtBtn({x:20,y:216,w:210,h:20},
+			            {sw:3, cve:5},
+			            {t:"Enviroment Optcodes", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=20; docBounds = {l:20, h:20};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			    }
+			    
+			    // Tips
+			    if (LEVELTABLE[Lvl].tipFlag>0) {
+			        {// Tip 1
+			        quickTxtBtn({x:240,y:60,w:60,h:20},
+			            {sw:3, cve:5},
+			            {t:"Tip #1", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=10; docBounds = {l:10, h:10};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			    }
+			    if (LEVELTABLE[Lvl].tipFlag>1) {
+			        {// Tip 2
+			        quickTxtBtn({x:240,y:85,w:60,h:20},
+			            {sw:3, cve:5},
+			            {t:"Tip #2", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=13; docBounds = {l:13, h:13};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			    }
+			    if (LEVELTABLE[Lvl].tipFlag>2) {
+			        {// Tip 3
+			        quickTxtBtn({x:240,y:110,w:60,h:20},
+			            {sw:3, cve:5},
+			            {t:"Tip #3", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=19; docBounds = {l:19, h:19};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			    }
+			    
+			    if (LEVELTABLE[Lvl].tipFlag>3) {
+			        {// Conjecture Hint
+			        quickTxtBtn({x:240,y:230,w:150,h:20},
+			            {sw:3, cve:5},
+			            {t:"Conjecture Hint", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=21; docBounds = {l:21, h:21};
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			    }
+			    
+			};
+			var drawDocPages = function() {
+			    if (docPage===0) {
+			        textFont(VerdBold,30); fill(7, 4, 31);
+			        textAlign(CENTER,CENTER);
+			        text("Contents",120,35);
+			        text("Bonus",338,35);
+			        docsContentsPage();
+			    } else {
+			        // Intro
+			        if (docPage===1) {
+			            textFont(VerdBold,15); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("Hey you, do you have\na goal position to get to\nnot being possible with\nyour fat bum unable to\npreform any wallkicks?",120,20);
+			            image(ASSET_TYLER_THINK,80,130,80,80);
+			            text("Well I got the soulution.\nYou can use a specially\nmade computer called",122,211);
+			            
+			            textFont(VerdBold,20);
+			            text("𝗗𝗨𝗠",122,270);
+			            
+			            textFont(VerdBold,15);
+			            text("As you see, DUM is a",336,20);
+			            
+			            textFont(VerdBold,20);
+			            text(" 𝗗  eficient\n𝗨  nicode\n𝗠  achine",330,45);
+			            
+			            textFont(VerdBold,15);
+			            text("It's a WIP tool to go in\ncertain code and edit in\nperson. However, it's\nnot programmed in a\nnormal language, that\nwould be so silly :3",336,140);
+			        }
+			        if (docPage===2) {
+			            textFont(VerdBold,15); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("In here, code is written\nin a language with the\nsame name. Unlike cool\nlanguages, there are no\nfunctions, datatypes, or\nany of that fancy stuff.\n\nThe only type of code\nhere are 𝘾𝙤𝙢𝙢𝙖𝙣𝙙𝙨.\n\nThey are executed from\ntop to bottom.",122,20);
+			            
+			            text("This is what a command\nwould usually look.",338,20);
+			            textFont(VerdBold,20);
+			            text("foo 1 6 0",335,65);
+			            
+			            textFont(VerdItal,13);
+			            text("You may seen something\nlike this before, or not.",338,90);
+			            
+			            textFont(VerdBold,14);
+			            text('Anyways, the "foo" is an\nOptcode, the command.\nThe rest are Operands,\nthe parameters to plug in.\n\nThose can be numbers,\ntext, or register IDs.',338,140);
+			            
+			            //text("Operands can be numbers,",338,230);
+			        }
+			        if (docPage===3) {
+			            textFont(VerdBold,15); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("Now, let's try writing a\ncommand ourselves and\ncreate our first DUM\nprogram to get to that\nshiny goal you wanted.\n\nAnd once you master all\nthe commands, you can\nget through anything if\nyou just think hard\nenough to solve it.",122,40);
+			            
+			            //image(ASSET_TYLER_FLOOF,248,60,180,180);
+			            //textFont(VerdBold,35); fill(28, 141, 186);
+			            
+			            //text("Happy\n\n\nDUMing!",335,50);
+			            
+			        }
+			        
+			        // First Program
+			        if (docPage===4) {
+			            textFont(VerdBold,15); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("Let's write our first DUM\nprogram! First, we need\nto open the DUM, you\nwill see three things.",122,20);
+			            
+			            textAlign(CORNER);
+			            text("1. The Code Editor\n2. Allowed Commands\n3. Maximum Lines",20,130);
+			            
+			            textAlign(CENTER,TOP);
+			            text("The Editor is where you\nwrite your code, the rest\nare self-explanatory.",122,190);
+			            
+			            text("In here, let's write the\ncommand, 𝙋𝙡𝙖𝙘𝙚𝘽𝙡𝙤𝙘𝙠.",338,20);
+			            text("It is written as follows.",338,70);
+			            textFont(VerdBold,20);
+			            text("𝚙𝚋𝚔 𝚡 𝚢",335,95);
+			            
+			            textFont(VerdBold,15);
+			            text("pbk is our optcode, and\nx&y are the operands\ntelling where to place\nit on the grid.\nWe can get the cords\nholding RightClick, and\nget the cords of the tile.",338,130);
+			        }
+			        if (docPage===5) {
+			            textFont(VerdBold,15); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("Now that we gotten the\ncords, we can now type\nin the command. So for\nexample, if your cords\nwas 6, 8, then we type",122,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚙𝚋𝚔 𝟼 𝟾",122,133);
+			            
+			            textFont(VerdBold,15);
+			            text('So now exit the DUM,\nand run our code with\n the "Run" button.\nIf done right, the block\nwill be placed at our\nwanted cords.',122,170);
+			            
+			            text("If it didn't work, an\nerror pops up telling\nyou what you did\nwrong at what line.\n\nKeep trying and you'll\neventually get it right :)",339,20);
+			            text("That's all for now, but\nif you were to be stuck,\nOr if you were to refer\nback to something, this\nwill give info you need.",338,175);
+			        }
+			        
+			        // Level Optcodes
+			        if (docPage===6) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("PlaceBlock",25,20);
+			            text("Erase",240,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚙𝚋𝚔 𝚡 𝚢",25,40);
+			            text("𝚎𝚛𝚜 𝚡 𝚢",240,40);
+			            
+			            textFont(VerdBold,15);
+			            text("Places a block the cord\nx, y. This can overwrite\nother tiles.",25,80);
+			            text("Erases any tile at the\ncord x, y.",240,80);
+			            
+			            text("Example",25,150); text("Example",240,130);
+			            text("𝚙𝚋𝚔 𝟷𝟶 𝟻",25,170);text("𝚎𝚛𝚜 𝟾 𝟸",240,150);
+			            
+			            textFont(VerdItal,13);
+			            text("Remember that in the grid,\ny-cords increase futher DOWN\nthe level, not upwards.",22,212);
+			        }
+			        if (docPage===7) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Set Tile",25,20);
+			            text("Erase Row",240,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚜𝚝𝚒 𝚡 𝚢 𝚝",25,40);
+			            text("𝚎𝚛𝚛𝚠 𝚢",240,40);
+			            
+			            textFont(VerdBold,15);
+			            text("Sets the tile at x, y, to\nbe as tile t.",25,80);
+			            text("Erases and sets row y\nto the deafault state.",240,80);
+			            
+			            text("Example",25,210); text("Example",240,130);
+			            text("𝚜𝚝𝚒 𝟿 𝟷𝟼 𝟸",25,230); text("𝚎𝚛𝚛𝚠 𝟾",240,150);
+			            
+			            textFont(VerdItal,13);
+			            text("0 is an Empty Tile\n1 is a Solid Block.\n2 is a Spike.\n3 is a Coin.",25,130);
+			        }
+			        if (docPage===8) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Erase Column",25,20);
+			            text("Erase All",240,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚎𝚛𝚌𝚕 𝚡",25,40);
+			            text("𝚎𝚛𝚊𝚕",240,40);
+			            
+			            textFont(VerdBold,15);
+			            text("Erases and sets column\nx to the deafault state.",25,80);
+			            text("Erases the entire level\nto the deafualt state.",240,80);
+			            
+			            text("Example",25,130);
+			            text("𝚎𝚛𝚌𝚕 𝟺",25,150);
+			        }
+			        if (docPage===9) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Read Tile",25,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚛𝚝𝚒 𝚡 𝚢 𝚛",25,40);
+			            
+			            textFont(VerdBold,15);
+			            text("Reads the id of tile x, y\nand stores the value\ninto register r.",25,80);
+			            
+			            text("Example",25,152);
+			            text("𝚛𝚝𝚒 𝟽 𝟾 𝟶",25,170);
+			            
+			            image(ASSET_FLOOF_REGISTERS,15,133,170,170);
+			            fill(0); textFont(SansBoldItalic,15);
+			            text("you don't know\nregisters do you?",88,185);
+			        }
+			        
+			        // Tip 1
+			        if (docPage===10) {
+			            textFont(VerdBold,15); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("After the code has been\nexecuted completly, or\nwhen the Stop button is\npressed, the level will\nstay the same way you\nchanged it.\n\nHowever, when code\nstarts to run, the level\nwill revert back to its\noriginal state before so.",122,40);
+			            textFont(VerdBold,14);
+			            text("Oh yeah, and also\nyou can still move about\nwhile code is running, or\nwhile you're clicking Run.",338,40);
+			        }
+			        
+			        // About Registers
+			        if (docPage===11) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CENTER);
+			            
+			            textFont(VerdBold,16);
+			            text("Alright, it's time to\nlearn about registers.",120,40);
+			            
+			            textFont(VerdBold,15);
+			            text("Registers are like a box\nthat can hold an integer\nfrom 0, to 255.\nYou can write to them,\nread them, and perform\noperations on them.",122,90);
+			            
+			            text("There are many ways to\nwrite to registers. But\nwe will use RegSet for\nthis example.",338,40);
+			            text("This uses 2 operands,\nthe first being which\nregister we want to\nuse, and the 2nd being\nthe integer we set to.",338,130);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚛𝚜𝚎𝚝 𝟶 𝟾",335,240);
+			            
+			            textFont(VerdItal,13);
+			            text("Ex. puts 8 into register 0.",338,260);
+			        }
+			        if (docPage===12) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CENTER);
+			            
+			            textFont(VerdBold,15);
+			            text("Now that we written\nto it, we can now read\nand use this value.",122,40);
+			            text('This can be done by\nrather than using an\ninteger as the operand\nin optcodes, you type\n"r", then the register\nnumber you desire to.',122,110);
+			            text("You can look at the red\nline right now, and see\nit's doing that already.",122,245);
+			            
+			            textFont(VerdBold,14);
+			            text("There are also special\nregisters, which are\nread only, and can't be\nwritten to with normal\nregister optcodes, being\nfrom 128 to 135.",337,40);
+			            
+			            textFont(VerdItal,13);
+			            textAlign(CORNER,CORNER);
+			            text("128 - Player's X Cord\n129 - Player's Y Cord\n130 - Up Input\n131 - Down Input\n132 - Left Input\n133 - Right Input\n134 - Space Input\n135 - Tick Delay",260,160);
+			        }
+			        
+			        // Tip 2
+			        if (docPage===13) {
+			            textFont(VerdBold,14); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("Remember that registers\nare limited from 0 to 255.\n\nTherefore, if it proceeds\npast the limit, it will loop\nback over, this is called\n𝗢𝘃𝗲𝗿𝗳𝗹𝗼𝘄.",122,25);
+			            
+			            text("Also remember that in\nthis grid system, higher\ny-values are further\ndown the grid, similar to\nhow the cords are with\np5.js canvas for example.",122,180);
+			            
+			            textFont(VerdBold,14);
+			            text("Now about those spikes.\nYou know that colliding\nwith these respawns you\nback to a certain point.\n\nBut if that said point was\nto be obscured in some\npaticular way...",338,25);
+			        }
+			        
+			        // Register Optcodes + 2OUCH5
+			        if (docPage===14) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Register Set",25,20);
+			            text("Register Add",240,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚛𝚜𝚎𝚝 𝚛 𝚟",25,40);
+			            text("𝚛𝚊𝚍𝚍 𝚊 𝚋 𝚟",240,40);
+			            
+			            textFont(VerdBold,15);
+			            text("Stores v to register r.\nv can be from 0 to 255.",25,80);
+			            text("Adds a and b, and store\nthe result in register r.",240,80);
+			            
+			            text("Example",25,130); text("Example",240,130);
+			            text("𝚛𝚜𝚎𝚝 𝟶 𝟾",25,150);text("𝚛𝚊𝚍𝚍 𝟸 𝟹 𝟽",240,150);
+			            
+			            textFont(VerdItal,13);
+			            text("Setting the value of register 0\nto a number of 8.\n\nRemember that you can't\nset special registers with\nthese register optcodes.",22,170);
+			            text("Adds 2 and 3, and stores the\nresult of 5 into register 7.\n\nRemember, as we're picking a\nregister to store to, we're\ntyping 7, NOT r7.",240,170);
+			        }
+			        if (docPage===15) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Register Subtract",25,20);
+			            text("Register Mutiply",240,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚛𝚜𝚞𝚋 𝚊 𝚋 𝚛",25,40);
+			            text("𝚛𝚖𝚞𝚝 𝚊 𝚋 𝚛",240,40);
+			            
+			            textFont(VerdBold,15);
+			            text("Subtracts a and b, and\nstores the result in\nregister r.",25,80);
+			            text("Mutiplies a by b, and\nstores the result in\nregister r.",240,80);
+			            
+			            text("Example",25,145); text("Example",240,145);
+			            text("𝚛𝚜𝚞𝚋 𝟸𝟶 𝟾 𝟶",25,165);text("𝚛𝚖𝚞𝚝 𝟻 𝟺𝟸 𝟶",240,165);
+			        }
+			        if (docPage===16) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Register Divivde",25,20);
+			            text("Register Exponet",240,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚛𝚍𝚒𝚟 𝚊 𝚋 𝚛",25,40);
+			            text("𝚛𝚎𝚡𝚙 𝚊 𝚋 𝚛",240,40);
+			            
+			            textFont(VerdBold,15);
+			            text("Divides a and b, and\nstores the result\nrounded down to\nregister r.\nDividing by 0 returns 0.",25,80);
+			            text("Calculates a to the\npower of b, and stores\nthe result in register r.",240,80);
+			            
+			            text("Examples",25,195); text("Example",240,150);
+			            text("𝚛𝚍𝚒𝚟 𝟷𝟼 𝟾 𝟶",25,215);text("𝚛𝚎𝚡𝚙 𝟸 𝟹 𝟶",240,170);
+			            
+			            textFont(SansBoldItalic,15); fill(211, 221, 222);
+			            text("2OUCH5",300,280);
+			        }
+			        
+			        // Control Optcodes
+			        if (docPage===17) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Jump To",25,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚓𝚝𝚘 𝚕",25,43);
+			            
+			            textFont(VerdBold,14);
+			            text("Jumps to line l.\nJumping to lines 0 or\nabove 99 cause error.\n\nJumping to a line beyond\nthe code but is still\nbetween 1 and 99 halts\nthe code.",25,80);
+			            
+			            textFont(VerdBold,16);
+			            text("Examples",240,22);
+			            text("𝚓𝚝𝚘 𝟹\n𝚛𝚜𝚎𝚝 𝟶 𝟻\n𝚛𝚜𝚎𝚝 𝟶 𝟷𝟶",238,45);
+			            text("𝚛𝚜𝚎𝚝 𝟷 𝟶\n𝚛𝚊𝚍𝚍 𝚛𝟷 𝟷 𝟷\n𝚓𝚝𝚘 𝟸",238,175);
+			            
+			            textFont(VerdItal,13);
+			            text("Sets Register 0 to a value of\n10 instead of 5, as it jumped\npass the line.",238,112);
+			            text("Counts up forever, as it jumps\nback to the radd optcode.",238,242);
+			        }
+			        if (docPage===18) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Jump Upon Match",22,20); text("Halt",238,20);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚓𝚞𝚖 𝚊 𝚋 𝚟",20,43);
+			            text("𝚑𝚊𝚕𝚝",238,43);
+			            
+			            textFont(VerdBold,14);
+			            text("Jumps to line l if value a\nmatches value b.",25,80);
+			            text("Stops running the code.",238,80);
+			            
+			            textFont(VerdBold,16);
+			            text("Example",22,125); text("Example",238,105);
+			            textFont(VerdBold,14);
+			            text("𝚛𝚜𝚎𝚝 𝟷 𝟷𝟶\n𝚛𝚜𝚞𝚋 𝚛𝟷 𝟷 𝟷\n𝚓𝚞𝚖 𝚛𝟷 𝟶 𝟻\n𝚓𝚝𝚘 𝟸\n𝚑𝚊𝚕𝚝",22,145);
+			            text("𝚑𝚊𝚕𝚝\n𝚎𝚛𝚊𝚕",238,130);
+			            
+			            textFont(VerdItal,13);
+			            text("Counts down from 10 to 0.\nLoops back to line 2 until r1\nmatches 0, which then jumps.",22,245);
+			            text("Prevents from eral from being\ncalled and erasing stuff.",238,170);
+			        }
+			        
+			        // Tip 3 + BALL45
+			        if (docPage===19) {
+			            textFont(VerdBold,14); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("If you wish to break out\nof a jump loop, use the\n𝚓𝚞𝚖 optcode, so we can \nexit out of it for a\n𝘤𝘦𝘳𝘵𝘢𝘪𝘯 𝘤𝘰𝘯𝘥𝘪𝘵𝘪𝘰𝘯.",122,25);
+			            
+			            text("Remember that you can\nalso jump to itself too.",122,140);
+			            
+			            textFont(SansBoldItalic,15); fill(211, 221, 222);
+			            text("BALL45",410,20);
+			        }
+			        
+			        // Enviroment Optcodes
+			        if (docPage===20) {
+			            textFont(VerdBold,20); fill(7, 4, 31);
+			            textAlign(CORNER,TOP);
+			            text("Speed Set",22,20);
+			            text("Respawn",22,195);
+			            text("X Set",238,20);
+			            text("Y Set",238,160);
+			            
+			            textFont(VerdBold,20);
+			            text("𝚜𝚙𝚜𝚝 𝚝",22,43);
+			            text("𝚛𝚜𝚙𝚠",22,215);
+			            text("𝚡𝚜𝚎𝚝 𝚡",238,43);
+			            text("𝚢𝚜𝚎𝚝 𝚢",238,180);
+			            
+			            textFont(VerdBold,14);
+			            text("Sets the tick delay (r135)\nto t, being 0 to 999.",22,82);
+			            text("Places you back at spawn.",22,250);
+			            text("Set's your X-position to x.",238,82);
+			            text("Set's your Y-position to y.",238,220);
+			            
+			            textFont(VerdBold,16);
+			            text("Example",22,120); text("Example",238,100); text("Example",238,235);
+			            text("𝚜𝚙𝚜𝚝 𝟶\n𝚑𝚊𝚕𝚝",22,140);
+			            text("𝚡𝚜𝚎𝚝 𝟷𝟶",238,120);
+			            text("𝚢𝚜𝚎𝚝 𝟺",238,260);
+			        }
+			        
+			        // Conjecture Hint
+			        if (docPage===21) {
+			            textFont(VerdBold,13); fill(7, 4, 31);
+			            textAlign(CENTER,TOP);
+			            text("This level utilizes a concept\nnamed Collatz Conjecture,\nwhere you take a number\nand apply these two rules.",122,25);
+			            
+			            text("After long enough you will\nalways end with *1.",122,155);
+			            
+			            text("The goal is starting at 3,\nprogram this concept to\nreach 1, erasing the blocks.",122,220);
+			            
+			            textFont(VerdBold,15);
+			            text("𝗜𝗳 𝗲𝘃𝗲𝗻, 𝗱𝗶𝘃𝗶𝗱𝗲 𝗯𝘆 𝟮\n𝗜𝗳 𝗻𝗼𝘁, 𝘁𝗶𝗺𝗲𝘀 𝟯 𝗮𝗻𝗱 𝗮𝗱𝗱 𝟭",122,105);
+			            
+			            textFont(VerdItal,13);
+			            text("*This is yet not proved",122,190);
+			            text("(Register 0 holds said 3.)",122,280);
+			            
+			            // SECOND PAGE
+			            textFont(VerdBold,13); fill(7, 4, 31);
+			            text("Since there isn't an optcode\nfor chekcing evens, you're\ngonna use 𝚛𝚍𝚒𝚟 instead.",338,25);
+			            text("If you ever payed attention\nto math class, you know\nthat even means a number\nis divisible by 2.",338,100);
+			            
+			            text("Hmm... How do we do that?",338,190);
+			            
+			            text("Welp, see ya on\nthe other side.",338,220);
+			        }
+			        
+			        // Page Buttons
+			        if (docPage>docBounds.l&&!docFlip) {// Left Button
+			        quickTxtBtn({x:235,y:280,w:20,h:20},
+			            {sw:3, cve:5},
+			            {t:"<", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage--;
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			        if (docPage<docBounds.h&&!docFlip) {// Right Button
+			        quickTxtBtn({x:260,y:280,w:20,h:20},
+			            {sw:3, cve:5},
+			            {t:">", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage++;
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			        { // Back Button
+			        quickTxtBtn({x:390,y:280,w:50,h:20},
+			            {sw:3, cve:5},
+			            {t:"Back", f:color(0), fnt:createFont("Arial Bold",20)},
+			        function() {
+			            docFlip=30; docPage=0;
+			            playSound(Doc1);
+			        },{x:80,y:133});}
+			    }
+			};
+			
+			/** Level Functions **/
+			var emptyLevel = function() {
+			    // Levels are functionally 20x18, however having 1 extra row of empty space.
+			    level = [
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "X..................X",
+			        "XXXXXXXXXXXXXXXXXXXX",
+			        "...................."
+			    ];
+			};
+			var resetPlayer = function() {
+			    Player.x = LEVELTABLE[Lvl].spawn.x;
+			    Player.y = LEVELTABLE[Lvl].spawn.y;
+			    Player.d = LEVELTABLE[Lvl].spawn.d;
+			    Player.vx = 0; Player.vy = 0;
+			    Player.ground=2;
+			};
+			var refreshLevel = function() {
+			    level = [];
+			    for (var i=0; i<20; i++) {
+			        var temp = LEVELTABLE[Lvl].lvl[i];
+			        level.push(temp);
+			    }
+			};
+			var loadLevel = function() {
+			    winTime = 0;
+			    
+			    coins = 0;
+			    
+			    blockPalSelected = LEVELTABLE[Lvl].blockPalVal;
+			    
+			    runningCode = 0;
+			    runningCodeTick = 0;
+			    
+			    codeEditorLine = 0; codeEditorLineIndex = 0;
+			    
+			    Code = LEVELTABLE[Lvl].startingCode;
+			    allowedCode = LEVELTABLE[Lvl].allowed.list;
+			    allowedCodeTxt = LEVELTABLE[Lvl].allowed.txt;
+			    
+			    textScroll = 0;
+			    refreshLevel();
+			    resetPlayer();
+			};
+			var printLevel = function() {
+			    for (var i=0; i<level.length-1; i++) {
+			        println('"'+level[i]+'",');
+			    }
+			    println('"'+level[level.length-1]+'"');
+			};
+			var drawLevel = function() {
+			    // Outer
+			    for (var j=0; j<18; j++) {for (var i=0; i<20; i++) {
+			        if (level[j][i]==="X") {
+			            image(blockPals.outer[blockPalSelected],i*30-5,j*30-5,40,40);
+			        }
+			        if (level[j][i]==="^") {
+			            var ground=0; var rot = 0;
+			            
+			            if (i>0) {if (level[j][i-1]==="X") {ground=1; rot=90;}}
+			            if (i<19) {if (level[j][i+1]==="X") {ground=1; rot=270;}}
+			            
+			            if (j>0) {if (level[j-1][i]==="X") {ground=1; rot=180;}}
+			            if (j<18) {if (level[j+1][i]==="X") {ground=1; rot=0;}}
+			            
+			            if (ground) {
+			                pushMatrix(); translate(15+i*30,15+j*30); rotate(rot);
+			                image(ASSET_SPIKE_GROUND,-15,-15,30,30);
+			                popMatrix();
+			            } else {image(ASSET_SPIKE_AIR,i*30,j*30,30,30);}
+			        }
+			    }}
+			    
+			    // Inner
+			    for (var j=0; j<18; j++) {for (var i=0; i<20; i++) {
+			        if (level[j][i]==="X") {
+			            image(blockPals.inner[blockPalSelected],i*30,j*30,30,30);
+			        }
+			        if (level[j][i]==="*") {
+			            fill(237, 195, 26); stroke(143, 81, 6); strokeWeight(4);
+			            ellipse(i*30+15,j*30+15, sin(globalTick*2)*15 ,15);
+			        }
+			    }}
+			};
+			var setTile = function(x,y,id) {
+			    level[y] = stringReplace(level[y],x,id);
+			};
+			var inTylerLevel = function() {
+			    return LEVELTABLE[Lvl].blockPalVal === 5 && MENU === 1;
+			};
+			
+			/** Player & Physics Functions **/
+			var boxToBox = function(a,b,c,d,e,f,g,h) {
+			    return a+c>e&&a<e+g&&b+d>f&&b<f+h;
+			};
+			var pointToLevel = function(x,y) {
+			    return level[floor(y/30)][floor(x/30)];
+			};
+			
+			var touchingTileID;
+			var playerOutOfBounds = function() {
+			    if (Player.x<0) {
+			        Player.x = 0;
+			        if (touchingTileID(Player.x,Player.y,"X")) {return 1;}
+			    }
+			    if (Player.x>565) {
+			        Player.x = 565;
+			        if (touchingTileID(Player.x,Player.y,"X")) {return 1;}
+			    }
+			    if (Player.y<0) {
+			        Player.y = 0;
+			        Player.vy = 0;
+			        if (touchingTileID(Player.x,Player.y,"X")) {return 1;}
+			    }
+			    if (Player.y>520) {return 1;}
+			    
+			    return 0;
+			};
+			touchingTileID = function(x,y,tileID) {
+			    if (Player.y<0) {return 0;}
+			    return pointToLevel(x+4,y+4)===tileID||pointToLevel(x+25,y+4)===tileID||
+			           pointToLevel(x+4,y+29)===tileID||pointToLevel(x+25,y+29)===tileID;
+			};
+			var collectCoins = function() {
+			    for (var j=0; j<18; j++) {for (var i=0; i<20; i++) {
+			        if (level[j][i]==="*") {
+			            if (boxToBox(
+			                Player.x, Player.y, 30, 30,
+			                i*30, j*30, 30, 30
+			            )) {
+			                playSound(Coin);
+			                setTile(i,j,".");
+			                coins++;
+			            }
+			        }
+			    }}
+			};
+			
+			var playerQuickFix = function(amount) {
+			    for (var i=0; i<amount; i++) {
+			        // Up
+			        Player.y-=i;
+			        if (!touchingTileID(Player.x,Player.y,"X")) {return;}
+			        // Down
+			        Player.y+=i*2;
+			        if (!touchingTileID(Player.x,Player.y,"X")) {return;}
+			        // Left
+			        Player.y-=i;
+			        Player.x-=i;
+			        if (!touchingTileID(Player.x,Player.y,"X")) {return;}
+			        // Right
+			        Player.x+=i*2;
+			        if (!touchingTileID(Player.x,Player.y,"X")) {return;} Player.x-=i;
+			    }
+			    
+			    // Too stuck in block
+			    playSound(Hurt); playSound(Clop);
+			    resetPlayer();
+			};
+			var playerPhysics = function() {
+			    var control = [0,0,0];
+			    if (!codeWindow&&!docs) {control = [input(87,1),input(65,2),input(68,2)];}
+			    
+			    // Grav
+			    Player.vy+=Gravity;
+			    Player.y+=Player.vy;
+			    
+			    // VY
+			    if (touchingTileID(Player.x,Player.y,"X")) {
+			        while(touchingTileID(Player.x,Player.y,"X")) {
+			            Player.y-=abs(Player.vy)/Player.vy;
+			        }
+			        Player.vy=control[0]*-15;
+			        if (control[0]) {
+			            Player.ground = 0;
+			            playSound(Jump);
+			        } else {
+			            Player.ground++;
+			            if (Player.ground===1) {playSound(Land);}
+			        }
+			        
+			        
+			    } else {Player.ground=0;}
+			    
+			    // Control
+			    if (xor(control[1],control[2])) {
+			        Player.vx = (control[2]-control[1])*Player.speed;
+			        Player.d=abs(Player.vx)/Player.vx;
+			        Player.move = 1;
+			    } else {
+			        Player.vx*=Player.friction;
+			        Player.move = 0;
+			    }
+			    Player.x+=Player.vx;
+			    
+			    // VX
+			    if (touchingTileID(Player.x,Player.y,"X")) {
+			        while(touchingTileID(Player.x,Player.y,"X")) {
+			            Player.x-=abs(Player.vx)/Player.vx;
+			        }
+			        Player.vx=0;
+			    }
+			};
+			var playerTick = function() {
+			    // Out of Bounds?
+			    if (playerOutOfBounds()) {
+			        playSound(Hurt); playSound(Clop); resetPlayer();}
+			    
+			    // Already in Block?
+			    if (touchingTileID(Player.x,Player.y,"X")) {
+			        playerQuickFix(20);
+			    }
+			    
+			    playerPhysics();
+			    
+			    // Touching Spikes
+			    if (touchingTileID(Player.x,Player.y,"^")) {
+			        playSound(Hurt); playSound(Clop);
+			        resetPlayer();
+			    }
+			    
+			    // Touching Coin
+			    collectCoins();
+			    
+			    // Touching Goal
+			    if (boxToBox(Player.x,Player.y,30,30,
+			        LEVELTABLE[Lvl].goal.x,LEVELTABLE[Lvl].goal.y,30,30)) {
+			        if ((LEVELTABLE[Lvl].coinsNeeded===undefined ||
+			            coins >= LEVELTABLE[Lvl].coinsNeeded) && !winTime) {
+			            playSound(Win);
+			            winTime = 1;
+			        }
+			    }
+			};
+			var getPlayerSpr = function() {
+			    if (Player.ground) {
+			        if (codeWindow) {return playerSprs[6+(globalTick%80>40)];}
+			        if (docs) {return playerSprs[8];}
+			        
+			        if (Player.move) {return playerSprs[1+floor((globalTick%32)/8)];}
+			        else {return playerSprs[0];}
+			    } else {
+			        return playerSprs[5];
+			    }
+			    return playerSprs[0]; 
+			};
+			
+			/** DUM Functions **/
+			var updateSpecialRegs = function() {
+			    Registers[128] = floor((Player.x+15)/30);
+			    Registers[129] = floor((Player.y+15)/30);
+			    
+			    Registers[130] = keys[87];
+			    Registers[131] = keys[83];
+			    Registers[132] = keys[65];
+			    Registers[133] = keys[68];
+			    Registers[134] = keys[32];
+			};
+			var error = function(er) {
+			    gotError = 1;
+			    errors = "Error line "+(codeLine+1)+": "+er;
+			    if (false) {println("Error line "+(codeLine+1)+": "+er);}
+			    playSound(WrongCode);
+			};
+			var get1Para = function(line, commandlen) {
+			    if (line[commandlen]===" ") {
+			        var a;
+			        var reg = 0;
+			        reader=commandlen+1; readerStr="";
+			        
+			        // Read value a
+			        while (reader!==line.length) {
+			            readerStr=readerStr+line[reader];
+			            reader++;
+			        }reader++;
+			        
+			        // Check a
+			        if (readerStr[0]==="r") {
+			            readerStr = readerStr.substring(1,readerStr.length); reg = 1;
+			        }
+			        if (!strIsInt(readerStr)) {
+			            if (readerStr==="") {error("Expected a value");}
+			            else {error("Expected Integer, not "+readerStr);}
+			            return;
+			        }
+			        a = parseInt(readerStr,10);
+			        if (reg) {
+			            if ( !((LEVELTABLE[Lvl].allowed.regs).includes(a)) && !LEVELTABLE[Lvl].noEdit.includes(codeLine) && !(LEVELTABLE[Lvl].allowed.regs.includes("Any"))) {
+			                error("Using unallowed register");
+			                return;
+			            }
+			            a = Registers[a];
+			        }
+			        
+			        // Set paras
+			        parameter1 = a;
+			        return;
+			    } else {
+			        error("Expected space");
+			        return;
+			    }
+			};
+			var get2Para = function(line, commandlen) {
+			    if (line[commandlen]===" ") {
+			        var a; var b;
+			        var reg = 0;
+			        reader=commandlen+1; readerStr="";
+			        
+			        // Read value a
+			        while (line[reader]!==" ") {
+			            if (reader===line.length) {
+			                error("Expected space");
+			                return;
+			            }
+			            readerStr=readerStr+line[reader];
+			            reader++;
+			        }reader++;
+			        
+			        // Check a
+			        if (readerStr[0]==="r") {
+			            readerStr = readerStr.substring(1,readerStr.length); reg = 1;
+			        }
+			        if (!strIsInt(readerStr)) {
+			            if (readerStr==="") {error("Expected a value");}
+			            else {error("Expected Integer, not "+readerStr);}
+			            return;
+			        }
+			        a = parseInt(readerStr,10);
+			        if (reg) {
+			            if ( !((LEVELTABLE[Lvl].allowed.regs).includes(a)) && !LEVELTABLE[Lvl].noEdit.includes(codeLine) && !(LEVELTABLE[Lvl].allowed.regs.includes("Any"))) {
+			                error("Using unallowed register");
+			                return;
+			            }
+			            a = Registers[a];
+			        }
+			        
+			        // Read value b
+			        readerStr=""; reg = 0;
+			        while (reader!==line.length) {
+			            readerStr=readerStr+line[reader];
+			            reader++;
+			        }reader++;
+			        
+			        // Check b
+			        if (readerStr[0]==="r") {
+			            readerStr = readerStr.substring(1,readerStr.length); reg = 1;
+			        }
+			        if (!strIsInt(readerStr)) {
+			            if (readerStr==="") {error("Expected a value");}
+			            else {error("Expected Integer, not "+readerStr);}
+			            return;
+			        }
+			        b = parseInt(readerStr,10);
+			        if (reg) {
+			            if ( !((LEVELTABLE[Lvl].allowed.regs).includes(b)) && !LEVELTABLE[Lvl].noEdit.includes(codeLine) && !(LEVELTABLE[Lvl].allowed.regs.includes("Any"))) {
+			                error("Using unallowed register");
+			                return;
+			            }
+			            b = Registers[b];
+			        }
+			        
+			        // Set paras
+			        parameter1 = a; parameter2 = b;
+			        return;
+			    } else {
+			        error("Expected space");
+			        return;
+			    }
+			};
+			var get3Para = function(line, commandlen) {
+			    if (line[commandlen]===" ") {
+			        var a; var b; var c;
+			        var reg = 0;
+			        reader=commandlen+1; readerStr="";
+			        
+			        // Read value a
+			        while (line[reader]!==" ") {
+			            if (reader===line.length) {
+			                error("Expected space");
+			                return;
+			            }
+			            readerStr=readerStr+line[reader];
+			            reader++;
+			        }reader++;
+			        
+			        // Check a
+			        if (readerStr[0]==="r") {
+			            readerStr = readerStr.substring(1,readerStr.length); reg = 1;
+			        }
+			        if (!strIsInt(readerStr)) {
+			            if (readerStr==="") {error("Expected a value");}
+			            else {error("Expected Integer, not "+readerStr);}
+			            return;
+			        }
+			        a = parseInt(readerStr,10);
+			        if (reg) {
+			            if ( !((LEVELTABLE[Lvl].allowed.regs).includes(a)) && !LEVELTABLE[Lvl].noEdit.includes(codeLine) && !(LEVELTABLE[Lvl].allowed.regs.includes("Any"))) {
+			                error("Using unallowed register");
+			                return;
+			            }
+			            a = Registers[a];
+			        }
+			        
+			        // Read value b
+			        readerStr=""; reg = 0;
+			        while (line[reader]!==" ") {
+			            if (reader===line.length) {
+			                error("Expected space");
+			                return;
+			            }
+			            readerStr=readerStr+line[reader];
+			            reader++;
+			        }reader++;
+			        
+			        // Check b
+			        if (readerStr[0]==="r") {
+			            readerStr = readerStr.substring(1,readerStr.length); reg = 1;
+			        }
+			        if (!strIsInt(readerStr)) {
+			            if (readerStr==="") {error("Expected a value");}
+			            else {error("Expected Integer, not "+readerStr);}
+			            return;
+			        }
+			        b = parseInt(readerStr,10);
+			        if (reg) {
+			            if ( !((LEVELTABLE[Lvl].allowed.regs).includes(b)) && !LEVELTABLE[Lvl].noEdit.includes(codeLine) && !(LEVELTABLE[Lvl].allowed.regs.includes("Any"))) {
+			                error("Using unallowed register");
+			                return;
+			            }
+			            b = Registers[b];
+			        }
+			        
+			        // Read value c
+			        readerStr=""; reg = 0;
+			        while (reader!==line.length) {
+			            readerStr=readerStr+line[reader];
+			            reader++;
+			        }reader++;
+			        
+			        // Check c
+			        if (readerStr[0]==="r") {
+			            readerStr = readerStr.substring(1,readerStr.length); reg = 1;
+			        }
+			        if (!strIsInt(readerStr)) {
+			            if (readerStr==="") {error("Expected a value");}
+			            else {error("Expected Integer, not "+readerStr);}
+			            return;
+			        }
+			        c = parseInt(readerStr,10);
+			        if (reg) {
+			            if ( !((LEVELTABLE[Lvl].allowed.regs).includes(c)) && !LEVELTABLE[Lvl].noEdit.includes(codeLine) && !(LEVELTABLE[Lvl].allowed.regs.includes("Any"))) {
+			                error("Using unallowed register");
+			                return;
+			            }
+			            c = Registers[c];
+			        }
+			        
+			        // Set paras
+			        parameter1 = a; parameter2 = b; parameter3 = c;
+			        return;
+			    } else {
+			        error("Expected space");
+			        return;
+			    }
+			};
+			var canExecuteLine = function(optcode) {
+			    if (LEVELTABLE[Lvl].noEdit.includes(codeLine)) {return 1;}
+			    if (!allowedCode.includes(optcode)) {
+			        if (!allowedCode.includes("ANY")) {
+			            return 0;
+			        }
+			    }
+			    return 1;
+			};
+			var runLine = function(line) {
+			    
+			    /** Level Manip **/
+			    if (line.substring(0,3)==="pbk") {
+			        if (!canExecuteLine("pbk")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get2Para(line,3); if (gotError) {return;}
+			        if (parameter1<0||parameter1>19||parameter2<0||parameter2>17) {
+			            error("Out of range"); return;
+			        }
+			        setTile(parameter1,parameter2,"X");
+			    }
+			    else if (line.substring(0,3)==="ers") {
+			        if (!canExecuteLine("ers")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get2Para(line,3); if (gotError) {return;}
+			        if (parameter1<0||parameter1>19||parameter2<0||parameter2>17) {
+			            error("Out of range"); return;
+			        }
+			        setTile(parameter1,parameter2,".");
+			    }
+			    else if (line.substring(0,3)==="sti") {
+			        if (!canExecuteLine("sti")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get3Para(line,3); if (gotError) {return;}
+			        if (parameter1<0||parameter1>19||parameter2<0||parameter2>17) {
+			            error("Out of range"); return;
+			        }
+			        setTile(parameter1,parameter2,BRUSHTABLE[parameter3]);
+			    }
+			    else if (line.substring(0,3)==="rti") {
+			        if (!canExecuteLine("rti")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get3Para(line,3); if (gotError) {return;}
+			        if (parameter1<0||parameter1>19||parameter2<0||parameter2>17) {
+			            error("Out of range"); return;
+			        }
+			        if (parameter3<0||parameter3>127) {
+			            error("Unallowed Register Range");
+			            return;
+			        }
+			        Registers[parameter3]=BRUSHTABLE.indexOf(level[parameter2][parameter1]);
+			    }
+			    else if (line.substring(0,4)==="errw") {
+			        if (!canExecuteLine("errw")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get1Para(line,4); if (gotError) {return;}
+			        if (parameter1<0&&parameter1>17) {
+			            error("Out of range"); return;
+			        }
+			        level[parameter1] = "X..................X";
+			    }
+			    else if (line.substring(0,4)==="ercl") {
+			        if (!canExecuteLine("ercl")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get1Para(line,4); if (gotError) {return;}
+			        if (parameter1<0&&parameter1>19) {
+			            error("Out of range"); return;
+			        }
+			        setTile(parameter1,0,"X");
+			        setTile(parameter1,17,"X");
+			        for (var i=1; i<17; i++) {
+			            setTile(parameter1,i,".");
+			        }
+			    }
+			    else if (line.substring(0,4)==="eral") {
+			        if (line.substring(0,5)==="eral ") {
+			            error("eral takes 0 operands!"); return;
+			        }
+			        if (line==="eral") {
+			            if (!canExecuteLine("eral")) {
+			                error("Unallowed command");
+			                return;
+			            }
+			            emptyLevel();
+			            return;
+			        } else {
+			            error("Unknown Optcode");
+			        }
+			    }
+			    else if (line.substring(0,3)==="rti") {
+			        if (!canExecuteLine("rti")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get3Para(line,3); if (gotError) {return;}
+			        if (parameter1<0||parameter1>19||parameter2<0||parameter2>17) {
+			            error("Out of range"); return;
+			        }
+			        if ( !((LEVELTABLE[Lvl].allowed.regs).includes(parameter3)) && !LEVELTABLE[Lvl].noEdit.includes(codeLine)) {
+			            error("Using unallowed register");
+			            return;
+			        }
+			        
+			        Registers[parameter3] = BRUSHTABLE.indexOf(level[parameter2][parameter1]);
+			    }
+			    
+			    /** Registers **/
+			    else if (line.substring(0,4)==="rset") {
+			        if (!canExecuteLine("rset")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        
+			        get2Para(line,4);
+			        if (parameter1<0||parameter1>127) {
+			            error("Unallowed Register Range");
+			            return;
+			        }
+			        if (parameter2<0||parameter2>255) {
+			            error("Unallowed Range");
+			            return;
+			        }
+			        
+			        if (gotError) {return;}
+			        Registers[parameter1]=parameter2;
+			    }
+			    else if (line.substring(0,4)==="radd") {
+			        if (!canExecuteLine("radd")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        
+			        get3Para(line,4);
+			        if (parameter3<0||parameter3>127) {
+			            error("Unallowed Register Range");
+			            return;
+			        }
+			        
+			        if (gotError) {return;}
+			        Registers[parameter3]=(parameter1+parameter2)%256;
+			    }
+			    else if (line.substring(0,4)==="rsub") {
+			        if (!canExecuteLine("rsub")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        
+			        get3Para(line,4);
+			        if (parameter3<0||parameter3>127) {
+			            error("Unallowed Register Range");
+			            return;
+			        }
+			        
+			        if (gotError) {return;}
+			        Registers[parameter3]=parameter1;
+			        for (var i=0; i<parameter2; i++) {
+			            Registers[parameter3]--;
+			            if (Registers[parameter3]<0) {Registers[parameter3]=255;}
+			        }
+			    }
+			    else if (line.substring(0,4)==="rmut") {
+			        if (!canExecuteLine("rmut")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        if (parameter3<0||parameter3>127) {
+			            error("Unallowed Register Range");
+			            return;
+			        }
+			        
+			        get3Para(line,4); if (gotError) {return;}
+			        Registers[parameter3]=(parameter1*parameter2)%256;
+			    }
+			    else if (line.substring(0,4)==="rdiv") {
+			        if (!canExecuteLine("rdiv")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        
+			        get3Para(line,4);
+			        if (parameter3<0||parameter3>127) {
+			            error("Unallowed Register Range");
+			            return;
+			        }
+			        
+			        if (gotError) {return;}
+			        Registers[parameter3]=floor(parameter1/parameter2);
+			        if (parameter1===0 || parameter2===0) {
+			            Registers[parameter3]=0;
+			        }
+			    }
+			    else if (line.substring(0,4)==="rexp") {
+			        if (!canExecuteLine("rexp")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        if (parameter3<0||parameter3>127) {
+			            error("Unallowed Register Range");
+			            return;
+			        }
+			        
+			        get3Para(line,4); if (gotError) {return;}
+			        Registers[parameter3]=(parameter1^parameter2)%256;
+			    }
+			    else if (line.substring(0,4)==="rgtr") {
+			        if (!canExecuteLine("rgtr")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        if (parameter3<0||parameter3>127) {
+			            error("Unallowed Register Range");
+			            return;
+			        }
+			        if (parameter1>255||parameter2>255) {
+			            error("Unallowed Range");
+			            return;
+			        }
+			        
+			        get3Para(line,4); if (gotError) {return;}
+			        Registers[parameter3]=(parameter1>parameter2)+0;
+			    }
+			    
+			    /** Logic and Control **/
+			    else if (line.substring(0,3)==="jto") {
+			        if (!canExecuteLine("jto")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get1Para(line,3); if (gotError) {return;}
+			        if (parameter1<1&&parameter1>99) {
+			            error("Jumping Out of range"); return;
+			        }
+			        codeLine = parameter1-2;
+			    }
+			    else if (line.substring(0,3)==="jum") {
+			        if (!canExecuteLine("jum")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get3Para(line,3); if (gotError) {return;}
+			        
+			        if (parameter1>255||parameter2>255) {
+			            error("Out of range"); return;
+			        }
+			        if (parameter3<1&&parameter3>99) {
+			            error("Jumping Out of range"); return;
+			        }
+			        if (parameter1===parameter2) {codeLine = parameter3-2;}
+			    }
+			    else if (line.substring(0,4)==="halt") {
+			        if (line.substring(0,5)==="halt ") {
+			            error("halt takes 0 operands!"); return;
+			        }
+			        if (line==="halt") {
+			            if (!canExecuteLine("halt")) {
+			                error("Unallowed command");
+			                return;
+			            }
+			            runningCode=0;
+			            return;
+			        } else {
+			            error("Unknown Optcode");
+			        }
+			    }
+			    
+			    /** Environment **/
+			    else if (line.substring(0,4)==="rspw") {
+			        if (line.substring(0,5)==="rspw ") {
+			            error("rpsw takes 0 operands!"); return;
+			        }
+			        if (line==="rspw") {
+			            if (!canExecuteLine("rspw")) {
+			                error("Unallowed command");
+			                return;
+			            }
+			            resetPlayer();
+			            return;
+			        } else {
+			            error("Unknown Optcode");
+			        }
+			    }
+			    else if (line.substring(0,4)==="xset") {
+			        if (!canExecuteLine("xset")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get1Para(line,4); if (gotError) {return;}
+			        if (parameter1<0||parameter1>17) {
+			            error("Out of range"); return;
+			        }
+			        
+			        Player.x = parameter1*30;
+			        Registers[128] = floor((Player.x+15)/30);
+			    }
+			    else if (line.substring(0,4)==="yset") {
+			        if (!canExecuteLine("yset")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get1Para(line,4); if (gotError) {return;}
+			        if (parameter1<0||parameter1>17) {
+			            error("Out of range"); return;
+			        }
+			        
+			        Player.vy = 0;
+			        Player.y = parameter1*30;
+			        Registers[129] = floor((Player.y+15)/30);
+			    }
+			    else if (line.substring(0,4)==="spst") {
+			        if (!canExecuteLine("spst")) {
+			            error("Unallowed command");
+			            return;
+			        }
+			        get1Para(line,4); if (gotError) {return;}
+			        if (parameter1<0&&parameter1>999) {
+			            error("Out of range"); return;
+			        }
+			        
+			        Registers[135] = parameter1;
+			    }
+			    
+			    /** Invalid **/
+			    else if (line === "") {
+			        
+			    } else {
+			        error("Unknown Optcode");
+			    }
+			};
+			var runCode = function() {
+			    refreshLevel();
+			    coins = 0;
+			    
+			    Registers = []; for (var i=0; i<255; i++) {Registers[i]=0;}
+			    updateSpecialRegs();
+			    Registers[135] = 5;
+			    
+			    runningCode = 1;
+			    runningCodeTick = "start";
+			    
+			    errors = [];
+			    gotError = 0;
+			    codeLine = 0;
+			};
+			
+			/** Title Button OOP **/
+			var TitleBtn = function(x, y, r, txt) {
+			    this.tx = x;
+			    this.x = x; this.y = y;
+			    this.r = r;
+			    this.d = this.r;
+			    this.text = txt;
+			    
+			    this.draw = function(onClick) {
+			        // Tick
+			        if (dist(mousePos.x, mousePos.y, this.x, this.y) < this.d/2 && !loadScreenOn) {
+			            this.d = (this.d+(r+30)/10)/1.1;
+			            if (mouse===1) {onClick();}
+			        } else {
+			            this.d = (this.d+(r)/10)/1.1;
+			        }
+			        var diff = this.d - r;
+			        this.x = (this.x + (this.tx)/10)/1.1;
+			        
+			        // Draw
+			        noFill(); stroke(30 + diff*3, 179 + diff*3, 53 + diff*3); strokeWeight(10);
+			        ellipse(this.x, this.y, this.d, this.d);
+			        
+			        fill(226, 245, 241);
+			        textFont(VerdBold, txt.s);
+			        textAlign(CENTER, CENTER);
+			        pushMatrix(); translate(this.x, this.y); scale(1 + diff*txt.g);
+			            text(this.text.t, 0, 0);
+			        popMatrix();
+			    };
+			};
+			
+			/** Particle OOP **/
+			var particles = []; var particleWait = 0;
+			var Particle = function(x, y, a, speed, l, color) {
+			    this.x = x; this.y = y; this.r = random(2,6);
+			    this.a = a; this.speed = speed;
+			    this.l = l; this.del = false;
+			    
+			    this.draw = function() {
+			        // Tick
+			        this.l--;
+			        if (this.l < 0) {this.del = true;}
+			        
+			        this.x += sin(this.a)*this.speed;
+			        this.y -= cos(this.a)*this.speed;
+			        
+			        // Draw
+			        noStroke(); fill(color, this.l/l * 255);
+			        ellipse(this.x, this.y, this.r, this.r);
+			        
+			    };
+			};
+			var spawnParticle = function(x, y, a, speed, l, color) {
+			    particles.push( new Particle(x, y, a, speed, l, color) );
+			};
+			
+			/** Setup **/
+			loadLevel();
+			
+			var TBtn1 = new TitleBtn(200, 350, 150, {t:"New\nGame", g:0.021, s:22});
+			var TBtn2 = new TitleBtn(400, 350, 150, {t:"Load\nPasscode", g:0.012, s:22});
+			var TBtn3 = new TitleBtn(300, 500, 100, {t:"Credits", g:0.012, s:20});
+			
+			var LBtn1 = new TitleBtn(800, 500, 100, {t:"Enter", g:0.012, s:20});
+			var LBtn2 = new TitleBtn(800, 500, 100, {t:"Exit", g:0.012, s:20});
+			
+			var CBtn = new TitleBtn(300, 550, 70, {t:"Back", g:0.012, s:18});
+			
+			var PauseBtn1 = new TitleBtn(300, 450, 80, {t:"Exit to\nTitle", g:0.012, s:16});
+			var PauseBtn2 = new TitleBtn(200, 300, 120, {t:"Particles\n= On =", g:0.012, s:18});
+			var PauseBtn3 = new TitleBtn(400, 300, 120, {t:"Sounds\n= On =", g:0.012, s:18});
+			
+			/** Draw **/
+			draw = function() {
+			    /** Input **/
+			    for (var i=0; i<127; i++) {
+			        if (keys[i]) {
+			            if (keyDown[i]>0) {keyDown[i]=2;} else {keyDown[i]=1;}
+			        } else {keyDown[i]=0;}
+			    }
+			    mousePos.x = mouseX*CANVAS_MULTIPLIER;
+			    mousePos.y = mouseY*CANVAS_MULTIPLIER;
+			    if (mouseIsPressed) {
+			        if (!mouse) {mouse=1;} else {mouse=2;}
+			    } else {mouse=0;}
+			    
+			    /** Tick Rates **/
+			    // Global tick and dialouge
+			    globalTick++;
+			    if ((globalTick%2)===0&&textScroll<LEVELTABLE[Lvl].dia.length &&
+			        MENU===1 && !loadScreenOn && !winTime
+			    ) {
+			        textScroll++;
+			        if ((textScroll%15)-1===0||1) {playSound(Blip);}
+			    }
+			    
+			    // Title
+			    if (passScreen) {
+			        passScreenAni = constrain(passScreenAni+1, 0, 32);
+			    } else {passScreenAni = constrain(passScreenAni-1, 0, 25);}
+			    if (passError>0) {passError-=8;}
+			    
+			    // Win Screen
+			    if (winTime) {
+			        winTime++;
+			        if (winTime === 150) {
+			            if (LEVELTABLE[Lvl].returnOnComplete) {loadToMenu(0, 2);}
+			            else { loadToMenu(1, 2, function() {
+			                winTime = 0;
+			                Lvl++;
+			                loadLevel();
+			            });}
+			        }
+			    }
+			    
+			    /** MENUS **/
+			    pushMatrix(); scale(1/CANVAS_MULTIPLIER);
+			    
+			    // Background
+			    background(20, 9, 20);
+			    
+			    // Particles
+			    if (Settings_enableParticles) {
+			        particleWait--;
+			        if (particleWait < 1) { spawnParticle(
+			            random(0,601),random(0,601), random(270,360), random(0.5,3), 100, 255
+			        ); particleWait = 4;}
+			        for (var i=0; i<particles.length; i++) {
+			            particles[i].draw();
+			    }
+			        var i=0; while(i<particles.length) {
+			            if (particles[i].del) {particles.splice(i,1);} else {i++;}
+			    }
+			    }
+			    if (inTylerLevel()) {background(0);}
+			    
+			    // BoredGuy Intro
+			    if (MENU === -1) {
+			        if (INTRO.on) {INTRO.t++;}
+			        if (INTRO.t === 1) {playSound(getSound("retro/laser4"));}
+				    if (INTRO.t === 70) {play();}
+					if (INTRO.t >= 70) {INTRO.appear = constrain(INTRO.appear-8, 0, 232);}
+					if (INTRO.t === 240) {
+					    loadToMenu(0, 1);
+					}
+			        
+			        background(0);
+			        
+			        // Intro assumes canvas is 400x400
+			        
+			        pushMatrix(); scale(1.5);
+			            
+			            // Image
+			            image(INTRO.img, 15, -32, 350, 350);
+			            noStroke(); fill(0,INTRO.appear);
+			            rect(75,30,250,270);
+			            
+			            // Blur Thingy
+			            fill(25, 129, 232);
+			            rect(-50 + INTRO.t*12,308,50,30);
+			            rect(400 - INTRO.t*12,308,50,30);
+			            
+			            // Text
+			            fill(25 - INTRO.appear, 129 - INTRO.appear, 232 - INTRO.appear);
+			            textFont(INTRO.font);
+			            textAlign(CENTER, CENTER);
+			            text("Bored Guy",200,320);
+			            
+			            if (!INTRO.on) {
+			                fill(255);
+			                textFont(MonoBold);
+			                textAlign(CENTER, CENTER);
+			                text("Click to open game",200,200);
+			                
+			                textFont(MonoBold,12);
+			                text("(For best experience, add the following\nto the end of the url.)",200,300);
+			                text("?width=800&height=800&editor=no",200,340);
+			            }
+			            
+			        popMatrix();
+			    }
+			    
+			    // Title
+			    if (MENU===0 || MENU === 2 || MENU === "THUMBNAIL") {
+			        pushMatrix();
+			        if (MENU === "THUMBNAIL") {
+			            image(ASSET_PLAYER_LETS_SIT_DOWN2,140,180,70,70);
+			            translate(-65,170); scale(1.2);
+			        }
+			        /** Title **/
+			        textFont(MonoBold,80);
+			        textAlign(CORNER);
+			        var tx1 = "𝕣𝕖𝕡𝕣𝕠";
+			        var tx2 = "𝕘𝕣𝕒𝕞";
+			        
+			        // Dots
+			        strokeWeight(8); stroke(80, 230, 143, 150);
+			        for (var i=0; i<450; i+=12) {
+			            if (i > 220) {
+			                stroke(232, 28, 62, 150);
+			            }
+			            point(i + 81, 120);
+			        }
+			        
+			        // Title Text
+			        fill(20, 209, 99); text(tx1, 90, 110);
+			        fill(240, 17, 39); text(tx2, 306, 110);
+			        
+			        // Sub-Text
+			        fill(20, 224, 88);
+			        textAlign(CENTER, CENTER);
+			        textFont(VerdBold,22);
+			        text('A program-editing "puzzle" game',300,150);
+			        popMatrix();
+			    }
+			    
+			    // Buttons on Title + version
+			    if (MENU === 0) {
+			        // Version
+			        fill(220, 232, 242);
+			        textAlign(CORNER);
+			        textFont(VerdBold,18);
+			        text("Ver 1.0.0",4,594);
+			        
+			        /** Buttons **/
+			        TBtn1.draw(function() {
+			            if (!passScreen) {
+			                Lvl = 1;
+			                loadLevel();
+			                loadToMenu(1, 2);
+			            }
+			        });
+			        TBtn2.draw(function() {
+			            if (!passScreen) {
+			                passScreen = true;
+			                TBtn1.tx = -200;
+			                TBtn2.tx = -200;
+			                TBtn3.tx = -200;
+			                
+			                LBtn1.tx = 200;
+			                LBtn2.tx = 400;
+			            }
+			        });
+			        TBtn3.draw(function() {
+			            if (!passScreen) {
+			                loadToMenu(2, 2);
+			            }
+			        });
+			        
+			        LBtn1.draw(function() {
+			            if (passScreen) {
+			                if (searchPasscode()===-1) {
+			                    passError = 255;
+			                } else {
+			                    Lvl = searchPasscode();
+			                    loadLevel();
+			                    loadToMenu(1, 2);
+			                }
+			            }
+			        });
+			        LBtn2.draw(function() {
+			            if (passScreen) {
+			                passScreen = false;
+			                TBtn1.tx = 200;
+			                TBtn2.tx = 400;
+			                TBtn3.tx = 300;
+			                
+			                LBtn1.tx = 800;
+			                LBtn2.tx = 800;
+			            }
+			        });
+			        
+			        /** Load Passcode **/
+			        // Box
+			        noFill(); stroke(30, 179, 53, passScreenAni*10); strokeWeight(15);
+			        rect(150, 250, 300, 80, 10);
+			        
+			        // Text
+			        fill(242, 250, 252, passScreenAni*10);
+			        textAlign(CENTER); textFont(VerdBold,20);
+			        text("Type in your Passcode up here.\nClick Enter when you're done.",300,370);
+			        textFont(MonoBold,60);
+			        text(passcode,300,310);
+			        
+			        //println(passError);
+			        textFont(VerdBold,25);
+			        fill(255, 0, 0, passError);
+			        text("Invalid Password!",300,230);
+			    }
+			    
+			    // Main Game
+			    if (MENU === 1) {
+			        /** Update **/
+			        if (input(80,1) && !loadScreenOn && !codeWindow && !docs && !winTime)
+			        {pause = 1-pause;}
+			        
+			        if (!pause) {
+			            if (!winTime) {playerTick();} else {
+			                Player.move = 0;
+			                docs = 0; docsFrame = 0; docFlip = 0;
+			                runningCode = 0; codeWindow = 0; codeWindowFrame = 0;
+			                textScroll = 0;
+			            }
+			        
+			            // Update Special Registers
+			            updateSpecialRegs();
+			            
+			            // Code Running
+			            if (runningCode) {
+			                runningCodeTick++;
+			                if (runningCodeTick>=Registers[135]) {
+			                    runningCodeTick=0;
+			                    
+			                    // Execute Line
+			                    runLine(Code[codeLine]);
+			                    if (gotError) {runningCode=0;}
+			                    codeLine++;
+			                    if (codeLine>=Code.length) {runningCode=0;}
+			                }
+			            }
+			        }
+			        
+			        /** Draw **/
+			        drawLevel();
+			        
+			        // Goal
+			        pushMatrix();
+			        translate(LEVELTABLE[Lvl].goal.x+15,LEVELTABLE[Lvl].goal.y+sin(globalTick*2.5)*5+15);
+			            pushMatrix();
+			                scale(-1+(globalTick%200>100)*2, 1+((globalTick+50)%200>100)*-2);
+			                if (
+			                    LEVELTABLE[Lvl].coinsNeeded===undefined ||
+			                    coins >= LEVELTABLE[Lvl].coinsNeeded
+			                ) {
+			                    image(ASSET_GOAL,-15,-15,30,30);
+			                } else {
+			                    image(ASSET_GOAL_GREY,-15,-15,30,30);
+			                    popMatrix();
+			                    
+			                    fill(255, 138, 36);
+			                    textAlign(CENTER, CENTER);
+			                    textFont(VerdBold,25);
+			                    text(LEVELTABLE[Lvl].coinsNeeded-coins,0,0);
+			                    
+			                    pushMatrix();
+			                }
+			            popMatrix();
+			            
+			        popMatrix();
+			        
+			        // Player
+			        pushMatrix(); translate(Player.x+15,Player.y+8); scale(Player.d,1);
+			        image(getPlayerSpr(),-22.5,-22.5,45,45);
+			        popMatrix();
+			        noTint();
+			        
+			        // "Dialouge"
+			        textFont(VerdBold); fill(230, 245, 247);
+			        textAlign(CENTER,TOP);
+			        var c = color(230, 245, 247); if (inTylerLevel()) {c = color(26, 171, 21);}
+			        outlineText(
+			            LEVELTABLE[Lvl].dia.substring(0,textScroll),300,10,
+			           c, color(7, 3, 20), 3, 40
+			        );
+			        
+			        // Mouse Tile Cord
+			        if (mouse===2 && mouseButton === RIGHT && !docs && !codeWindow &&
+			            mousePos.y<540&&allowedCodeTxt!=="None") {
+			            
+			            mousePos.tileX = floor(mousePos.x/30);
+			            mousePos.tileY = floor(mousePos.y/30);
+			            
+			            noFill(); stroke(255); strokeWeight(2);
+			            rect(mousePos.tileX*30,mousePos.tileY*30,30,30);
+			            
+			            textFont(MonoBold,20); fill(213, 237, 235);
+			            textAlign(CENTER);
+			            text(mousePos.tileX+","+mousePos.tileY,
+			            constrain(mousePos.x,30,565),constrain(mousePos.y,20,Infinity));
+			        }
+			        
+			        // UI
+			        noStroke(); fill(0); rect(0, 540, 600, 60);
+			        textAlign(CORNER);
+			        fill(255); textFont(MonoBold);
+			        text("Level "+Lvl,10,565);
+			        text(LEVELTABLE[Lvl].name,10,590);
+			        
+			        text("Passcode",200,565);
+			        text(LEVELTABLE[Lvl].password,210,590);
+			        
+			        var c = sin(globalTick*10)*300;
+			        fill(255, 0+c, 0+c, gotError*255); textAlign(CORNER); textFont(MonoBold,18);
+			        text(errors,10,530);
+			        
+			        // Buttons
+			        if (allowedCodeTxt!=="None") {
+			            {// Open Docs
+			            var s;
+			            if (codeWindow) {s = "Docs";}
+			            else {s = "Docs";}
+			            quickBtn({x:320,y:550,w:60,h:40},
+			                     {f:color(166, 112, 25), sc:color(82, 50, 4), sw:3, cve:5},
+			                     {t:s, f:color(0), fnt:createFont("Arial Bold",20)},
+			            function() {
+			                if (!winTime&&!codeWindow&&(docsFrame===0||docsFrame===510)) {
+			                    docs = 1-docs; docFlip=0;
+			                    if (!docsFrame) {playSound(Woosh);}
+			                }
+			            });}
+			            {// Open Code Window
+			            var s;
+			            if (codeWindow) {s = "Close DUM";}
+			            else {s = "Open DUM";}
+			            quickBtn({x:390,y:550,w:130,h:40},
+			                     {f:color(79, 168, 24), sc:color(31, 82, 4), sw:3, cve:5},
+			                     {t:s, f:color(0), fnt:createFont("Arial Bold",20)},
+			            function() {
+			                if (!winTime && !docs) {codeWindow=1-codeWindow;}
+			            });}
+			            if (!runningCode) {
+			                {// Run Code
+			            quickBtn({x:530,y:550,w:60,h:40},
+			                     {f:color(79, 168, 24), sc:color(31, 82, 4), sw:3, cve:5},
+			                     {t:"Run", f:color(0), fnt:createFont("Arial Bold",20)},
+			            function() {
+			                if (!winTime && !docs) {runCode();}
+			            });}}
+			            else {
+			                {// Stop Code
+			            quickBtn({x:530,y:550,w:60,h:40},
+			                     {f:color(166, 25, 25), sc:color(82, 4, 4), sw:3, cve:5},
+			                     {t:"Stop", f:color(0), fnt:createFont("Arial Bold",20)},
+			            function() {
+			                if (!winTime && !docs) {runningCode=0;}
+			            });}
+			            }
+			        }
+			        
+			        /** Code Window **/
+			        codeWindowFrame+=(codeWindow*2-1)*10;
+			        codeWindowFrame=constrain(codeWindowFrame,0,200);
+			        if (allowedCodeTxt!=="None") {
+			            pushMatrix(); translate(75,45-200+codeWindowFrame);
+			            
+			            stroke(24, 48, 133, codeWindowFrame); strokeWeight(5);
+			            fill(53, 64, 51, codeWindowFrame); rect(0,0,450,450,10);
+			            fill(0, 0, 0, codeWindowFrame); rect(10,10,430,300);
+			            
+			            // Allowed Code and Rules
+			            fill(255,codeWindowFrame); textFont(MonoBold,20);
+			            text("Allowed Code\n"+allowedCodeTxt,10,335);
+			            text("Maximum Lines - "+LEVELTABLE[Lvl].maxLines,220,335);
+			            if (LEVELTABLE[Lvl].allowed.regs.length!==0) {
+			                text("Allowed Registers",220,365);
+			                text(LEVELTABLE[Lvl].allowed.regs,220,385);
+			            }
+			            
+			            // Show Code
+			            codePage = floor(codeEditorLine/11);
+			            for (var i=0; i<11; i++) {
+			                var I = 11*codePage + i;
+			                
+			                fill(255,codeWindowFrame);
+			                if (LEVELTABLE[Lvl].noEdit.includes(I)) {
+			                    fill(237, 23, 23, codeWindowFrame);
+			                }
+			                
+			                if (I===Code.length) {break;}
+			                
+			                if (I<9) {text("0"+(i+1)+". "+Code[I],15,35+i*25);}
+			                else {text((I+1)+". "+Code[I],15,35+i*25);}
+			            }
+			            
+			            // Move Arrow
+			            // Arrows - U-38 D-40 L-37 R-39
+			            if (codeWindowFrame>199&&!runningCode) {
+			                if (input(38,1)) {
+			                    if (codeEditorLine===0) {
+			                        codeEditorLineIndex = 0;
+			                    } else {
+			                        codeEditorLine--;
+			                    }
+			                }
+			                if (input(40,1)) {
+			                    if (codeEditorLine===Code.length-1) {
+			                        codeEditorLineIndex = Code[codeEditorLine].length;
+			                    } else {
+			                        codeEditorLine++;
+			                    }
+			                }
+			                if (input(37,1)) {
+			                    if (codeEditorLineIndex===0) {
+			                        if (codeEditorLine!==0) {
+			                            codeEditorLine--;
+			                            codeEditorLineIndex=Code[codeEditorLine].length;
+			                        }
+			                    } else {
+			                        codeEditorLineIndex--;
+			                    }
+			                }
+			                if (input(39,1)) {
+			                    
+			                    if (codeEditorLineIndex===Code[codeEditorLine].length) {
+			                        if (codeEditorLine!==Code.length-1) {
+			                            codeEditorLineIndex=0;
+			                            codeEditorLine++;
+			                        }
+			                        
+			                    } else {
+			                        codeEditorLineIndex++;
+			                    }
+			                }
+			            }
+			            codeEditorLineIndex = constrain(codeEditorLineIndex,0,Code[codeEditorLine].length);
+			            
+			            // Show Arrow / Running Code Message
+			            if (!runningCode) {
+			                noStroke(); fill(180+sin(globalTick*10)*50,codeWindowFrame);
+			                rect(60+codeEditorLineIndex*12.2,19+(codeEditorLine%11)*25,3,20);
+			            } else {
+			                fill(0,codeWindowFrame); noStroke();
+			                rect(10,10,430,300);
+			                
+			                textAlign(CENTER);
+			                fill(242, 29, 29, codeWindowFrame); textFont(MonoBold,30);
+			                text("! Code Running !\n! Can Not Edit !",225,150);
+			            }
+			            
+			            popMatrix();
+			        }
+			        
+			        /** Docs **/
+			        if (!docs) {docPage=0;}
+			        docsFrame+=(docs*2-1)*15;
+			        docsFrame=constrain(docsFrame,0,510);
+			        
+			        pushMatrix(); translate(80,388-constrain(docsFrame,0,255));
+			            fill(161, 100, 20, docsFrame);
+			            stroke(110, 62, 13, docsFrame); strokeWeight(10);
+			            rect(100,0,230,320,5);
+			            
+			            textAlign(CORNER);
+			            pushMatrix(); translate(120,35); rotate(90);
+			            fill(87, 41, 16, docsFrame); textFont(SansBoldItalic,90);
+			            text("DOCs",0,0);
+			            popMatrix();
+			            fill(199, 151, 95, docsFrame); textFont(MonoBold,18);
+			            text("Written by Tyler",115,310);
+			            
+			            if (docsFrame===495) {
+			                if (docs) {playSound(Doc1);}
+			                else {playSound(Woosh);}
+			            }
+			            
+			            if (docsFrame>499) {
+			                fill(161, 100, 20, docsFrame);
+			                stroke(110, 62, 13, docsFrame); strokeWeight(10);
+			                rect(0,0,460,320,5);
+			                
+			                fill(231, 244, 245); stroke(136, 145, 156); strokeWeight(5);
+			                rect(15,15,430,290);
+			                
+			                stroke(51, 61, 77); strokeWeight(8);
+			                line(230,20,230,300);
+			                
+			                if (docFlip) {
+			                    docFlip--;
+			                    var w = (430*(docFlip/30))-215;
+			                    stroke(136, 145, 156); strokeWeight(5);
+			                    fill(231, 244, 245); rect(230,15,w,290);
+			                } else {
+			                    drawDocPages();
+			                }
+			            }
+			            
+			        popMatrix();
+			        
+			        /** Level Editor **/
+			        if (levelEditor) {
+			            // Get MousePos
+			            mousePos.tileX = floor(mousePos.x/30);
+			            mousePos.tileY = floor(mousePos.y/30);
+			            
+			            // Mouse Down
+			            if (mouse===2&&mousePos.y<530) {
+			                if (mouseButton === RIGHT) {
+			                setTile(mousePos.tileX,mousePos.tileY,BRUSHTABLE[0]);
+			                }else{
+			                setTile(mousePos.tileX,mousePos.tileY,BRUSHTABLE[levelEditorBrush]);
+			                }
+			            }
+			            
+			            // Show Brush
+			            if (levelEditorBrush===1) {
+			                image(blockPals.inner[blockPalSelected],mousePos.tileX*30,mousePos.tileY*30,30,30);
+			                noStroke(); fill(0,150);
+			                rect(mousePos.tileX*30,mousePos.tileY*30,30,30);
+			            }
+			            if (levelEditorBrush===2) {
+			                image(ASSET_SPIKE_GROUND,mousePos.tileX*30,mousePos.tileY*30,30,30);
+			                noStroke(); fill(0,150);
+			                rect(mousePos.tileX*30,mousePos.tileY*30,30,30);
+			            }
+			            
+			            // Select Brush
+			            for (var i=1; i<10; i++) {
+			                if (input(48+i,1)) {levelEditorBrush=i;}
+			            }
+			            
+			            // Print Level
+			            if (input(81,1)) {
+			                printLevel();
+			            }
+			        }
+			        
+			        /** Win Screen **/
+			        if (winTime) {
+			            var size = constrain(log(winTime)*40, 0, 150);
+			            
+			            fill(37, 17, 54); noStroke();
+			            for (var i=0; i<2; i++) {
+			                for (var j=150; j<451; j+=25) {
+			                    var n = noise(j*2.96581) * 300 + 150;
+			                    ellipse(j,n,size - i*16,size - i*16);
+			                }
+			                
+			                fill(82, 78, 99);
+			            }
+			            
+			            pushMatrix(); translate(300,280); scale(size/140);
+			                fill(224, 229, 255);
+			                textFont(VerdBold,50); textAlign(CENTER, CENTER);
+			                text("Level Passed",0,0);
+			            popMatrix();
+			        }
+			        
+			        /** Code Run on First Tick **/
+			        if (runningCodeTick==="start") {
+			            runningCodeTick=0;
+			                
+			            // Execute Line
+			            runLine(Code[codeLine]);
+			            if (gotError) {runningCode=0;}
+			            codeLine++;
+			            if (codeLine>=Code.length) {runningCode=0;}
+			        }
+			        
+			        /** Pause **/
+			        if (pause) {
+			            fill(0,150); noStroke(); rect(0,0,600,600);
+			            
+			            textFont(VerdBold,70); fill(255); textAlign(CENTER, CENTER);
+			            text("- PAUSE -",300,150);
+			            
+			            PauseBtn1.draw(function() {
+			                loadToMenu(0,2);
+			            });
+			            PauseBtn2.draw(function() {
+			                PauseBtn2.d = PauseBtn2.r;
+			                Settings_enableParticles = !Settings_enableParticles;
+			                if (Settings_enableParticles) {
+			                    PauseBtn2.text.t = "Particles\n= On =";
+			                } else {
+			                    PauseBtn2.text.t = "Particles\n= Off =";
+			                }
+			            });
+			            PauseBtn3.draw(function() {
+			                PauseBtn3.d = PauseBtn2.r;
+			                Settings_sounds = !Settings_sounds;
+			                if (Settings_sounds) {
+			                    PauseBtn3.text.t = "Sounds\n= On =";
+			                } else {
+			                    PauseBtn3.text.t = "Sounds\n= Off =";
+			                }
+			                soundToggle();
+			            });
+			        }
+			    }
+			    
+			    // Credits
+			    if (MENU === 2) {
+			        CBtn.draw(function() {
+			            loadToMenu(0,2);
+			        });
+			        
+			        fill(237, 247, 255); textFont(VerdBold,35);
+			        textAlign(CORNER);
+			        text("Programmed by",40,200);
+			        fill(22, 159, 227); text("Bored Guy",360,200);
+			        
+			        fill(237, 247, 255);
+			        textAlign(CENTER, CENTER); textFont(VerdBold,26);
+			        text("Inspiration by                        's\n",300,260);
+			        
+			        fill(158, 40, 158); text("Infinite Coder",396,242);
+			        fill(255, 0, 0); text("Code a Platfomer",300,275);
+			        
+			        textFont(VerdBold,22);
+			        pushMatrix(); translate(0,90);
+			        fill(88, 232, 88);
+			        text("KA Enviroment",430,250);
+			        fill(175, 212, 40);
+			        text("Henry",320,280);
+			        fill(7, 166, 7);
+			        text("Mushy Avacodo",228,353);
+			        fill(242, 17, 17);
+			        text("Troy Cook",298,400);
+			        
+			        fill(237, 247, 255);
+			        text("- Programmed in the                          ",300,250);
+			        text("- Jingle created with           's Music Program.",300,280);
+			        text("- Ported to HTML with\n                         's exporter.",300,338);
+			        text("- Art drawn using                  's vertex program.",300,400);
+			        popMatrix();
+			        
+			        if (input(10,2)&&input(32,2)&&input(48,2)&&input(65,2)) {
+			            MENU = "THUMBNAIL";
+			        }
+			    }
+			    
+			    // "Loading" Screen
+			    if (loadScreenOn) {
+			        loadScreen = constrain(loadScreen+loadScreenSpeed, 0, 100);
+			        noFill(); stroke(10); strokeWeight( constrain(loadScreen*15, 0,1000) );
+			        ellipse(300,300,1000,1000);
+			        
+			        if (loadScreen === 100) {
+			            passScreen = false;
+			            TBtn1.tx = 200;TBtn2.tx = 400;TBtn3.tx = 300;
+			            LBtn1.tx = 800;LBtn2.tx = 800;
+			            
+			            MENU = loadScreenMenu;
+			            loadScreenSpeed *= -1;
+			            pause = 0;
+			            
+			            if (loadScreenFunc !== null) { loadScreenFunc(); }
+			        }
+			        if (loadScreen === 0) {
+			            loadScreenOn = false;
+			        }
+			    }
+			    
+			    popMatrix();
+			};
+			
+			/** Other **/
+			keyPressed = function() {
+			    keys[keyCode]=1;
+			};
+			keyReleased = function() {
+			    keys[keyCode]=0;
+			};
+			keyTyped = function() {
+			    if (MENU === 1) {
+			        var edit = !LEVELTABLE[Lvl].noEdit.includes(codeEditorLine);
+			        if (codeWindow&&!runningCode) {
+			            if (key.code===8&&edit) { // Backspace
+			                if (codeEditorLineIndex===0&&!codeEditorLineIndex) {
+			                    if (codeEditorLine===0) {return;}
+			                    if (LEVELTABLE[Lvl].noEdit.length) {return;}
+			                    Code.splice(codeEditorLine,1);
+			                    codeEditorLine--;
+			                    codeEditorLineIndex=Code[codeEditorLine].length;
+			                    return;
+			                }
+			                Code[codeEditorLine] = strBackspace(Code[codeEditorLine],codeEditorLineIndex-1);
+			                codeEditorLineIndex--;
+			            } else if (key.code===10) { // Enter
+			                if (Code.length<LEVELTABLE[Lvl].maxLines) {
+			                    codeEditorLine++;
+			                    if (LEVELTABLE[Lvl].noEdit.length===0) {Code.splice(codeEditorLine,0,"");}
+			                }
+			            } else if (edit){
+			              Code[codeEditorLine] = strInsert(Code[codeEditorLine],codeEditorLineIndex,key.toString());
+			            codeEditorLineIndex++;
+			            }
+			            codeEditorLine = constrain(codeEditorLine,0,Code.length-1);
+			        }
+			    } else if (MENU === 0 && passScreen) {
+			        if (key.code===8) {
+			            passcode = passcode.substring(0,passcode.length-1);
+			        } else if (passcode.length < 6) {
+			            passcode = passcode + key.toString().toUpperCase();
+			        }
+			    }
+			};
+			mousePressed = function() {
+			    if (MENU === -1) {
+			        INTRO.on = true;
+			    }
+			    if (MENU === "THUMBNAIL") {
+			        MENU = 2;
+			    }
+			};
+			
+		}
+		
+		runPJS(program);
+		
+		// Add reload button on KA --> <script>
+		
+	</script>
+</body>
+
+</html>
