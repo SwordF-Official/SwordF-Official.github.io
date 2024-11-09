@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Program exported to HTML using the KA Project Exporter by @MushyAvocado 
+https://www.khanacademy.org/computer-programming/ka-project-exporter/5195486791385088
+-->
+	
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Basically Cyan 1</title>
+	<style>
+		
+		
+		/* Change the color as you want */
+		:root {
+			--background-color: #000000;
+		}
+		
+		
+		html, body, #wrapper {
+			overflow: hidden;
+			width: 100%;
+		    height: 100%;
+			margin: 0px;
+			padding: 0px;
+		    width: calc(100% + 1px);
+		}
+		
+		body {
+		    background-color: var(--background-color);
+		}
+		
+		
+		canvas {
+			width: fit-content;
+			height: fit-content;
+		}
+		
+		canvas:focus {
+			outline: none;
+		}
+		
+		/* Automatically fits to the remaining height and centers the canvas it contains */
+		#wrapper {
+			padding: 0px;
+			margin: 0px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+		}
+		
+</style>
+</head>
+<body id="wrapper">
+    <!-- Canvases with a class of "sketch" are applied to the program in the order runPJS() is called. -->
+    <canvas class="sketch"></canvas>
+	<!-- Load the PJS library -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Khan/processing-js@master/processing.js"></script>
+	<!-- The exporter script must be loaded before the program script -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Mushy-Avocado/KA-exporter@v1.0.1/exporter.js"></script>
+	<!-- Run Khan Academy program and import PJS -->
+	<script type="application/javascript">
+		
+		
+		function program() {
+		    
+		    title("Basically Cyan 1");
+		    size(400, 400);
+		    
+		    // All code goes here
+			/**
+			 * ==============================================
+			 *                 Basicaly CYAN
+			 * ==============================================
+			 * A silly little platformer I made for fun :)
+			 * 
+			 * ==============================================
+			 *                   Controls
+			 * ==============================================
+			 * Controls can be changed in the settings.
+			 * Don't touch spikes. Get to the flag.
+			 * 
+			 * ==============================================
+			 *                  Update Log
+			 * ==============================================
+			 * 12-21-22
+			 * - Released
+			 * 
+			 * 12-22-22
+			 * - Added settings menu; can change controls and sound
+			 * 
+			**/
+			
+			// Constants
+			var PlayerColor = color(77, 114, 235);
+			var PlayerColorHighlight = color(77, 114, 235,120);
+			var BlockColor = color(86, 179, 237);
+			var BlockColorHighlight = color(86, 179, 237,120);
+			var SpikeColor = color(39, 104, 145);
+			var SpikeColorHighlight = color(39, 104, 145,120);
+			var BackgroundLineColor = color(195, 197, 217);
+			
+			var TxtLvl = createFont("Verdana Bold Italics", 30);
+			var TxtMain = createFont("Helvetica Bold", 20);
+			var TxtTitle1 = createFont("Times Bold");
+			var TxtTitle2 = createFont("Trebuchet MS Bold");
+			
+			var SoundBtn = getSound("retro/hit1");
+			var SoundJump = getSound("retro/jump2"); SoundJump.audio.volume = 0.10;
+			var SoundSpring = getSound("retro/jump1"); SoundSpring.audio.volume = 0.10;
+			var SoundWin = getSound("retro/whistle2"); SoundWin.audio.volume = 0.40;
+			var SoundDie = getSound("retro/laser2");
+			var SoundCrusher = getSound("rpg/hit-thud"); SoundCrusher.audio.volume = 0.5;
+			var SoundKey = getSound("rpg/metal-clink"); SoundKey.audio.volume = 0.5;
+			
+			textAlign(CENTER,CENTER);
+			
+			var Gravity = 0.5;
+			
+			var LevelCodes = [null,
+			    [[1,1,1,1,1,1,1,1],
+			    [1,1,1,1,1,1,1,1],
+			    [1,1,2,0,0,0,2,1],
+			    [1,0,0,0,0,0,9,1],
+			    [1,8,0,0,0,1,1,1],
+			    [1,1,0,0,1,1,1,1],
+			    [1,1,1,1,1,1,1,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,1,1,1,1,1,1,1],
+			    [1,2,0,0,0,2,1,1],
+			    [1,0,0,1,0,0,0,1],
+			    [1,2,0,1,0,9,0,1],
+			    [1,8,2,1,0,2,0,1],
+			    [1,1,1,1,1,1,1,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,2,0,0,0,2,1,1],
+			    [1,0,9,0,0,0,0,1],
+			    [1,0,1,3,0,0,0,1],
+			    [1,0,2,1,2,0,0,1],
+			    [1,0,0,0,0,0,2,1],
+			    [1,8,0,3,1,3,3,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,0,2,1,1,0,0,1],
+			    [1,8,0,1,2,0,9,1],
+			    [1,2,0,1,0,0,2,1],
+			    [1,0,0,0,0,0,0,1],
+			    [1,0,0,0,0,5,0,1],
+			    [1,3,3,1,3,1,3,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,2,1,1,1,1,2,1],
+			    [1,3,1,2,1,1,3,1],
+			    [1,1,2,0,0,2,1,1],
+			    [1,0,0,0,0,0,0,1],
+			    [1,8,4,0,0,4,9,1],
+			    [1,1,1,1,1,1,1,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,2,0,0,1,0,9,1],
+			    [1,8,0,4,1,0,1,1],
+			    [1,1,2,0,1,0,0,1],
+			    [1,0,0,0,1,5,0,1],
+			    [1,0,3,0,1,2,0,1],
+			    [1,0,2,2,2,0,5,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,1,2,4,2,1,1,1],
+			    [1,8,4,0,4,0,1,1],
+			    [1,1,1,1,2,0,2,1],
+			    [1,1,2,0,0,0,3,1],
+			    [1,1,0,0,0,3,1,1],
+			    [1,1,9,3,0,1,1,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,2,0,0,0,2,1,1],
+			    [1,0,0,0,0,10,0,1],
+			    [1,0,0,2,1,1,1,1],
+			    [1,2,0,0,1,2,0,1],
+			    [1,8,0,0,6,0,9,1],
+			    [1,1,5,1,1,1,1,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,2,0,1,2,0,2,1],
+			    [1,0,0,1,0,10,0,1],
+			    [1,0,9,1,3,0,3,1],
+			    [1,0,1,1,2,0,2,1],
+			    [1,0,1,0,0,5,0,1],
+			    [1,5,6,8,0,2,0,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,8,4,0,6,0,4,1],
+			    [1,1,0,1,1,2,0,1],
+			    [1,0,0,0,1,0,0,1],
+			    [1,5,0,10,1,0,3,1],
+			    [1,2,0,2,1,0,2,1],
+			    [1,3,3,3,1,0,9,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,1,1,1,1,1,1],
+			    [1,1,1,1,2,4,0,1],
+			    [1,1,2,0,4,0,4,1],
+			    [1,1,0,4,0,1,0,1],
+			    [1,0,4,0,1,1,0,1],
+			    [1,4,0,1,2,0,0,1],
+			    [1,8,1,1,9,3,0,1],
+			    [1,1,1,1,1,1,1,1]],
+			    
+			    [[1,1,2,1,1,2,1,1],
+			    [1,1,0,0,2,0,0,1],
+			    [1,0,0,0,0,4,10,1],
+			    [1,0,4,0,0,1,1,1],
+			    [1,0,0,0,5,1,1,1],
+			    [1,0,0,2,1,1,0,1],
+			    [1,3,5,0,8,6,9,1],
+			    [1,1,1,3,1,1,1,1]]
+			];
+			
+			// Variables
+			var Settings = [0,0];
+			
+			var Player = {x:0, y:0, vx:0, vy:0, onGround:0, spawnX:null, spawnY:null};
+			var Flag = {x:null, y:null, ani:0};
+			var Key = {x:null, y:null};
+			var levelOn = 11;
+			var level = [];
+			
+			var Block;
+			var blocks = [];
+			var Hazzard;
+			var hazzards = [];
+			var Spring;
+			var springs = [];
+			var gottenKey = 0;
+			
+			var particles = [];
+			var curtainFlash = 0;
+			var titleTime = 0;
+			var MENU = 1;
+			
+			var keys = []; for (var k=0;k<127;k++) {keys[k]=0;}
+			var deBug = 1;
+			var editor = 0;
+			var editorBrush = 1;
+			
+			// Functions
+			var rngInt = function(min,max) {
+			    return floor(random(min,max));
+			};
+			var mod = function(x,n) {
+			    var a = floor(x/n)*n; return x-a;
+			};
+			var emptyLevel = function() {
+			    level = [];
+			    for (var j = 0; j < 8; j++) {
+			        var t = [];
+			        for (var i = 0; i < 8; i++) {
+			            t.push(0);
+			        }
+			        level.push(t);
+			    }
+			};
+			var generateLevel = function() {
+			    blocks = []; hazzards = []; springs = [];
+			    for (var j = 0; j < 8; j++) { for (var i = 0; i < 8; i++) {
+			        if (level[j][i]===1) {blocks.push(new Block(i*50,j*50,50,50,1));}
+			        if (level[j][i]===2) {blocks.push(new Block(i*50,j*50,50,25,1));}
+			        if (level[j][i]===3) {hazzards.push(new Hazzard(i*50,j*50+25,1));}
+			        if (level[j][i]===4) {hazzards.push(new Hazzard(i*50,j*50-350,2));}
+			        if (level[j][i]===5) {springs.push(new Spring(i*50+10,j*50+30));}
+			        if (level[j][i]===6) {blocks.push(new Block(i*50,j*50,50,50,2));}
+			        if (level[j][i]===8) {Player.spawnX=i; Player.spawnY=j;}
+			        if (level[j][i]===9) {Flag.x=i;Flag.y=j;}
+			        if (level[j][i]===10) {Key.x=i;Key.y=j;}
+			    }}
+			};
+			var saveLevel = function() {
+			    println("");
+			    println("Level Code Here");
+			    for (var i = 0; i < 8; i++) {
+			        if (i===0) {
+			            println("[["+level[i]+"],");
+			        } else if (i===7) {
+			            println("["+level[i]+"]]");
+			        } else {
+			            println("["+level[i]+"],");
+			        }
+			    }
+			};
+			var loadLevel = function(l) {level=l; generateLevel();};
+			var resetLevel = function() {
+			    Key.x = null; Key.y = null;
+			    emptyLevel();
+			    loadLevel(LevelCodes[levelOn]);
+			    Player.x = Player.spawnX*50+15; Player.y = Player.spawnY*50+30;
+			    Player.vx = 0; Player.vy = 0;
+			    gottenKey = 0;
+			    curtainFlash = 255;
+			};
+			
+			var drawTitle = function(x,y,size) {
+			    pushMatrix();
+			    translate(x,y);
+			    scale(size/100);
+			    
+			    fill(60, 118, 252);
+			    textFont(TxtTitle1,25);
+			    
+			    pushMatrix();
+			    translate(-40,-28);
+			    rotate(-12);
+			    text("Basically",0,0);
+			    popMatrix();
+			    
+			    textFont(TxtTitle2,40);
+			    fill(39, 187, 245);
+			    text("CYAN",0,0);
+			    
+			    popMatrix();
+			};
+			
+			// Player Functions
+			Player.inObjectList = function(object) {
+			    for (var o = 0; o < object.length; o++) {
+			        if (Player.x+20>object[o].x && Player.x<object[o].x+object[o].w &&
+			            Player.y+20>object[o].y && Player.y<object[o].y+object[o].h) {
+			            return 1;
+			        }
+			    }
+			    return 0;
+			};
+			Player.control = function() {
+			    Player.vy+=Gravity;
+			    Player.y+=Player.vy;
+			    Player.onGround = 0;
+			    
+			    if (Settings[0]===0) {
+			        
+			        // Moving
+			        if (Player.inObjectList(blocks)) {
+			            while (Player.inObjectList(blocks)) {
+			                Player.y-=abs(Player.vy)/Player.vy;
+			            }
+			            if (abs(Player.vy)/Player.vy===-1) {Player.vy = 0;} else {
+			                Player.onGround = 1; Player.vy=keys[74]*-9;
+			                if (Settings[1]&&keys[74]) {
+			                    playSound(SoundJump);
+			                }
+			            }
+			            
+			        }
+			        Player.vx=(keys[68]-keys[65])*3;
+			        Player.x+=Player.vx;
+			        if (Player.inObjectList(blocks)) {
+			            while (Player.inObjectList(blocks)) {
+			                Player.x-=abs(Player.vx)/Player.vx;
+			            }
+			        }
+			    
+			    } else {
+			        // Moving
+			        if (Player.inObjectList(blocks)) {
+			            while (Player.inObjectList(blocks)) {
+			                Player.y-=abs(Player.vy)/Player.vy;
+			            }
+			            if (abs(Player.vy)/Player.vy===-1) {Player.vy = 0;} else {
+			                Player.onGround = 1; Player.vy=keys[UP]*-9;
+			                if (Settings[1]&&keys[UP]) {
+			                    playSound(SoundJump);
+			                }
+			            }
+			            
+			        }
+			        Player.vx=(keys[RIGHT]-keys[LEFT])*3;
+			        Player.x+=Player.vx;
+			        if (Player.inObjectList(blocks)) {
+			            while (Player.inObjectList(blocks)) {
+			                Player.x-=abs(Player.vx)/Player.vx;
+			            }
+			        }
+			    }
+			};
+			Player.tick = function() {
+			    
+			    Player.control();
+			    
+			    // Touching hazzards
+			    if (Player.inObjectList(hazzards)) {
+			        resetLevel();
+			        if (Settings[1]) {playSound(SoundDie);}
+			    }
+			    // Touching Springs
+			    if (Player.inObjectList(springs)) {
+			        Player.vy=-12;
+			        if (Settings[1]) {playSound(SoundSpring);}
+			    }
+			    // Touching flag
+			    if (Player.x+20>Flag.x*50&&Player.x<Flag.x*50+50&&
+			        Player.y+20>Flag.y*50&&Player.y<Flag.y*50+50) {
+			        levelOn++;
+			        if (Settings[1]) {playSound(SoundWin);}
+			        if (levelOn>12) {
+			            MENU = 1; titleTime = 0; curtainFlash = 255;
+			        } else {
+			            resetLevel();
+			        }
+			    }
+			    // Touching Key
+			    if (Player.x+20>Key.x*50&&Player.x<Key.x*50+50&&
+			        Player.y+20>Key.y*50&&Player.y<Key.y*50+50) {
+			        Key.x=null; Key.y=null;
+			        gottenKey=1;
+			        if (Settings[1]) {playSound(SoundKey);}
+			    }
+			};
+			Player.godMode = function() {
+			    Player.vx = 0; Player.vy = 0;
+			    Player.x+=(keys[68]-keys[65])*3;
+			    Player.y+=(keys[83]-keys[87])*3;
+			};
+			
+			// OOP
+			var Block = function(x,y,w,h,id) {
+			    this.x = x; this.y = y; this.w = w; this.h = h;
+			    this.id = id;
+			    
+			    this.drawOutline = function() {
+			        if (gottenKey && this.id===2) {this.y = -9999;}
+			        noFill(); stroke(0); strokeWeight(6);
+			        rect(this.x,this.y,this.w,this.h);
+			    };
+			    this.draw = function() {
+			        noStroke();
+			        if (this.id===1) {
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			        } else if (this.id===2) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,50,50);
+			            
+			            fill(BlockColor);
+			            ellipse(this.x+25,this.y+20,15,15);
+			            triangle(this.x+25,this.y+20,this.x+20,this.y+40,this.x+30,this.y+40);
+			        }
+			    };
+			};
+			var Hazzard = function(x,y,id) {
+			    this.x = x; this.y = y; this.id = id;
+			    this.w = 0; this.h = 0;
+			    this.tickA=0;
+			    this.draw = function() {
+			        fill(SpikeColor); noStroke();
+			        if (this.id===1) {
+			            this.w = 50;
+			            this.h = 25;
+			            triangle(this.x,this.y+25,this.x+25,this.y+25,this.x+12.5,this.y);
+			            triangle(this.x+25,this.y+25,this.x+50,this.y+25,this.x+37.5,this.y);
+			        } else if (this.id===2) {
+			            this.w = 50; this.h = 400;
+			            triangle(this.x,this.y+375,this.x+25,this.y+374,this.x+12.5,this.y+400);
+			            triangle(this.x+25,this.y+375,this.x+50,this.y+374,this.x+37.5,this.y+400);
+			            rect(this.x,this.y,50,375);
+			        }
+			    };
+			    this.tick = function() {
+			        if (this.id===2) {
+			            if (this.tickA<50) {
+			                this.y-=1;
+			            } else if (this.tickA<60) {
+			                // ;)
+			            } else if (this.tickA<70) {
+			                this.y+=5;
+			            } else if (this.tickA>=105) {
+			                this.tickA=0;
+			                this.y--;
+			            }
+			            if (this.tickA===65 && Settings[1]) {playSound(SoundCrusher);}
+			            this.tickA++;
+			        }
+			    };
+			};
+			var Spring = function(x,y) {
+			    this.x = x; this.y = y; this.w = 30; this.h = 20;
+			    this.draw = function() {
+			        fill(PlayerColor); noStroke();
+			        rect(this.x,this.y,30,10);
+			        rect(this.x+12,this.y+10,6,10);
+			    };
+			};
+			
+			var Particle = function(x,y,life,grav,dir,speed,scatter) {
+			    this.x = x; this.y = y; this.vy=0;
+			    this.grav = grav;
+			    this.dir = dir+=rngInt(-scatter,scatter);
+			    this.speed = speed;
+			    this.startLife = life; this.life = life;
+			    this.drawTick = function() {
+			        // tick
+			        this.life--;
+			        this.x+=sin(this.dir)*this.speed;
+			        this.y+=(cos(this.dir)*this.speed);
+			        this.vy+=this.grav;
+			        this.y+=this.vy;
+			        
+			        // draw
+			        noStroke(); fill(77, 114, 235,this.life/this.startLife*255); rectMode(CENTER);
+			        rect(this.x,this.y,4,4);
+			        rectMode(CORNER);
+			        
+			    };
+			};
+			var Btn = function(x,y,w,h,ro,r,g,b,txt) {
+			    this.x = x; this.y = y;
+			    this.sy = y;
+			    this.w = w; this.h = h; this.sw = w; this.sh = h;
+			    this.ro = ro; this.startRo = ro;
+			    this.txt = txt; this.r=r;this.g=g;this.b=b;
+			    this.hover = function() {
+			        return mouseX>this.x-this.w/2 && mouseX<this.x+this.w/2&&
+			               mouseY>this.y-this.h/2 && mouseY<this.y+this.h/2;
+			    };
+			    this.drawTick = function() {
+			        // Tick
+			        if (this.hover()) {
+			            this.ro++; this.w+=2; this.h+=2;
+			        } else {
+			            this.ro--; this.w-=2; this.h-=2;
+			        }
+			        this.w = constrain(this.w,this.sw,this.sw+10);
+			        this.h = constrain(this.h,this.sh,this.sh+10);
+			        this.ro = constrain(this.ro,this.startRo,10);
+			        
+			        // Draw
+			        stroke(0); strokeWeight(5);
+			        fill(this.r,this.g,this.b);
+			        rectMode(CENTER);
+			        rect(this.x,this.y,this.w,this.h,this.ro);
+			        fill(250);
+			        textFont(TxtMain,20);
+			        text(this.txt,this.x,this.y);
+			        rectMode(CORNER);
+			    };
+			    
+			};
+			
+			// Setup
+			var startBtn = new Btn(200,450,100,40,10,41, 130, 255,"Play");
+			var settingsBtn = new Btn(200,310,100,40,10,41, 130, 255,"Settings");
+			var settingsControls = new Btn(200,100,120,40,10,41, 130, 255,"");
+			var settingsSound = new Btn(200,250,120,40,10,41, 130, 255,"");
+			var settingsExit = new Btn(350,375,80,30,10,41, 130, 255,"Exit");
+			
+			// Draw Loop
+			draw = function() {
+			    
+			    // Background
+			    background(235);
+			    stroke(BackgroundLineColor); strokeWeight(10);
+			    var bx = mod(millis()/-40,40)+200;
+			    for (var b = 0; b < 15; b++) { 
+			        line(bx+b*40-400,0,bx+b*40-200,400);
+			    }
+			    
+			    if (MENU!==3) {
+			        settingsControls.y = -999;
+			        settingsSound.y = -999;
+			        settingsExit.y = -999;
+			    }
+			    if (MENU!==1) {
+			        startBtn.y=450;
+			        settingsBtn.y=450;
+			    }
+			    
+			    if (MENU === 1) {
+			        textAlign(CENTER,CENTER);
+			        
+			        if (titleTime > 89) {particles.push(new Particle(rngInt(10,390),410,100,0.1,180,rngInt(2,5),20));}
+			        
+			        // Particles
+			        for (var p=0; p<particles.length;p++) {
+			            particles[p].drawTick();
+			            if (particles[p].life<1) {
+			                particles.shift();
+			            }
+			        }
+			        
+			        // Title
+			        titleTime++;
+			        if (titleTime < 50) {
+			            drawTitle(200,200, log(titleTime)*30);
+			            startBtn.y = 450;
+			            settingsBtn.y = 450;
+			        } else if (titleTime < 90) {
+			            drawTitle(200,200,120);
+			        } else if (titleTime < 130) {
+			            drawTitle(200, sin( (titleTime-90)*-2 )*50 +200,120);
+			            startBtn.y = sin( (titleTime-90)*-2 )*200 +450;
+			            settingsBtn.y = sin( (titleTime-90)*-2 )*200 +510;
+			        } else {
+			            drawTitle(200,150,120);
+			        }
+			        
+			        if (titleTime > 89) {
+			            fill(0,(titleTime-90)*4);
+			            textFont(TxtMain,15);
+			            if (titleTime < 130) {
+			                text("A game made by\nBored Guy",200,sin((titleTime-90)*-2)*50+250 );
+			            } else {
+			                text("A game made by\nBored Guy",200,200);
+			            }
+			        }
+			        
+			        startBtn.drawTick();
+			        settingsBtn.drawTick();
+			        
+			    }
+			    if (MENU === 2) {
+			        
+			        // Update Hazzards
+			        for (var h=0;h<hazzards.length;h++) {
+			            hazzards[h].tick();
+			        }
+			        
+			        // Flag
+			        if (Flag.x!==null) {
+			            noStroke(); fill(PlayerColor);
+			            rect(Flag.x*50+10,Flag.y*50+10,30,20);
+			            rect(Flag.x*50+10,Flag.y*50+30,5,20);
+			        }
+			        
+			        // Draw Level
+			        for (var h = 0; h < hazzards.length; h++) {
+			            hazzards[h].draw();
+			        }
+			        for (var s = 0; s < springs.length; s++) {
+			            springs[s].draw();
+			        }
+			        for (var b = 0; b < blocks.length; b++) {
+			            blocks[b].drawOutline();
+			        }
+			        for (var b = 0; b < blocks.length; b++) {
+			            blocks[b].draw();
+			        }
+			        
+			        // Player
+			        if (editor) {Player.godMode();} else {
+			            var px = Player.x;
+			            if (curtainFlash < 1) {Player.tick();}
+			            if (px!==Player.x && Player.onGround) {
+			                particles.push(
+			                    new Particle(Player.x+10+Player.vx,Player.y+15,20,0.2,0,1,40)
+			                );
+			            }
+			        }
+			        fill(PlayerColor);
+			        rect(Player.x,Player.y,20,20);
+			        
+			        // Key
+			        if (!(gottenKey || Key.x === null)) {
+			            fill(PlayerColor);
+			            Key.ani = sin(millis()/3)*2;
+			            ellipse(Key.x*50+25,Key.y*50+20+Key.ani,30,20);
+			            rect(Key.x*50+20,Key.y*50+20+Key.ani,5,25);
+			            rect(Key.x*50+20,Key.y*50+40+Key.ani,15,5);
+			            rect(Key.x*50+20,Key.y*50+32+Key.ani,15,5);
+			        }
+			        
+			        // Player Spawn
+			        if (Player.spawnX!==null && deBug) {
+			            fill(PlayerColorHighlight);
+			            rect(Player.spawnX*50+15,Player.spawnY*50+15,20,20);
+			        }
+			        
+			        // Debug
+			        if (deBug) {
+			            if (keys[79]) {editor=0;} if (keys[80]) {editor=1;}
+			        }
+			        if (editor) {
+			            noStroke();
+			            var mX = floor(mouseX/50)*50;
+			            var mY = floor(mouseY/50)*50;
+			            
+			            if (keys[49]) {editorBrush=1;}
+			            if (keys[50]) {editorBrush=2;}
+			            if (keys[51]) {editorBrush=3;}
+			            if (keys[52]) {editorBrush=4;}
+			            if (keys[53]) {editorBrush=5;}
+			            if (keys[54]) {editorBrush=6;}
+			            
+			            
+			            if (keys[56]) {editorBrush=8;}
+			            if (keys[57]) {editorBrush=9;}
+			            
+			            if (keys[75]) {editorBrush=10;}
+			            
+			            if (editorBrush===1) {fill(BlockColorHighlight); rect(mX,mY,50,50);}
+			            if (editorBrush===2) {fill(BlockColorHighlight); rect(mX,mY,50,25);}
+			            if (editorBrush===3) {fill(SpikeColorHighlight); 
+			            triangle(mX,mY+50,mX+25,mY+50,mX+12.5,mY+25);
+			            triangle(mX+25,mY+50,mX+50,mY+50,mX+37.5,mY+25);
+			            }
+			            if (editorBrush===4) {fill(SpikeColorHighlight); 
+			            triangle(mX,mY+25,mX+25,mY+25,mX+12.5,mY+50);
+			            triangle(mX+25,mY+25,mX+50,mY+25,mX+37.5,mY+50);
+			            rect(mX,mY-375,50,400);
+			            }
+			            if (editorBrush===5) {
+			                fill(PlayerColorHighlight);
+			                rect(mX+10,mY+30,30,10);
+			                rect(mX+22,mY+40,6,10);
+			            }
+			            if (editorBrush===6) {
+			                fill(SpikeColorHighlight);
+			                rect(mX,mY,50,50);
+			                
+			                fill(BlockColorHighlight);
+			                ellipse(mX+25,mY+20,15,15);
+			                triangle(mX+25,mY+20,mX+20,mY+40,mX+30,mY+40);
+			            }
+			            
+			            if (editorBrush===8) {
+			                fill(PlayerColorHighlight);
+			                rect(mX+15,mY+15,20,20);
+			            }
+			            if (editorBrush===9) {
+			                fill(PlayerColorHighlight);
+			                rect(mX+10,mY+10,30,20);
+			                rect(mX+10,mY+30,5,20);
+			            }
+			            if (editorBrush===10) {
+			                fill(PlayerColorHighlight);
+			                ellipse(mX+25,mY+20,30,20);
+			                rect(mX+20,mY+20,5,25);
+			                rect(mX+20,mY+40,15,5);
+			                rect(mX+20,mY+32,15,5);
+			            }
+			            
+			            if (keys[32]===1) {
+			                saveLevel();
+			            }
+			            
+			        }
+			        
+			        for (var p=0; p<particles.length;p++) {
+			            particles[p].drawTick();
+			            if (particles[p].life<1) {
+			                particles.shift();
+			            }
+			        }
+			        
+			        
+			        // Txt
+			        fill(250); textFont(TxtLvl); textAlign(CENTER,CENTER);
+			        text(levelOn,375,25);
+			        
+			        if (deBug) {
+			            textAlign(LEFT,CENTER);
+			            textFont(TxtMain);
+			            if (editor) {
+			                text("Level Editor Mode",2,388);
+			            } else {
+			                text("Debug Mode",2,388);
+			            }
+			        }
+			        
+			    }
+			    if (MENU === 3) {
+			        particles.push(new Particle(rngInt(10,390),410,100,0.1,180,rngInt(2,5),20));
+			        
+			        // Particles
+			        for (var p=0; p<particles.length;p++) {
+			            particles[p].drawTick();
+			            if (particles[p].life<1) {
+			                particles.shift();
+			            }
+			        }
+			        
+			        fill(0,200); rectMode(CORNER);
+			        rect(0,0,400,400);
+			        
+			        if (Settings[0]===0) {settingsControls.txt="A D and J";}
+			        else {settingsControls.txt="Arrows";}
+			        
+			        if (Settings[1]===0) {settingsSound.txt="Sound Off";}
+			        else {settingsSound.txt="Sound On";}
+			        
+			        settingsControls.y = 150;
+			        settingsSound.y = 250;
+			        settingsExit.y = 375;
+			        settingsControls.drawTick();
+			        settingsSound.drawTick();
+			        settingsExit.drawTick();
+			        
+			    }
+			    
+			    // Curtain
+			    noStroke(); fill(250,curtainFlash);
+			    rect(0,0,400,400);
+			    curtainFlash-=15;
+			    
+			};
+			
+			// Other
+			keyPressed = function() {keys[keyCode]=1;};
+			keyReleased = function() {keys[keyCode]=0;};
+			mousePressed = function() {
+			    if (startBtn.hover()) {
+			        MENU = 2; levelOn = 1; resetLevel(); particles = [];
+			        if (Settings[1]) {playSound(SoundBtn);}
+			    }
+			    if (settingsBtn.hover()) {
+			        MENU = 3;
+			        if (Settings[1]) {playSound(SoundBtn);}
+			    }
+			    if (settingsControls.hover()) {
+			        Settings[0]=1-Settings[0];
+			        if (Settings[1]) {playSound(SoundBtn);}
+			    }
+			    if (settingsSound.hover()) {
+			        Settings[1]=1-Settings[1];
+			        playSound(SoundBtn);
+			    }
+			    if (settingsExit.hover()) {
+			        MENU = 1; titleTime = 0; curtainFlash = 255;
+			        if (Settings[1]) {playSound(SoundBtn);}
+			    }
+			    
+			    if (editor) {
+			        var mX = floor(mouseX/50);
+			        var mY = floor(mouseY/50);
+			        
+			        if (level[mY][mX]!==0) {
+			            if (level[mY][mX]===8) {
+			                Player.spawnX = null; Player.spawnY = null;
+			            }
+			            if (level[mY][mX]===9) {
+			                Flag.x = null; Flag.y = null;
+			            }
+			            if (level[mY][mX]===10) {
+			                Key.x = null; Key.y = null;
+			            }
+			            level[mY][mX]=0;
+			        } else {
+			            if (editorBrush===8) {
+			                if (Player.spawnX!==null) {
+			                    level[Player.spawnY][Player.spawnX]=0;
+			                }
+			            } else if (editorBrush===9) {
+			                if (Flag.x!==null) {
+			                    level[Flag.y][Flag.x]=0;
+			                }
+			            } else if (editorBrush===10) {
+			                if (Key.x!==null) {
+			                    level[Key.y][Key.x]=0;
+			                }
+			            }
+			            level[mY][mX]=editorBrush;
+			            if (editorBrush===8) {
+			                Player.spawnX = mX;
+			                Player.spawnY = mY;
+			            } else if (editorBrush===9) {
+			                Flag.x = mX;
+			                Flag.y = mY;
+			            } else if (editorBrush===10) {
+			                Key.x = mX;
+			                Key.y = mY;
+			            }
+			        }
+			        
+			        generateLevel();
+			    }
+			};
+		}
+		
+		runPJS(program);
+		
+		// Add reload button on KA --> <script>
+		
+	</script>
+</body>
+
+</html>
