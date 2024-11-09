@@ -1,0 +1,3604 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Program exported to HTML using the KA Project Exporter by @MushyAvocado 
+https://www.khanacademy.org/computer-programming/ka-project-exporter/5195486791385088
+-->
+	
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Basically Cyan 3</title>
+	<style>
+		
+		
+		/* Change the color as you want */
+		:root {
+			--background-color: #000000;
+		}
+		
+		
+		html, body, #wrapper {
+			overflow: hidden;
+			width: 100%;
+		    height: 100%;
+			margin: 0px;
+			padding: 0px;
+		    width: calc(100% + 1px);
+		}
+		
+		body {
+		    background-color: var(--background-color);
+		}
+		
+		
+		canvas {
+			width: fit-content;
+			height: fit-content;
+		}
+		
+		canvas:focus {
+			outline: none;
+		}
+		
+		/* Automatically fits to the remaining height and centers the canvas it contains */
+		#wrapper {
+			padding: 0px;
+			margin: 0px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+		}
+		
+</style>
+</head>
+<body id="wrapper">
+    <!-- Canvases with a class of "sketch" are applied to the program in the order runPJS() is called. -->
+    <canvas class="sketch"></canvas>
+	<!-- Load the PJS library -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Khan/processing-js@master/processing.js"></script>
+	<!-- The exporter script must be loaded before the program script -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Mushy-Avocado/KA-exporter@v1.0.1/exporter.js"></script>
+	<!-- Run Khan Academy program and import PJS -->
+	<script type="application/javascript">
+		
+		
+		function program() {
+		    
+		    title("Basically Cyan 3");
+		    size(400, 400);
+		    
+		    // All code goes here
+			/**
+			 * ======================================================
+			 *    Paste the level code here to play custom levels
+			 * ======================================================
+			**/
+			
+			var CustomLevel = "";
+			
+			/**
+			 * ======================================================
+			 *                    Basicaly CYAN 3
+			 *                    The Final Shade
+			 * ======================================================
+			 *    Why did I made this? Good question, I forgot.
+			 * But I didn't reall had any other plans so here we are.
+			 *   Anyways, welcome to (probably) the final game of
+			 *    the ever not-so classic blue platformer series.
+			 * 
+			 *   And since is is probably gonna be the final take,
+			 *    I've added and tweeked many things to make the
+			 *   experience much enjoyable, as well with being a
+			 *                 bit harder challenge
+			 * 
+			 * ======================================================
+			 *            So What's the Stuff That's Fixed?
+			 * ======================================================
+			 *           Many things, here's the full list
+			 *            for the nerds who are intested...
+			 * 
+			 * - Speedrun Timer
+			 *   Counts in minues, seconds, and milliseconds
+			 * 
+			 * - More Animations
+			 *   Death Animations and decent transits
+			 * 
+			 * - Fixing Seesaws
+			 *   In BasicallyCyan 2, there was a big bug where
+			 *   interacting on a seesaw while more than 1 was
+			 *   in the level causes weird stuff. That's gone now.
+			 * 
+			 * - Nerfed SpikeChains
+			 *   SpikeChains now don't use the millis() function
+			 *   for it's movement, and is now cycle-friendly.
+			 * 
+			 * - Falling Platform Glitch
+			 *   There was a bug in BasicallyCyan 2 where landing
+			 *   on a block while on a falling platform unalives you.
+			 *   It is now fixed
+			 * 
+			 * - Enhanced Squishing Code
+			 *   The code for when you get squahsed in the last game
+			 *   was very messy and quite jank. It's now better.
+			 * 
+			 *   It's still not perfect, and sometimes still not
+			 *   work. If you have any ideas how to fix, let me know.
+			 * 
+			 * - Hotkeys are revised
+			 *   Origonally it's numbers 1-9, k, and q to select
+			 *   objects faster, it's now changed to just 1-6 and e.
+			 * 
+			 * - Level Select is now avalible
+			 *   Instead of raging in the comments about a level you're
+			 *   stuck on, you can now just skip to the next level, or
+			 *                  any level you like.
+			 * 
+			 * ======================================================
+			 *              Controls & Instructions
+			 * ======================================================
+			 *     The rules are as simple as always (hopefully).
+			 *    Run and jump your way to the flag at each level.
+			 * 
+			 *             A and D to move, J to jump.
+			 * 
+			 *      The blue cheese will get you cancelled so
+			 *         interacting with them is a bad idea.
+			 * 
+			 *          Touching the Flag wins the level.
+			 * 
+			 * ======================================================
+			 *                      Level Editor
+			 * ======================================================
+			 *    Hey! Do YOU want to take a step in my own suit
+			 *           and try to make levels yourself?
+			 * 
+			 *       Well you can! It's almost easy as 1 2 3!
+			 * 
+			 *   In the Level-Editor menu, clicking on "New Level"
+			 *     will bring you to a screen asking you to set
+			 *             the dimensions of the level.
+			 * 
+			 *    The level can be small as 8x8, up to a 32x32.
+			 *    After that, you can click on "Get started!".
+			 * 
+			 *    In the level editor mode, there are two modes.
+			 *    Play mode (press O), and Editor mode (Press P).
+			 *    While in editor mode, you can freely move around
+			 *          and can place and remove blocks. 
+			 * 
+			 *   Pressing Space (in editor mode) brings you to a
+			 *    manager screen. Here you can select mutiple
+			 *   things like blocks and cheese that cancels you.
+			 * 
+			 *   You can also use the hotkeys 1-6 and e to switch
+			 *             to different items faster.
+			 * 
+			 *   Going to the level settings can let you change
+			 *    mutiple settings, and also quit out to test
+			 *              your belvoed creation.
+			 * 
+			 * To save the level, click on "Get Save Code" to get
+			 *   a code that you can copy, and paste to share
+			 *           your creation to the planet.
+			 * 
+			 * To load a custom level, paste the level code into
+			 * the variable in the code above, make sure the type
+			 *    is a string, or else it won't work. Then you
+			 *     click on "Start" in the Level-Editor menu.
+			 * 
+			 * ======================================================
+			 *                       Update Log
+			 * ======================================================
+			 * 
+			 * 2-28-24 v1.1.3 - Text during ending was fixed.
+			 * 
+			 * 1-4-24 v1.1.2 - Space progresses dialogue instead of the mouse.
+			 *                 You now also press P to skip said dialogue.
+			 * 
+			 * 9/8/23 v1.1.1 - Oh whoops! level 29 was somehow impossible.
+			 *                 I fixed it though so you're welcome :)
+			 * 
+			 * 9/5/23 v1.1.0 - Fixed LevelManager Tab, Added a "Settings" menu.
+			 * 
+			 * 8/31/23 v1.0.0 - Released (Finally!) 1 Vote
+			 * 
+			**/
+			
+			/** The entire game lies here. **/
+			{
+			// Constants
+			var PlayerColor = color(54, 157, 217);
+			var PlayerColorHighlight = color(77, 114, 235,120);
+			var BlockColor = color(86, 179, 237);
+			var BlockColorHighlight = color(86, 179, 237,120);
+			var SpikeColor = color(39, 104, 145);
+			var SpikeColorHighlight = color(39, 104, 145,120);
+			var BackgroundLineColor = color(193, 199, 247);
+			var WaterColorHighlight = color(54, 201, 209,100);
+			var WaterColor = color(54, 201, 209);
+			
+			var TxtLvlNumber = createFont("Verdana Bold Italics", 30);
+			var TxtLvlName1 = createFont("Verdana Bold Italics", 20);
+			var TxtLvlName2 = createFont("Verdana Bold Italics", 15);
+			var TxtLvlSetting = createFont("Verdana Bold", 20);
+			var TxtMain = createFont("Helvetica Bold", 20);
+			var TxtTitle1 = createFont("Times Bold");
+			var TxtTitle2 = createFont("Trebuchet MS Bold");
+			var TxtTitle3 = createFont("Trebuchet MS Bold Italics",120);
+			var LvlBtnTxt = createFont("Verdana Bold", 20);
+			
+			textAlign(CENTER,CENTER);
+			
+			var Gravity = 0.5;
+			
+			var LevelDataCodes = [
+			    [0,0,,"","",""],
+			    [32,8,"A Third Hello","Bored Guy",""],
+			    [32,8,"Crush & Mash","Bored Guy",""],
+			    [10,16,"Locked","Bored Guy",""],
+			    [16,12,"They Move It","Bored Guy",""],
+			    [8,16,"Water Tunnel","Bored Guy",""],
+			    [12,12,"Cavern","Bored Guy",""],
+			    [16,12,"Trapping Game","Bored Guy",""],
+			    [14,20,"Open Lifts","Bored Guy",""],
+			    [20,10,"Waterbound","Bored Guy",""],
+			    [16,10,"Arrows","Bored Guy",""],
+			    [25,8,"Another Color","Bored Guy",""],
+			    [16,20,"Squishy Boosting","Bored Guy",""],
+			    [8,32,"Power Tower","Bored Guy",""],
+			    [16,8,"Constrained","Bored Guy",""],
+			    [20,12,"Same Bland","Bored Guy",""],
+			    [20,12,"Water is Float","Bored Guy",""],
+			    [25,10,"Skies and Spikes","Bored Guy",""],
+			    [16,16,"Tiny Oatmeal","Bored Guy",""],
+			    [20,8,"Unreal","Bored Guy",""],
+			    [20,10,"Pushing Desire","Bored Guy",""],
+			    [20,12,"Gatekeep","Bored Guy",""],
+			    [16,16,"Key Sweep","Bored Guy",""],
+			    [12,24,"Scaper","Bored Guy",""],
+			    [20,20,"Oatmeal's Deck","Bored Guy",""],
+			    [8,32,"Up and Down","Bored Guy",""],
+			    [32,10,"Controled","Bored Guy",""],
+			    [21,21,"CUBE","Bored Guy",""],
+			    [20,20,"Fortress","Bored Guy",""],
+			    [8,32,"One Final Climb","Bored Guy",""],
+			    [8,8,"The Last Shade","Bored Guy",""],
+			];
+			var LevelCodes = [
+			[],
+			
+			/**Chatper 1**/
+			// A Third Hello
+			[[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,7,7,7,7,7,1,1,1,2,0,0,11,1,1,1,7,7],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,7,1,1,1,1,2,0,0,0,0,0,0,0,11,1,1,7],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,2,0,0,0,0,0,0,0,0,0,0,0,2,0,1,1],
+			[0,0,0,21,0,0,0,0,0,0,0,0,11,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,11,0,0,12,0,1,0,0,0,0,12,0,0,0,0,0,11,3,0,0,0,0,0,0,0],
+			[0,8,0,0,0,12,1,1,12,0,0,0,1,0,0,0,0,1,12,12,3,12,12,1,1,11,3,0,3,0,9,0],
+			[1,11,1,11,1,11,1,11,1,1,1,1,11,1,0,5,0,1,7,1,2,1,7,1,7,1,1,11,1,1,1,1],
+			[1,1,1,1,1,1,1,1,7,7,7,7,1,1,1,11,1,1,7,1,0,1,7,1,7,7,7,7,7,7,7,7]],
+			
+			// Crush & Mash
+			[[1,7,7,7,1,1,1,1,7,7,7,1,7,7,7,7,7,7,7,7,7,7,7,7,7,7,1,7,1,7,7,7],
+			[7,7,1,1,2,0,0,1,1,1,1,11,1,1,1,1,7,1,1,1,11,1,11,1,1,1,1,1,1,1,1,1],
+			[1,1,2,0,0,0,0,0,0,0,0,0,0,1,0,2,1,2,0,13,0,13,0,13,0,0,0,0,0,0,0,0],
+			[0,0,0,22,0,3,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,1,0,0,3,0,0,4,0,0,0,0,3,0,0,5,0,5,0,5,0,0,4,0,4,0,9,0],
+			[0,8,0,3,0,0,0,5,11,1,1,11,0,0,0,1,11,1,1,11,1,11,1,11,1,1,11,1,11,1,1,1],
+			[1,11,1,11,1,1,1,11,1,7,7,1,0,5,0,1,7,1,7,7,1,7,1,7,7,1,7,7,7,1,7,7],
+			[7,7,7,7,7,7,7,7,1,7,7,1,0,1,0,1,7,1,7,7,1,7,1,7,7,1,2,2,2,1,2,2]],
+			
+			// Locked
+			[[1,1,7,7,7,1,1,1,1,1],
+			[7,7,7,1,1,1,0,0,0,1],
+			[1,1,1,1,0,0,0,10,0,1],
+			[1,0,0,0,0,0,0,0,0,1],
+			[1,0,0,12,0,2,0,0,0,0],
+			[1,0,0,0,0,0,0,0,0,0],
+			[1,5,0,0,0,0,0,11,0,0],
+			[1,11,0,14,0,11,0,0,0,2],
+			[1,0,0,0,0,0,0,0,12,0],
+			[1,0,0,0,0,0,0,0,0,0],
+			[1,0,0,0,0,3,0,4,0,5],
+			[1,2,0,3,5,1,11,1,11,1],
+			[1,0,12,11,1,1,2,0,2,1],
+			[1,0,0,0,2,1,0,23,0,1],
+			[1,5,0,8,0,6,0,9,0,1],
+			[1,11,1,1,1,1,11,1,11,1]],
+			
+			// They Move It
+			[[1,1,1,1,1,1,7,7,7,7,7,1,1,1,1,1],
+			[1,2,0,23,2,1,1,1,11,1,1,2,23,2,1,1],
+			[0,23,0,0,0,0,23,0,1,23,0,0,0,0,23,1],
+			[23,0,0,2,11,1,11,16,1,9,0,0,0,0,0,2],
+			[12,0,0,0,0,2,0,0,11,1,2,0,2,0,0,3],
+			[1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,11],
+			[1,1,0,0,15,0,3,0,0,0,3,0,12,0,5,1],
+			[7,1,1,0,0,0,11,0,0,16,1,0,0,3,1,1],
+			[1,2,0,0,0,0,1,3,3,0,11,1,0,1,11,1],
+			[0,23,0,0,15,0,11,1,11,0,0,23,0,1,7,7],
+			[0,8,0,12,3,12,1,7,1,0,0,3,5,1,7,7],
+			[11,1,11,1,1,1,7,7,11,0,1,11,1,1,7,7]],
+			
+			// Water Tunnel
+			[[0,0,0,2,1,1,1,1],
+			[3,0,0,0,0,0,0,1],
+			[1,3,0,8,0,23,0,1],
+			[1,1,1,11,1,11,7,1],
+			[1,0,23,0,23,1,7,1],
+			[1,16,11,1,7,7,7,1],
+			[1,0,23,2,1,1,1,1],
+			[1,23,0,0,0,0,2,1],
+			[1,0,0,0,0,0,23,1],
+			[1,3,3,11,1,11,7,11],
+			[1,1,1,1,10,1,7,1],
+			[2,0,2,11,23,11,7,11],
+			[9,0,0,1,7,7,7,1],
+			[1,1,6,1,7,14,7,11],
+			[1,1,7,7,7,7,7,1],
+			[1,1,1,1,1,1,1,1]],
+			
+			// Cavern
+			[[3,0,0,0,0,0,0,0,0,0,0,0],
+			[1,0,0,0,0,0,0,0,0,0,0,0],
+			[1,23,9,0,1,3,0,3,0,0,0,0],
+			[1,0,2,23,1,1,1,1,1,0,0,0],
+			[1,23,0,0,1,0,0,0,1,3,0,2],
+			[1,23,3,23,1,23,8,23,1,1,12,0],
+			[1,16,1,5,4,0,0,0,1,1,0,0],
+			[1,23,1,1,1,1,1,1,1,1,0,1],
+			[1,0,23,0,2,0,1,0,2,1,23,1],
+			[1,23,0,23,0,0,14,0,0,4,5,1],
+			[1,23,3,1,1,7,7,7,1,1,1,1],
+			[1,0,1,1,1,1,1,1,1,1,1,1]],
+			
+			/**Chatper 2**/
+			// Trapping Game
+			[[0,0,2,1,1,1,1,1,1,1,1,1,1,1,1,1],
+			[0,0,0,0,23,2,1,1,1,2,1,2,0,0,2,1],
+			[0,0,0,22,0,0,1,0,2,0,0,3,0,0,23,1],
+			[0,8,0,0,0,0,19,0,24,0,0,1,7,1,16,1],
+			[1,1,1,1,1,12,0,0,12,4,0,1,7,1,23,1],
+			[1,1,23,2,1,1,3,12,1,1,7,14,7,1,0,1],
+			[1,23,0,0,0,2,1,1,1,1,7,7,7,1,23,1],
+			[1,0,0,0,0,0,23,19,23,2,1,1,1,2,0,1],
+			[1,9,0,0,16,0,0,0,0,0,0,1,23,0,23,1],
+			[1,1,2,0,0,0,27,23,0,0,0,19,0,0,0,1],
+			[1,0,0,0,0,0,1,3,1,27,0,0,0,3,23,1],
+			[1,0,0,0,0,0,1,1,1,1,1,1,1,1,3,1]],
+			
+			// Open Lifts
+			[[1,1,1,1,1,1,0,0,0,2,1,1,1,1],
+			[0,2,2,1,2,23,0,0,0,0,23,0,2,1],
+			[0,23,0,1,23,0,3,0,0,0,0,23,0,1],
+			[0,9,0,6,0,12,11,2,0,0,3,0,0,1],
+			[1,1,1,11,1,2,19,0,0,5,11,0,0,1],
+			[1,2,0,2,0,0,0,0,3,1,1,0,0,23],
+			[0,0,0,23,0,0,0,0,11,2,0,0,10,0],
+			[0,0,0,23,3,0,0,15,0,0,0,0,23,0],
+			[3,0,0,1,11,1,0,0,0,0,0,1,1,1],
+			[1,0,2,1,2,19,0,0,0,0,0,0,2,1],
+			[1,2,23,0,0,0,0,0,3,0,0,0,0,1],
+			[1,0,18,0,0,0,11,1,11,5,0,0,0,0],
+			[2,23,0,0,0,0,0,23,2,1,2,0,0,0],
+			[0,0,0,0,0,0,22,0,23,0,0,0,0,0],
+			[23,0,0,0,0,0,0,3,23,0,0,0,0,0],
+			[0,12,11,0,16,0,11,1,11,3,0,0,0,0],
+			[23,0,1,0,0,0,0,2,1,11,0,17,0,0],
+			[5,0,19,0,0,0,8,23,1,11,0,0,0,0],
+			[1,18,23,0,0,11,1,1,11,0,0,0,0,0],
+			[1,0,0,0,0,0,1,0,1,7,7,7,7,7]],
+			
+			// Waterbound
+			[[1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0],
+			[1,1,1,2,0,0,0,0,0,0,0,0,0,0,2,1,2,0,0,0],
+			[2,0,0,0,0,0,10,3,0,0,0,0,0,0,0,1,0,0,0,9],
+			[0,0,0,0,0,0,12,11,1,12,0,0,0,0,0,6,0,0,0,1],
+			[0,0,0,0,0,0,0,0,2,2,0,1,2,0,1,1,3,0,0,1],
+			[3,0,0,0,0,0,0,0,0,0,13,0,0,23,0,2,1,0,0,1],
+			[1,8,0,0,3,0,0,0,18,0,0,0,0,5,0,23,1,0,0,1],
+			[1,11,1,1,11,18,0,0,0,3,0,0,0,1,0,0,1,17,0,1],
+			[0,1,0,0,1,0,0,0,0,1,3,0,0,1,0,23,1,0,0,1],
+			[7,1,7,7,1,7,7,7,7,1,1,7,7,1,7,7,1,7,7,1]],
+			
+			// Arrows
+			[[1,2,0,1,0,0,0,0,1,1,1,1,1,2,0,0],
+			[0,0,0,1,0,0,0,0,0,0,2,1,23,0,0,0],
+			[8,3,0,1,0,0,3,0,0,23,0,27,0,0,0,0],
+			[11,1,0,1,0,0,11,0,11,1,16,1,0,0,0,9],
+			[2,23,0,1,0,0,0,23,0,1,0,1,0,16,0,1],
+			[0,0,0,27,0,0,0,5,0,27,0,0,0,0,0,1],
+			[0,1,1,1,0,0,0,2,23,1,0,0,0,0,0,1],
+			[0,23,0,4,23,11,3,3,3,1,3,0,0,0,0,1],
+			[1,11,1,11,1,1,1,2,1,1,1,3,17,0,0,1],
+			[1,1,1,1,1,1,7,7,7,1,1,1,7,7,7,1]],
+			
+			// Another Color
+			[[7,7,7,11,1,11,2,0,1,0,1,0,1,11,1,2,0,2,1,1,2,0,0,0,0],
+			[1,1,1,2,23,19,0,0,2,11,1,11,23,19,31,0,0,23,2,11,23,0,0,0,0],
+			[11,23,0,0,3,0,0,0,0,0,23,0,0,0,0,10,0,0,23,6,0,0,0,9,0],
+			[19,0,0,0,27,0,0,0,12,4,0,4,0,0,0,0,26,0,0,11,0,0,2,11,2],
+			[8,0,0,0,1,0,0,0,11,1,11,0,0,0,2,11,2,0,0,27,0,0,0,29,0],
+			[2,11,0,0,11,0,5,0,0,2,1,0,0,0,26,29,0,0,15,11,0,5,0,0,0],
+			[0,29,18,0,0,0,11,0,0,23,1,0,2,11,2,11,2,0,0,30,0,11,0,29,0],
+			[0,0,0,0,0,0,29,0,0,0,1,0,0,29,0,29,0,0,0,11,0,29,0,0,0]],
+			
+			// Squishy Boosting
+			[[7,7,7,1,1,2,1,2,1,1,1,1,1,2,0,3],
+			[1,1,1,2,23,0,1,23,0,11,2,0,23,0,3,11],
+			[2,0,0,0,0,0,19,23,0,0,0,0,0,0,11,1],
+			[0,10,0,23,0,0,0,3,9,4,0,0,0,0,1,19],
+			[3,24,3,0,0,0,0,2,1,11,24,0,0,0,0,0],
+			[11,1,11,0,5,0,0,0,0,1,1,3,1,1,0,0],
+			[1,2,0,0,2,0,0,0,0,0,1,1,11,0,0,26],
+			[11,23,0,0,0,0,0,3,0,0,11,0,2,0,1,11],
+			[0,0,0,15,0,0,0,14,0,0,1,24,0,0,19,1],
+			[23,0,0,0,0,11,1,1,0,0,19,0,0,5,0,1],
+			[3,0,0,26,0,0,1,1,0,0,23,0,13,2,0,1],
+			[11,0,11,1,0,0,23,1,0,0,2,18,0,0,0,1],
+			[23,23,0,0,0,0,0,1,2,23,0,0,0,0,0,0],
+			[3,5,3,0,0,0,0,23,0,0,26,0,0,0,22,0],
+			[11,1,11,2,0,0,0,0,3,1,11,0,0,0,0,0],
+			[1,23,0,0,0,0,5,0,11,1,0,0,0,0,0,0],
+			[11,0,28,0,0,0,2,0,1,19,23,0,0,0,0,0],
+			[19,0,0,0,11,0,18,0,6,0,0,17,0,0,0,0],
+			[23,8,0,26,1,0,0,3,3,23,1,1,1,0,0,0],
+			[1,11,1,11,1,0,0,1,11,0,0,2,1,7,7,7]],
+			
+			/**Chapter 3**/
+			// Power Tower
+			[[1,1,1,1,1,1,1,1],
+			[1,2,23,0,11,1,11,1],
+			[1,23,0,0,0,23,2,1],
+			[1,8,0,0,0,12,16,1],
+			[1,11,3,3,12,1,0,1],
+			[1,2,2,1,1,1,23,1],
+			[0,23,0,3,23,0,0,1],
+			[16,11,23,1,0,22,0,1],
+			[23,1,7,1,0,3,0,1],
+			[0,1,7,11,7,1,3,1],
+			[23,1,7,27,7,1,1,1],
+			[0,1,7,7,7,27,1,1],
+			[23,11,1,1,1,2,23,1],
+			[0,23,0,0,0,0,0,1],
+			[23,0,0,0,0,0,0,23],
+			[0,0,0,26,11,0,0,0],
+			[0,3,3,0,1,0,3,3],
+			[3,1,11,1,1,0,1,1],
+			[1,1,1,2,19,0,0,2],
+			[1,1,0,0,0,0,0,0],
+			[0,11,0,0,0,0,0,0],
+			[0,19,0,0,3,0,0,0],
+			[4,0,4,0,11,0,0,3],
+			[0,11,1,0,1,0,0,1],
+			[0,0,2,1,1,17,0,1],
+			[0,0,23,19,1,3,3,1],
+			[0,0,0,0,1,1,1,1],
+			[0,3,0,0,19,0,0,2],
+			[5,11,0,16,23,0,23,9],
+			[1,1,0,0,0,1,11,1],
+			[1,2,0,0,0,23,2,1],
+			[1,7,7,7,7,7,7,1]],
+			
+			// Constrained
+			[[7,7,1,1,1,11,22,0,23,2,11,1,1,2,0,1],
+			[1,1,2,23,2,1,1,23,0,0,0,2,1,9,23,11],
+			[2,23,23,0,0,0,1,0,0,0,0,23,1,11,0,19],
+			[3,0,0,0,16,4,1,0,0,0,4,0,1,19,0,0],
+			[1,23,11,0,3,0,11,2,0,0,11,16,11,23,0,0],
+			[19,26,19,8,1,0,19,0,0,0,27,23,19,0,0,0],
+			[11,1,11,1,1,0,0,0,15,3,1,0,0,0,17,0],
+			[1,7,7,7,1,1,2,0,0,1,1,0,0,1,0,0]],
+			
+			// Same Bland
+			[[7,1,1,1,0,2,1,1,11,1,0,0,2,1,1,1,1,1,2,0],
+			[1,2,0,29,0,0,0,1,2,29,0,0,0,29,0,2,1,0,0,0],
+			[0,0,0,0,0,0,0,2,0,0,0,0,10,0,0,23,1,9,24,3],
+			[0,0,0,14,0,0,0,0,0,29,0,0,3,0,0,0,1,2,0,11],
+			[0,1,0,2,0,3,0,0,0,0,0,0,11,1,0,4,1,23,0,1],
+			[23,0,0,0,3,11,0,0,3,0,3,0,1,19,0,11,1,0,15,27],
+			[5,0,0,0,1,1,0,0,11,1,11,16,11,0,0,19,1,0,0,1],
+			[1,27,0,0,26,1,0,0,0,2,1,0,19,0,15,0,1,11,0,1],
+			[0,29,0,0,3,11,17,0,0,23,1,23,0,23,3,0,1,0,0,27],
+			[3,8,24,2,1,1,3,3,0,23,1,0,3,5,1,23,6,23,5,1],
+			[1,11,3,3,11,1,1,11,7,7,1,23,11,1,11,23,1,11,1,11],
+			[1,1,1,1,1,1,1,1,7,7,1,0,1,7,1,0,1,7,7,7]],
+			
+			// Water is Float
+			[[11,1,1,1,2,2,1,1,1,1,1,1,1,1,2,0,0,0,0,0],
+			[1,2,19,0,0,0,23,11,1,2,0,11,19,0,0,23,0,0,0,9],
+			[1,0,0,0,0,0,0,19,1,0,0,19,0,23,7,0,0,0,2,1],
+			[19,0,0,3,0,3,0,23,1,3,24,7,23,0,0,0,0,0,0,23],
+			[0,10,0,1,7,11,1,6,1,1,0,0,0,0,0,3,5,3,3,3],
+			[0,2,11,1,7,2,0,0,0,1,0,0,0,0,0,11,1,1,1,1],
+			[0,0,7,19,7,0,3,0,0,11,0,0,0,0,0,0,2,1,7,7],
+			[0,0,7,0,7,0,11,7,0,19,0,0,0,0,0,0,0,1,7,7],
+			[0,0,7,0,0,0,1,29,0,7,0,0,0,17,0,0,3,1,7,7],
+			[0,8,0,0,0,3,11,0,3,29,0,7,0,0,0,0,1,1,7,7],
+			[3,11,3,0,0,11,2,29,11,0,3,29,0,3,3,0,1,7,7,7],
+			[1,1,1,7,7,1,0,0,1,0,11,0,0,1,1,0,1,7,7,7]],
+			
+			// Skies and Spikes
+			[[1,1,29,0,29,0,2,1,1,7,1,1,2,0,0,1,1,1,1,2,0,1,1,2,0],
+			[1,0,0,0,0,0,0,23,1,1,1,0,23,0,0,0,2,11,0,0,0,11,0,0,0],
+			[2,0,0,3,0,0,0,0,1,19,24,0,0,0,0,0,0,0,0,0,0,19,0,0,0],
+			[0,0,2,2,2,0,16,0,1,0,4,0,0,0,0,3,0,4,0,16,3,0,0,0,9],
+			[0,0,0,0,0,0,0,0,6,0,1,0,0,0,0,11,1,11,3,0,11,0,12,0,1],
+			[0,5,3,0,0,0,0,0,11,1,11,0,0,3,0,0,2,1,11,0,19,0,0,0,1],
+			[0,1,2,0,0,0,10,0,0,2,1,0,0,1,0,0,23,1,0,0,0,0,0,11,1],
+			[0,0,8,0,15,3,0,3,0,23,1,0,0,1,17,0,0,1,0,3,0,0,26,1,29],
+			[3,0,11,0,3,11,0,11,3,23,1,17,0,1,0,0,23,1,0,1,0,11,1,11,0],
+			[1,7,1,0,11,1,0,1,11,0,1,7,7,1,7,7,7,1,0,0,0,29,0,29,0]],
+			
+			// Tiny Oatmeal
+			[[7,7,7,11,1,1,1,1,2,0,0,2,11,1,2,1],
+			[7,7,7,1,7,11,19,7,0,0,0,0,29,0,0,0],
+			[11,1,1,11,7,19,0,7,0,0,0,0,0,0,0,3],
+			[1,2,23,0,7,0,0,7,0,27,0,0,1,11,16,11],
+			[2,0,0,23,7,0,0,3,3,1,0,3,1,0,0,0],
+			[0,0,3,0,7,0,3,1,11,1,0,11,1,0,23,0],
+			[6,1,11,1,11,0,11,2,0,19,0,29,1,3,0,3],
+			[0,0,23,2,1,0,0,0,0,0,10,0,1,1,23,1],
+			[0,0,0,23,1,0,0,0,0,0,0,0,1,0,23,0],
+			[0,0,3,0,0,0,0,14,0,14,0,14,1,0,0,0],
+			[17,0,11,23,11,0,0,1,0,3,0,3,1,23,3,23],
+			[3,3,1,3,0,0,2,2,0,11,3,11,1,0,1,0],
+			[1,1,11,1,0,0,0,11,0,1,1,1,1,23,0,23],
+			[0,0,23,0,0,5,3,0,23,3,1,7,1,0,9,0],
+			[8,0,3,0,4,2,2,0,5,1,1,7,1,1,1,1],
+			[1,1,11,1,1,1,1,1,1,1,1,7,7,7,7,7]],
+			
+			/**Chapter 4**/
+			// Unreal
+			[[1,2,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1],
+			[0,0,0,0,19,1,1,1,2,23,0,1,2,7,19,0,0,0,2,1],
+			[0,0,0,0,0,19,0,0,23,0,0,1,0,7,0,0,0,0,0,1],
+			[8,0,3,0,0,0,3,0,4,0,0,19,0,7,0,11,1,11,1,1],
+			[1,1,11,0,0,26,1,0,23,0,11,30,14,7,0,0,19,1,0,2],
+			[1,2,0,0,0,0,30,0,5,0,1,0,0,7,0,0,23,1,0,23],
+			[1,23,0,0,11,1,11,2,1,2,1,23,0,7,0,3,23,30,0,9],
+			[1,0,0,0,1,7,1,0,29,0,1,7,7,7,7,1,1,11,1,11]],
+			
+			// Pushing Desire
+			[[0,0,0,0,0,0,0,0,0,0,0,2,1,1,0,23,0,1,1,1],
+			[0,0,0,3,0,0,0,0,0,3,0,0,23,6,0,9,0,1,1,1],
+			[0,3,12,11,0,0,0,0,0,1,0,0,0,1,1,1,1,1,23,0],
+			[0,11,2,29,0,3,0,0,0,11,0,0,0,1,19,0,0,35,10,34],
+			[0,29,0,29,0,11,0,0,0,35,0,0,15,1,0,0,0,11,1,11],
+			[0,29,0,0,16,1,0,0,2,1,11,0,0,1,0,24,1,1,1,7],
+			[0,0,0,3,0,11,0,0,0,23,1,0,0,11,1,0,0,0,1,7],
+			[8,0,5,11,0,19,0,15,23,34,1,5,34,35,0,0,0,0,1,7],
+			[1,1,1,1,0,0,23,12,12,11,1,1,1,11,0,23,5,11,1,11],
+			[1,1,1,1,0,0,11,1,1,7,7,7,7,1,1,0,1,1,7,7]],
+			
+			// Kategeep
+			[[1,1,0,0,1,1,1,1,1,7,7,7,7,1,1,1,1,7,1,1],
+			[2,0,0,0,0,0,23,2,2,1,1,7,1,11,2,23,1,1,2,0],
+			[0,23,0,0,0,0,0,0,0,0,1,7,1,19,0,0,1,0,23,0],
+			[0,0,0,0,0,0,0,3,0,0,2,1,11,0,0,31,11,0,10,0],
+			[23,34,23,0,0,0,11,1,11,24,0,1,19,0,0,0,0,23,23,0],
+			[23,1,0,3,0,0,0,2,1,0,0,1,0,0,0,2,1,1,1,1],
+			[23,35,23,11,5,0,0,0,1,0,3,1,0,12,0,0,23,1,2,0],
+			[5,11,1,1,1,0,0,31,1,0,1,1,0,19,0,34,0,1,23,0],
+			[1,2,2,11,29,0,0,31,1,23,11,0,0,0,0,11,6,11,0,0],
+			[3,23,23,0,0,0,0,0,1,0,35,0,0,15,0,19,16,19,23,0],
+			[1,8,0,4,0,34,17,0,11,1,11,2,0,3,0,0,0,0,9,0],
+			[1,11,1,1,1,1,0,0,1,7,1,0,0,11,0,0,0,0,1,1]],
+			
+			// Key Sweep
+			[[1,1,0,2,1,1,0,0,0,0,0,0,0,0,0,0],
+			[0,1,0,0,0,1,0,9,0,3,0,3,0,0,0,0],
+			[8,19,24,11,16,11,1,1,1,14,1,1,11,3,16,0],
+			[11,0,26,1,0,1,2,0,2,1,2,29,2,11,0,0],
+			[1,1,1,11,0,30,23,10,23,1,0,0,0,35,0,5],
+			[1,2,0,1,31,1,12,0,12,1,0,0,0,11,1,11],
+			[23,0,0,11,0,11,1,30,1,11,0,7,0,29,0,0],
+			[0,0,0,19,0,3,19,0,2,1,0,0,0,7,0,0],
+			[31,0,4,0,0,11,0,0,0,11,0,0,0,0,0,0],
+			[0,0,2,1,3,19,0,3,0,0,0,0,25,0,0,0],
+			[0,0,0,2,1,0,0,1,6,4,0,0,0,0,0,5],
+			[0,3,0,0,29,0,0,1,1,0,0,0,0,0,34,11],
+			[0,14,0,0,0,0,0,0,1,18,0,0,0,0,11,2],
+			[0,0,0,0,0,0,17,0,1,3,3,3,0,0,29,0],
+			[1,1,1,0,7,0,0,0,1,11,1,11,3,0,3,0],
+			[7,7,1,0,0,0,0,0,1,7,7,1,11,1,11,0]],
+			
+			// Scaper
+			[[11,2,0,1,1,7,1,1,11,1,1,1],
+			[19,23,23,0,1,1,2,23,0,23,0,2],
+			[0,23,0,0,1,19,0,0,4,23,10,23],
+			[9,0,23,0,1,0,0,0,11,0,2,11],
+			[11,1,12,0,1,0,11,0,35,31,0,19],
+			[19,0,35,23,11,0,29,0,1,0,0,23],
+			[0,23,1,0,19,0,0,0,11,0,1,1],
+			[0,2,11,31,0,0,0,0,0,0,0,2],
+			[1,23,19,6,0,0,29,31,0,5,0,23],
+			[11,1,11,1,0,36,0,0,0,11,0,0],
+			[1,2,23,0,0,0,29,34,4,19,0,0],
+			[0,23,0,0,0,31,0,11,0,0,0,0],
+			[0,3,0,0,0,0,26,1,0,24,17,0],
+			[7,11,0,0,12,1,1,1,30,1,3,3],
+			[7,1,16,0,0,1,0,0,23,2,1,1],
+			[7,27,0,0,0,35,23,0,0,0,0,23],
+			[7,1,0,5,0,1,0,0,0,0,0,0],
+			[7,1,3,11,3,1,0,0,0,11,0,0],
+			[7,11,1,1,11,1,0,36,0,19,0,7],
+			[7,1,11,0,19,1,0,0,0,0,0,7],
+			[7,30,19,0,0,11,0,0,0,34,0,0],
+			[1,2,0,0,0,0,0,0,0,11,0,0],
+			[0,8,12,4,0,4,0,0,26,29,0,0],
+			[1,1,1,11,1,1,0,2,2,0,0,0]],
+			
+			// Oatmeal's Deck
+			[[1,1,1,1,2,31,0,1,1,1,11,1,1,1,1,1,11,1,1,11],
+			[1,2,0,23,0,31,0,1,2,0,0,0,2,1,23,0,19,0,2,1],
+			[1,23,0,0,0,0,0,1,0,0,4,0,0,11,0,0,23,0,0,11],
+			[0,0,0,26,0,14,0,35,0,12,1,11,0,19,0,0,0,0,0,19],
+			[6,11,1,11,0,0,0,11,1,1,0,2,0,0,0,36,0,0,9,24],
+			[0,23,2,1,0,13,0,1,2,0,23,0,0,11,0,0,0,11,30,11],
+			[5,34,0,1,0,0,0,11,23,0,0,0,0,1,0,0,0,0,23,30],
+			[1,11,31,19,0,13,0,19,0,0,4,0,0,27,0,0,0,0,0,30],
+			[7,1,31,0,0,0,0,0,10,0,12,11,0,30,0,11,0,0,0,1],
+			[7,1,0,0,0,0,0,3,0,0,1,31,0,11,0,0,0,7,0,23],
+			[7,1,0,0,0,0,0,11,0,11,2,31,0,19,0,0,0,29,0,0],
+			[1,2,17,0,3,0,0,1,0,23,0,31,0,7,0,0,0,0,0,1],
+			[1,0,0,0,11,5,0,1,5,0,0,36,0,29,0,4,0,29,0,1],
+			[0,0,0,0,2,11,0,1,1,11,31,0,0,0,0,3,0,0,5,1],
+			[0,0,0,18,0,23,0,1,2,0,31,0,36,0,1,11,0,0,27,1],
+			[0,27,0,0,0,0,3,1,23,0,31,0,0,29,0,2,1,11,1,11],
+			[0,29,0,0,0,31,11,1,0,0,0,0,0,0,0,23,2,1,0,2],
+			[0,29,36,0,8,0,35,23,4,0,15,0,3,3,3,0,0,1,0,0],
+			[0,0,0,0,11,1,1,1,11,0,0,0,2,11,2,31,0,1,0,0],
+			[0,0,0,0,1,7,7,7,1,0,0,0,0,29,0,0,0,1,0,24]],
+			
+			/**Chapter 5**/
+			// Up and Down
+			[[7,7,7,1,1,1,1,7],
+			[7,1,1,2,2,0,2,1],
+			[1,2,0,0,23,10,23,1],
+			[1,0,23,0,0,0,0,1],
+			[1,0,0,0,2,14,2,1],
+			[1,23,0,0,0,29,0,1],
+			[1,15,0,0,0,0,0,1],
+			[1,0,0,0,0,2,0,2],
+			[1,5,0,0,0,29,0,12],
+			[1,27,0,0,0,12,0,1],
+			[11,19,0,36,0,2,0,1],
+			[19,0,0,0,0,29,0,1],
+			[0,0,0,0,11,0,18,11],
+			[0,0,13,0,35,0,3,1],
+			[0,0,0,2,11,2,11,1],
+			[0,0,0,0,0,23,2,1],
+			[17,0,0,0,0,0,0,1],
+			[3,3,26,0,0,31,31,1],
+			[11,1,11,0,34,0,31,1],
+			[1,19,19,0,11,0,31,1],
+			[1,0,0,0,0,0,1,1],
+			[14,0,0,0,0,26,1,1],
+			[1,0,0,0,11,1,11,1],
+			[1,5,0,0,29,19,1,1],
+			[1,11,0,36,0,0,19,1],
+			[7,1,3,0,0,0,0,1],
+			[7,1,27,0,7,0,3,1],
+			[1,2,0,0,0,0,11,1],
+			[1,0,23,0,0,0,1,0],
+			[1,0,23,0,15,0,6,9],
+			[1,8,4,23,0,1,1,1],
+			[1,1,1,1,0,1,7,7]],
+			
+			// Controled
+			[[1,1,1,0,0,0,0,1,1,2,1,1,1,2,31,2,1,11,1,11,2,0,1,1,1,1,1,1,1,11,1,1],
+			[1,11,1,23,0,0,23,1,0,23,2,11,23,0,31,0,23,0,6,0,0,0,0,2,0,23,2,11,2,0,2,1],
+			[1,1,1,1,11,1,1,11,0,0,23,0,0,0,0,0,12,11,1,11,0,4,0,0,4,0,0,19,0,0,0,11],
+			[0,0,3,0,2,11,2,19,0,0,0,4,31,0,0,0,35,23,0,2,1,24,0,2,11,2,0,0,9,4,0,19],
+			[0,0,11,0,0,19,0,0,0,0,11,1,31,26,0,11,1,0,0,0,1,1,3,0,29,0,0,11,1,11,0,0],
+			[8,4,0,0,22,0,0,0,36,0,29,1,0,34,0,19,2,1,0,0,30,2,11,0,0,0,0,29,19,29,0,0],
+			[11,31,0,0,0,0,11,0,0,0,0,11,1,11,0,0,23,11,0,31,1,23,35,0,0,0,0,0,0,0,0,5],
+			[19,0,0,31,0,26,29,0,0,0,0,35,10,6,0,5,0,6,0,0,11,1,11,0,29,0,3,0,3,0,3,1],
+			[0,23,4,31,11,1,1,0,3,23,11,1,1,11,1,1,1,11,0,0,1,7,1,0,0,11,1,11,1,11,1,11],
+			[0,0,11,31,1,2,23,3,11,3,23,2,1,0,24,0,0,1,17,0,1,7,1,0,0,1,0,23,0,23,0,1]],
+			
+			// CUBE
+			[[11,1,1,1,11,1,1,1,11,1,1,1,11,1,1,1,11,1,1,1,11],
+			[1,0,0,0,1,0,29,0,1,0,0,0,1,0,0,0,1,0,0,0,1],
+			[1,4,0,4,30,0,7,0,30,0,16,0,30,23,3,23,30,0,11,0,1],
+			[1,0,4,0,1,3,3,3,1,3,0,3,1,26,11,26,1,0,35,0,1],
+			[11,30,1,1,11,1,1,1,11,1,30,1,11,1,1,1,11,1,30,1,11],
+			[1,0,0,24,1,0,0,0,0,1,0,1,0,0,0,0,1,23,12,23,1],
+			[1,15,40,0,1,0,23,23,0,1,0,1,0,23,23,0,1,12,10,12,1],
+			[1,3,11,3,1,0,23,11,1,11,30,11,1,11,23,0,1,0,23,0,1],
+			[11,1,1,1,1,0,0,1,0,0,0,31,31,1,0,0,11,1,30,1,11],
+			[1,19,0,19,1,1,1,11,0,0,0,0,31,11,1,1,1,7,7,7,1],
+			[1,0,0,0,30,0,0,30,0,0,0,34,0,30,6,39,30,7,14,7,1],
+			[1,3,4,38,1,1,1,11,0,0,0,11,37,11,1,1,1,7,7,7,1],
+			[11,1,30,1,1,0,0,1,8,0,0,1,9,1,0,0,11,1,30,1,11],
+			[1,0,12,0,1,0,23,11,1,11,30,11,1,11,0,0,1,0,5,0,1],
+			[1,0,2,0,1,0,23,23,0,1,0,1,0,0,24,0,1,0,27,0,1],
+			[1,2,0,2,1,0,0,0,0,1,0,1,0,0,0,0,1,12,0,12,1],
+			[11,30,1,30,1,1,1,1,11,1,30,1,11,1,1,1,11,1,30,1,11],
+			[1,0,0,0,1,19,19,19,1,19,0,19,1,0,29,0,1,0,0,0,1],
+			[1,15,0,0,30,0,23,0,30,0,22,0,30,0,0,0,30,0,0,0,1],
+			[1,3,0,26,1,0,5,0,1,3,0,3,1,3,11,3,1,0,17,0,1],
+			[11,1,1,1,11,1,1,1,11,1,1,1,11,1,1,1,11,1,1,1,11]],
+			
+			// Fortress
+			[[0,0,3,0,1,1,1,1,1,1,1,1,1,1,7,7,7,7,7,30],
+			[0,12,11,1,1,1,1,1,2,2,0,0,23,2,2,1,11,1,7,7],
+			[0,1,2,0,1,2,11,0,0,36,0,0,0,0,0,23,0,2,2,1],
+			[0,11,0,0,6,0,0,0,24,0,0,0,0,36,0,0,23,0,0,23],
+			[0,29,0,0,6,0,0,0,0,0,0,36,0,0,14,12,0,0,9,0],
+			[0,0,36,0,6,0,4,0,26,0,0,0,14,24,2,1,11,1,1,11],
+			[0,0,0,0,11,1,1,1,11,0,14,0,0,0,0,1,7,7,7,7],
+			[0,7,0,0,30,7,7,7,1,0,0,0,24,0,0,1,7,7,7,7],
+			[0,0,0,0,1,1,14,7,1,0,0,0,0,0,0,11,1,1,1,11],
+			[0,0,0,0,30,7,7,7,1,3,3,3,3,0,23,4,0,23,2,1],
+			[0,0,0,0,11,1,1,1,11,1,11,1,11,0,0,11,0,0,0,1],
+			[0,0,11,0,27,26,1,2,2,0,0,0,0,0,0,19,0,13,31,11],
+			[0,0,29,0,11,1,2,24,0,0,0,23,0,0,23,0,23,0,0,1],
+			[0,0,0,15,1,2,26,0,0,36,0,0,36,3,0,5,0,3,23,1],
+			[0,0,34,0,6,0,0,0,11,0,0,0,0,11,1,1,1,11,7,14],
+			[0,36,2,1,1,1,11,0,0,0,0,0,0,1,2,0,2,1,7,1],
+			[0,0,0,0,1,2,0,0,0,0,0,0,0,1,0,10,23,1,7,1],
+			[8,0,0,0,11,0,0,24,0,0,0,0,24,1,0,0,0,1,7,1],
+			[11,12,0,26,35,0,0,0,4,0,17,0,3,11,1,23,1,11,7,14],
+			[1,1,1,1,11,1,3,3,1,0,3,3,1,1,7,7,7,7,7,1]],
+			
+			// One last Climb
+			[[11,1,29,0,29,11,1,11],
+			[1,0,29,0,0,0,0,1],
+			[1,0,0,9,3,0,31,1],
+			[1,31,12,11,2,0,0,1],
+			[1,36,0,0,0,23,0,1],
+			[1,0,23,36,0,23,0,1],
+			[1,0,0,0,0,15,0,1],
+			[1,0,0,0,0,0,5,1],
+			[1,0,0,0,16,0,11,1],
+			[1,3,0,0,0,0,0,1],
+			[1,27,5,0,24,0,0,1],
+			[1,11,1,11,0,0,0,1],
+			[1,1,2,0,0,0,0,1],
+			[1,2,0,0,0,0,26,1],
+			[1,0,0,0,0,15,15,1],
+			[1,0,0,0,2,0,0,1],
+			[1,11,0,0,24,0,0,1],
+			[1,18,0,13,0,0,0,1],
+			[1,11,0,0,0,0,0,1],
+			[1,29,31,31,31,36,11,1],
+			[1,0,0,36,0,0,27,1],
+			[1,0,3,0,0,0,11,1],
+			[1,7,11,31,0,23,19,1],
+			[1,23,35,0,11,0,0,1],
+			[1,1,11,23,0,31,31,31],
+			[1,2,0,0,0,0,31,0],
+			[1,0,34,0,0,0,0,0],
+			[1,0,11,0,4,0,17,3],
+			[1,0,19,24,11,0,0,11],
+			[0,0,0,0,29,0,3,1],
+			[8,0,5,0,26,3,11,1],
+			[1,1,1,1,1,1,1,7]],
+			
+			// The Final Shade
+			[[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[15.1,0,0,0,0,0,15.1,0],
+			[0,0,0,8,0,0,0,0],
+			[11,1,11,1,1,11,1,11]]
+			
+			];
+			var ItemNames = [
+			"Erase","Block","Top Slab","Spikes","Crush Trap","Spring",
+			"Key Block","Water","Player Spawn","End Flag","Key",
+			"Dark Block","Bottom Slab",
+			"Floating Spikes","Spike Chain","Vertical Platform","Falling Platform","Seesaw","Horizontal Platform","Upsidedown Spikes","Conveyor",
+			"Controls Sign","! Sign","Small Inside","Large Inside","Bored Billboard","Squishy","Arrow Trap","Reset Sign","Pole","Fake Block",
+			"1x1 Inside","Left Stair","Right Stair","Button","Gate","Flying Squishy",
+			"ShapeKey Door","ShapeKey 1","ShapeKey 2","ShapeKey 3",
+			];
+			var HotkeyTables = [
+			    [0],
+			    [1,11,2,12,18,15,16,30],
+			    [3,19,4,13,14,27],
+			    [21,22,31,23,24,25,28,29],
+			    [5,7,6,10,17,34,35],
+			    [8,9,26,36],
+			    [37,38,39,40]
+			];
+			var BossLines = [
+			    "Oh wow! Guess who\ncame for a party?",
+			    "You took your sweet precious\ntime to trot over here,\ndidn't you?",
+			    'Filming all of your little\n"adventures" like the famous\nwanna-be you are!',
+			    "Anyways,\nwhile you were doing\nyour little performace\nof yours...",
+			    "I've been doing REAL work!\nSabotaging every step\nof your path.",
+			    "I had seen everything\nyou've done...",
+			    "And you're not gonna keep\nthat record. Once I beat you...",
+			    "That record will be mine,\nall for myself...",
+			    "Your adventures...\nyour games...\nthey will be my own...",
+			    "Your LIFE will be\nstolen by ME!",
+			    "And I will be the one who\nwill be the known one!",
+			    "Get Unalived\nGeorge!"
+			];
+			
+			// Variables
+			var settings = [0];
+			
+			var Player = {x:0, y:0, vx:0, vy:0, onGround:0, spawnX:null, spawnY:null, coyoteTime:0, canControl:0, unaliveTick:0};
+			var Flag = {x:null, y:null, ani:0};
+			var Key = {x:null, y:null};
+			var Cam = {x:0, y:0, s:1};
+			var levelOn = 0;
+			var level = [];
+			var levelTimer = 0;
+			var lvlTransit = 0;
+			
+			var levelW = 8;
+			var levelH = 8;
+			
+			var Block;
+			var blocks = [];
+			var Hazzard;
+			var hazzards = [];
+			var Spring;
+			var springs = [];
+			var Water;
+			var waters = [];
+			var Decor;
+			var decors = [];
+			var Enemy;
+			var enemies = [];
+			var seesawVals = [];
+			var Particle;
+			var particles = [];
+			var gottenKey = 0;
+			var gateTimer = 0;
+			
+			var ShapeKey;
+			var shapeKeyDoor = [0,0,0];
+			var shapeKeys = [];
+			
+			var levelCurtain = 0;
+			var curtainFlash = 0;
+			var titleTime = 0;
+			var MENU = 1;
+			
+			var keys = []; for (var k=0;k<127;k++) {keys[k]=0;}
+			var mouse = 0;
+			
+			var levelEditorMode = 0;
+			var editor = 0;
+			var editorBrush = 0;
+			var editorMenu = 0;
+			var editorRename = 0;
+			var hotkeyID = [0,0];
+			var hotkeysDown = 0;
+			
+			var gateTimerPos = 40;
+			
+			var lvl30cutscene = 0;
+			var lvl30time = 0;
+			
+			var Boss = {x:200,y:500,vy:0,hurt:0};
+			var bossHealth=8;
+			var Hands = {
+			    l:{x:90,y:240,mode:0,harm:0}, r:{x:270,y:240,mode:0,harm:0}
+			};
+			var bossTxt = [0,0,0];
+			var bossTime = 0;
+			var bossUnaliveTime = 0;
+			var watchOut = {x:0,y:0,act:0};
+			
+			var thumbnail = 0;
+			
+			// Etc. Functions
+			var rngInt = function(min,max) {
+			    return floor(random(min,max));
+			};
+			var mod = function(x,n) {
+			    // Broooo why did you made a MOD function bro?
+			    // Like, you could of just used the % operator
+			    // and went on with your day but nooo, your little
+			    // stinky ah brain made a function of it.
+			    var a = floor(x/n)*n; return x-a;
+			};
+			var mouseInBox = function(x,y,w,h) {
+			    return mouseX>x&&mouseX<x+w&&mouseY>y&&mouseY<y+h;
+			};
+			var listSum = function(accumulator, a) {
+			  return accumulator + a;
+			};
+			var drawTitle = function(x,y,size) {
+			    pushMatrix();
+			    translate(x,y);
+			    scale(size/100);
+			    
+			    fill(60, 118, 252);
+			    textFont(TxtTitle1,25);
+			    
+			    pushMatrix();
+			    translate(-40,-28);
+			    rotate(-8);
+			    text("Basically",5,0);
+			    popMatrix();
+			    
+			    textFont(TxtTitle2,40);
+			    fill(39, 187, 245);
+			    text("CYAN",0,0);
+			    
+			    popMatrix();
+			};
+			var IAmAMountain = function(x,y) {
+			    // No, Seriously, what should I actually call this function?
+			    pushMatrix();
+			    translate(x,y); rotate(45);
+			    noStroke(); fill(127, 150, 163);
+			    rect(-50,-50,180,180);
+			    popMatrix();
+			};
+			
+			// Billboard Functions
+			var drawHead = function(x,y,sx,sy,r,fc,sc,sw){
+			/* Created with https://www.khanacademy.org/cs/curvevertexxy/4922655547326464 by Troy Cook */
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    fill(fc);
+			    stroke(sc);
+			    strokeWeight(sw);
+			    beginShape();
+			    curveVertex(-26,106); curveVertex(-75,112); curveVertex(-63,85); curveVertex(-51,63); curveVertex(-69,57); curveVertex(-85,45); curveVertex(-94,30); curveVertex(-94,16); curveVertex(-62,18); curveVertex(-31,-3); curveVertex(-43,-66); curveVertex(-66,-98); curveVertex(6,-50); curveVertex(41,-11); curveVertex(65,52); curveVertex(55,63); curveVertex(85,66); curveVertex(99,108); curveVertex(64,105); curveVertex(-26,106); curveVertex(-75,112); curveVertex(-63,85); /**/
+			    endShape();
+			    popStyle();
+			    popMatrix();
+			};
+			var drawArm = function(x,y,sx,sy,r,fc,sc,sw){
+			 /* Created with https://www.khanacademy.org/cs/curvevertexxy/4922655547326464 by Troy Cook */
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    fill(fc);
+			    stroke(sc);
+			    strokeWeight(sw);
+			    beginShape();
+			    curveVertex(-151,7); curveVertex(-145,-12); curveVertex(-115,-19); curveVertex(-70,-11); curveVertex(28,-41); curveVertex(74,-46); curveVertex(117,-27); curveVertex(142,4); curveVertex(150,45); curveVertex(130,35); curveVertex(97,37); curveVertex(63,11); curveVertex(15,-6); curveVertex(-45,6); curveVertex(-90,23); curveVertex(-127,21); curveVertex(-151,7); curveVertex(-145,-12); curveVertex(-115,-19); /**/
+			    endShape();
+			    popStyle();
+			    popMatrix();
+			};
+			var drawInnerArm = function(x,y,sx,sy,r,fc,sc,sw){
+			 /* Created with https://www.khanacademy.org/cs/curvevertexxy/4922655547326464 by Troy Cook */
+			    pushMatrix();
+			    pushStyle();
+			    translate(x,y);
+			    scale(sx,sy);
+			    rotate(r);
+			    fill(fc);
+			    stroke(sc);
+			    strokeWeight(sw);
+			    beginShape();
+			    curveVertex(-97,39); curveVertex(-111,7); curveVertex(-15,-21); curveVertex(79,-21); curveVertex(135,-2); curveVertex(99,28); curveVertex(50,79); curveVertex(-32,79); curveVertex(-97,39); curveVertex(-111,7); curveVertex(-15,-21); /**/
+			    endShape();
+			    popStyle();
+			    popMatrix();
+			};
+			var drawSmallHead = function(x,y,sca,gho) {
+			    pushMatrix();
+			        scale(sca);
+			        var rep = 1/sca;
+			        translate(x*rep+85,y*rep+3);
+			        fill(30, 81, 148,gho);
+			        noStroke();
+			        beginShape();
+			            vertex(-11,+78);
+			            vertex(-16,+80);
+			            vertex(-34,+84);
+			                        
+			            vertex(-68,+86);
+			            vertex(-60,+70);
+			            vertex(-65,+55);
+			                        
+			            vertex(-60,+55);
+			            vertex(-53,+40);
+			            vertex(-55,+17);
+			        endShape();
+			        drawHead(-35,+46,0.3,0.3,0,
+			        color(96, 184, 247,gho),color(14, 37, 54,gho),6);
+			                    
+			        fill(17, 60, 115,gho); noStroke();
+			        ellipse(-12,+65,3,3);
+			        ellipse(-18,+65,3,3);
+			                    
+			        ellipse(-30,+55,5,7);
+			        ellipse(-21,+55,5,7);
+			                    
+			        fill(182, 207, 237,gho);
+			        ellipse(-29,+54.5,2,2);
+			        ellipse(-21,+54.5,2,2);
+			        popMatrix();
+			};
+			
+			// Boss Functions
+			var drawBoss = function(x,y) {
+			    // The Dude
+			    fill(224, 141, 18); stroke(128, 66, 0); strokeWeight(3);
+			    rect(x-9,y-110,18,18,2);
+			    stroke(237, 208, 150); line(Boss.x-9+5,Boss.y-110+6,Boss.x-9+7,Boss.y-110+5);
+			    
+			    // Window
+			    fill(245, 229, 206,40); stroke(232, 220, 193); strokeWeight(6);
+			    arc(x,y-90,80,80,-180,0);
+			    if (Boss.hurt>0) {
+			        fill(224, 99, 27,Boss.hurt*10); stroke(232, 220, 193);
+			        arc(x,y-90,80,80,-180,0);
+			    }
+			    
+			    // Body
+			    noStroke();
+			    rectMode(CORNER);
+			    var loop=180;
+			    for (var i=0; i<loop; i++) {
+			        var hue = i/1.5;
+			        fill(224-hue, 141-hue, 18-hue);
+			        rect(x-87,y-90+(i),175,1);
+			    }
+			    noFill(); stroke(128, 66, 0); strokeWeight(6);
+			    rectMode(CENTER);
+			    rect(x,y,180,180,10);
+			    
+			    stroke(232, 220, 193); strokeWeight(3);
+			    arc(x-75,y-75,15,15,-190,-80);
+			    rectMode(CORNER);
+			    
+			};
+			var drawHands = function() {
+			    rectMode(CORNER);
+			    noStroke(); var loop=40;
+			    for (var i=0; i<loop; i++) {
+			        var hue = i/0.4;
+			        fill(224-hue, 141-hue, 18-hue);
+			        rect(Hands.l.x,Hands.l.y+i,40,1);
+			        rect(Hands.r.x,Hands.r.y+i,40,1);
+			    }
+			    noFill(); stroke(128, 66, 0); strokeWeight(4);
+			    rect(Hands.l.x,Hands.l.y,40,40);
+			    rect(Hands.r.x,Hands.r.y,40,40);
+			};
+			var extractBossTxt = function(line,letters) {
+			    var x = BossLines[line];
+			    var z = "";
+			    for (var i=0; i<letters; i++) {
+			        var z = z+BossLines[line][i];
+			    }
+			    return z;
+			};
+			var startBoss = function() {
+			    lvl30time=0; lvl30cutscene=0; Player.canControl=1;
+			};
+			var hurtBoss = function() {
+			    Boss.hurt=50;
+			    bossHealth--;
+			    if (bossHealth<1) {enemies=[]; watchOut = {x:0,y:0,act:0}; Player.canControl=0;}
+			};
+			
+			// Level Functions
+			var encodeLineFeed = function(str) {
+			    var enter = String.fromCharCode(92)+"n";
+			    var newStr = str.replace("\n",enter);
+			    //println('OG String: "'+str+'"');
+			    //println('New Str: "'+newStr+'"');
+			    return newStr;
+			};
+			var decodeLineFeed = function(str) {
+			    var enter = String.fromCharCode(92)+"n";
+			    var newStr = str.replace(enter,"\n");
+			    
+			    //println('OG String: "'+str+'"');
+			    //println('New Str: "'+newStr+'"');
+			    return newStr;
+			};
+			var emptyLevel = function(w,h) {
+			    level = [];
+			    for (var j = 0; j < h; j++) {
+			        var t = [];
+			        for (var i = 0; i < w; i++) {
+			            t.push(0);
+			        }
+			        level.push(t);
+			    }
+			};
+			var saveLevel = function() {
+			    println("");
+			    println("Level Code Here");
+			    for (var i = 0; i < levelH; i++) {
+			        if (i===0) {
+			            println("[["+level[i]+"],");
+			        } else if (i===levelH-1) {
+			            println("["+level[i]+"]]");
+			        } else {
+			            println("["+level[i]+"],");
+			        }
+			    }
+			};
+			var generateLevel = function() {
+			    blocks = []; hazzards = []; springs = []; waters = []; decors = [];
+			    enemies = []; seesawVals = []; shapeKeys = []; shapeKeyDoor=[0,0,0];
+			    gottenKey=0;
+			    var oy = (levelH-8)*-50;
+			    for (var j = 0; j < levelH; j++) { for (var i = 0; i < levelW; i++) {
+			        if (level[j][i]===1) {blocks.push(new Block(i*50,j*50+oy,50,50,1));}
+			        if (level[j][i]===2) {blocks.push(new Block(i*50,j*50+oy,50,25,1));}
+			        if (level[j][i]===3) {hazzards.push(new Hazzard(i*50,j*50+25+oy,1));}
+			        if (level[j][i]===4) {hazzards.push(new Hazzard(i*50,j*50-150+oy,2));}
+			        if (level[j][i]===5) {springs.push(new Spring(i*50+10,j*50+30+oy));}
+			        if (level[j][i]===6) {blocks.push(new Block(i*50,j*50+oy,50,50,2));}
+			        if (level[j][i]===7) {waters.push(new Water(i*50,j*50+oy,50,50));}
+			        if (level[j][i]===8) {Player.spawnX=i; Player.spawnY=j+(oy/50);}
+			        if (level[j][i]===9) {Flag.x=i;Flag.y=j+(oy/50);}
+			        if (level[j][i]===10) {Key.x=i;Key.y=j+(oy/50);}
+			        if (level[j][i]===11) {blocks.push(new Block(i*50,j*50+oy,50,50,3));}
+			        if (level[j][i]===12) {blocks.push(new Block(i*50,j*50+oy+25,50,25,1));}
+			        if (level[j][i]===13) {hazzards.push(new Hazzard(i*50+7.5,j*50+7.5+oy,3));}
+			        if (level[j][i]===14) {
+			            blocks.push(new Block(i*50,j*50+oy,50,50,3));
+			            hazzards.push(new Hazzard(i*50+7.5,j*50+7.5+oy,4));
+			        }
+			        if (level[j][i]===15) {blocks.push(new Block(i*50,j*50+oy+25,50,15,4));}
+			        if (level[j][i]===15.1) {blocks.push(new Block(i*50+25,j*50+oy+38,50,15,4));}
+			        if (level[j][i]===16) {blocks.push(new Block(i*50,j*50+oy+25,50,15,5));}
+			        if (level[j][i]===17) {
+			            // Seesaw
+			            seesawVals.push(0);
+			            var x = seesawVals.length-1;
+			            blocks.push(new Block(i*50+10,j*50+oy,30,10,6,x));
+			            blocks.push(new Block(i*50+60,j*50+oy,30,10,7,x));
+			            decors.push(new Decor(i*50,j*50+oy,7.1));
+			        }
+			        if (level[j][i]===18) {blocks.push(new Block(i*50,j*50+oy+25,50,15,8));}
+			        if (level[j][i]===19) {hazzards.push(new Hazzard(i*50,j*50+oy,5));}
+			        
+			        if (level[j][i]===21) {decors.push(new Decor(i*50,j*50+oy,1));}
+			        if (level[j][i]===22) {decors.push(new Decor(i*50,j*50+oy,2));}
+			        if (level[j][i]===23) {decors.push(new Decor(i*50,j*50+oy,3));}
+			        if (level[j][i]===24) {decors.push(new Decor(i*50,j*50+oy,4));}
+			        if (level[j][i]===25) {decors.push(new Decor(i*50,j*50+oy,5));}
+			        
+			        if (level[j][i]===26) {enemies.push(new Enemy(i*50+15,j*50+15+oy,1,-90));}
+			        if (level[j][i]===27) {blocks.push(new Block(i*50,j*50+oy,50,50,9));}
+			        if (level[j][i]===28) {decors.push(new Decor(i*50,j*50+oy,6));}
+			        if (level[j][i]===29) {decors.push(new Decor(i*50,j*50+oy,7));}
+			        if (level[j][i]===30) {
+			            decors.push(new Decor(i*50,j*50+oy,8));
+			            decors.push(new Decor(i*50,j*50+oy,9));
+			        }
+			        if (level[j][i]===31) {decors.push(new Decor(i*50,j*50+oy,9));}
+			        if (level[j][i]===34) {blocks.push(new Block(i*50+15,j*50+40+oy,20,10,10));}
+			        
+			        if (level[j][i]===35) {blocks.push(new Block(i*50+5,j*50+oy,40,50,11));}
+			        if (level[j][i]===36) {enemies.push(new Enemy(i*50+15,j*50+15+oy,3,-90));}
+			        
+			        if (level[j][i]===37) {blocks.push(new Block(i*50,j*50+oy,50,50,12));}
+			        if (level[j][i]===38) {shapeKeys.push(new ShapeKey(i*50,j*50+oy,1));}
+			        if (level[j][i]===39) {shapeKeys.push(new ShapeKey(i*50,j*50+oy,2));}
+			        if (level[j][i]===40) {shapeKeys.push(new ShapeKey(i*50,j*50+oy,3));}
+			        
+			        
+			    }}
+			};
+			var resetLevel = function() {
+			    Key.x = null; Key.y = null;
+			    Flag.x = -9999999; Flag.y = Flag.x;
+			    
+			    bossHealth=8;
+			    bossTime = 0;
+			    Hands = {
+			        l:{x:90,y:240,mode:0,harm:0}, r:{x:270,y:240,mode:0,harm:0}
+			    };
+			    watchOut = {x:0,y:0,act:0};
+			    bossUnaliveTime = 0;
+			    
+			    generateLevel();
+			    Player.x = Player.spawnX*50+15; Player.y = Player.spawnY*50+30;
+			    if (levelOn===30) {Player.x+=25;}
+			    Player.vx = 0; Player.vy = 0;
+			    gottenKey = 0; gateTimer = 0;
+			    shapeKeyDoor = [0,0,0];
+			    //curtainFlash = 255;
+			};
+			var loadLevel = function() {
+			    level=LevelCodes[levelOn];
+			    levelW=LevelDataCodes[levelOn][0];
+			    levelH=LevelDataCodes[levelOn][1];
+			    
+			    if (level.length!==levelH) {
+			        emptyLevel(LevelDataCodes[levelOn][0],LevelDataCodes[levelOn][1]);
+			        level[4][0]=8; level[5][0]=1; level[4][7]=9; level[5][7]=1;
+			    }
+			    resetLevel();
+			};
+			var getSaveCode = function() {
+			    println("This is your save code, copy this and paste this\nin the comments to share your level with others!");
+			    var str = LevelDataCodes[levelOn][2]+"|"+LevelDataCodes[levelOn][3]+"|"+LevelDataCodes[levelOn][0]+"|"+LevelDataCodes[levelOn][1]+"|"+encodeLineFeed(LevelDataCodes[levelOn][4])+"|";
+			    for (var j=0; j<LevelDataCodes[levelOn][1]; j++) {
+			        for (var i= 0; i<LevelDataCodes[levelOn][0]; i++) {
+			            if (level[j][i]>9) {str+=level[j][i];}
+			            else {str+="0"+level[j][i];}
+			        }
+			    }
+			    println(str);
+			    CustomLevel = str;
+			};
+			var menuToLevel = function(l) {
+			    levelOn = l;
+			    MENU = 2;
+			    particles = [];
+			    loadLevel();
+			    Player.canControl=1;
+			};
+			
+			// Player Functions
+			Player.inObjectList = function(object) {
+			    for (var o = 0; o < object.length; o++) {
+			        if (Player.x+20>object[o].x && Player.x<object[o].x+object[o].w &&
+			            Player.y+20>object[o].y && Player.y<object[o].y+object[o].h) {
+			            return 1;
+			        }
+			    }
+			    return 0;
+			};
+			Player.inRect = function(x,y,w,h) {
+			        return Player.x+20>x&&Player.x<x+w&&Player.y+20>y && Player.y<y+h;
+			};
+			Player.fixup = function() {
+			    // Are we already inside a Block?
+			    if (Player.inObjectList(blocks)) {
+			        var fix = 0;
+			        for (var i=1; i<5; i++) {
+			            fix++;
+			            Player.y+=fix;
+			            if (!Player.inObjectList(blocks)) {return;}
+			            
+			            fix++;
+			            Player.y-=fix;
+			            if (!Player.inObjectList(blocks)) {return;}
+			        }
+			        // Assumed the player gotten squished
+			        if (Player.canControl===1) {Player.unalive(); return;}
+			    }
+			};
+			Player.control = function() {
+			    var jump = (keys[74]&&!settings[0])||(keys[87]&&settings[0]);
+			    if (Player.onGround) {Player.coyoteTime=0;}
+			    else {Player.coyoteTime++;}
+			    
+			    Player.vy+=Gravity;
+			    Player.y+=Player.vy;
+			    Player.onGround = 0;
+			    
+			    // Moving
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.y-=abs(Player.vy)/Player.vy;
+			        }
+			        if (abs(Player.vy)/Player.vy===-1) {Player.vy = 0;} else {
+			            Player.onGround = 1; Player.vy=0;
+			        }
+			    }
+			    if (Player.coyoteTime<4 && jump) {Player.vy=-9; Player.coyoteTime=99; Player.onGround = 0;}
+			    
+			    Player.vx=(keys[68]-keys[65])*3;
+			    Player.x+=Player.vx;
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.x-=abs(Player.vx)/Player.vx;
+			        }
+			    }
+			    
+			};
+			Player.waterControl = function() {
+			    var jump = (keys[74]&&!settings[0])||(keys[87]&&settings[0]);
+			    
+			    while ((Player.inObjectList(blocks))) {Player.fixup();}
+			    
+			    if (Player.onGround) {Player.coyoteTime=99;}
+			    else {Player.coyoteTime++;}
+			    
+			    Player.onGround = 0;
+			    Player.coyoteTime = 0;
+			    
+			    if (jump) {
+			        Player.vy = -2;
+			    } else {
+			        Player.vy = 1;
+			    }
+			    Player.y+=Player.vy;
+			    
+			    // Moving
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.y-=abs(Player.vy)/Player.vy;
+			        }
+			        if (abs(Player.vy)/Player.vy===-1) {Player.vy = 0;} else {
+			        Player.onGround = 1; Player.vy=0;}
+			    }
+			    
+			
+			    Player.vx=(keys[68]-keys[65])*2;
+			    Player.x+=Player.vx;
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.x-=abs(Player.vx)/Player.vx;
+			        }
+			    }
+			    
+			};
+			Player.unalive = function() {
+			    levelTimer = 0;
+			    Player.canControl=2; Player.unaliveTick=0;
+			    for (var i=0; i<50; i++) {
+			        particles.push(
+			            new Particle(Player.x+15,Player.y+15,50,0,rngInt(0,360),2,10)
+			        );
+			    }
+			};
+			Player.fall = function() {
+			    Player.vy+=Gravity;
+			    Player.y+=Player.vy;
+			    Player.onGround = 0;
+			    
+			    // Moving
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.y-=abs(Player.vy)/Player.vy;
+			        }Player.vy = 0;
+			    }
+			};
+			Player.tick = function() {
+			    if (keys[82]) {Player.unalive();}
+			    if (Player.inObjectList(blocks)) {Player.fixup();}
+			    if (Player.canControl===1) {
+			    
+			    // Move Player
+			    if (!Player.inObjectList(waters)) {Player.control();}
+			    else {Player.waterControl();}
+			    if (Player.x<0) {Player.x=0; Player.vx=0;}
+			    if (Player.x+20>levelW*50) {Player.x=(levelW*50)-20;}
+			    if (Player.y>400) {Player.unalive();}
+			    
+			    // Touching hazzards
+			    if (Player.inObjectList(hazzards)) {
+			        Player.unalive();
+			    }
+			    
+			    // Touching Enemies
+			    if (Player.inObjectList(enemies)) {
+			        for (var e = 0; e < enemies.length; e++) {
+			            enemies[e].checkPlayer(e);
+			        }
+			    }
+			    
+			    // Touching Boss
+			    if (levelOn===30) {
+			        if (Player.inRect(155,148,89,41)&&Player.vy>0&&Boss.hurt<1) {
+			            Player.vy=-8;
+			            hurtBoss();
+			        }
+			        if (Player.inRect(Hands.l.x,Hands.l.y,40,40)&&Hands.l.harm) {
+			            Player.unalive();
+			        }
+			        if (Player.inRect(Hands.r.x,Hands.r.y,40,40)&&Hands.l.harm) {
+			            Player.unalive();
+			        }
+			    }
+			    
+			    
+			    // Touching Springs
+			    if (Player.inObjectList(springs)) {
+			        while (Player.inObjectList(springs)) {
+			            Player.y--;
+			        }
+			        Player.vy=-12;
+			    }
+			    // Touching flag
+			    if (Player.x+20>Flag.x*50&&Player.x<Flag.x*50+50&&
+			        Player.y+20>Flag.y*50&&Player.y<Flag.y*50+50) {
+			        if (false) {
+			            MENU = 1; titleTime = 0; curtainFlash = 255;
+			        } else {
+			            if (levelEditorMode && levelOn===0) {
+			                resetLevel();
+			            } else {
+			                levelCurtain=1;
+			                lvlTransit=-1;
+			                Player.canControl=0;
+			                /**
+			                levelOn++;
+			                if (Settings[1]) {playSound(SoundWin);}
+			                if (levelOn===1) {
+			                    levelOn=0;
+			                    MENU = 4; curtainFlash = 255;
+			                } else {
+			                    loadLevel();
+			                }
+			                **/
+			            }
+			        }
+			    }
+			    
+			    // Touching Key
+			    if (Player.x+20>Key.x*50&&Player.x<Key.x*50+50&&
+			        Player.y+20>Key.y*50&&Player.y<Key.y*50+50) {
+			        Key.x=null; Key.y=null;
+			        gottenKey=1;
+			    }
+			    }
+			};
+			Player.godMode = function() {
+			    Player.vx = 0; Player.vy = 0;
+			    Player.x+=(keys[68]-keys[65])*3;
+			    Player.y+=(keys[83]-keys[87])*3;
+			};
+			
+			// OOP
+			Block = function(x,y,w,h,id,seesawID) {
+			    this.x = x; this.y = y; this.w = w; this.h = h;
+			    this.id = id;
+			    this.timer = 0;
+			    this.seesawID = seesawID;
+			    
+			    this.tempA = 0;
+			    this.TempB = 0;
+			    
+			    this.drawOutline = function() {
+			        if (gottenKey && this.id===2) {this.y = -9999;}
+			        noFill(); stroke(0); strokeWeight(6);
+			        rect(this.x,this.y,this.w,this.h);
+			    };
+			    this.draw = function() {
+			        noStroke();
+			        if (this.id===1) {
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			        } else if (this.id===2) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,50,50);
+			            
+			            fill(BlockColor);
+			            ellipse(this.x+25,this.y+20,15,15);
+			            triangle(this.x+25,this.y+20,this.x+20,this.y+40,this.x+30,this.y+40);
+			        } else if (this.id===3) {
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            fill(SpikeColor);
+			            rect(this.x+5,this.y+5,this.w-10,this.h-10);
+			        } else if (this.id===4) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            
+			            if (this.timer>99) {
+			                this.y++;
+			                if (Player.inRect(this.x,this.y-3,this.w,this.h)&&!editor) {
+			                    Player.y=this.y-this.w/2+4;
+			                    
+			                    if (Player.inObjectList(blocks)) {
+			                        while (Player.inObjectList(blocks)) {
+			                            Player.y-=1;
+			                        }
+			                    }
+			                }
+			            } else {this.y--;}
+			            if (this.timer>199) {this.timer=-2;}
+			            this.timer++;
+			        } else if (this.id===5) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            
+			            if (Player.inRect(this.x,this.y-3,this.w,this.h)&&!editor) {
+			                this.y+=3;
+			                Player.y=this.y-this.w/2+4;
+			                
+			                if (Player.inObjectList(blocks)) {
+			                    while (Player.inObjectList(blocks)) {
+			                        Player.y-=1;
+			                    }
+			                }
+			            }
+			        } else if (this.id===6) {
+			            // seesaw right left half
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            if (Player.inRect(this.x,this.y-3,this.w,this.h)&&seesawVals[this.seesawID]===0&&!editor) {
+			                seesawVals[this.seesawID] = 1;
+			                this.y+=15; Player.vy = 0;
+			                Player.y=this.y-20;
+			            }
+			            if (seesawVals[this.seesawID]===2) {
+			                this.y-=15;
+			                if (Player.inRect(this.x,this.y-3,this.w,this.h)) {
+			                    Player.y=this.y-this.w;
+			                    Player.vy = -15;
+			                }
+			                seesawVals[this.seesawID] = 0;
+			            }
+			            
+			        } else if (this.id===7) {
+			            // seesaw right half
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            stroke(0); strokeWeight(3);
+			            fill(SpikeColor);
+			            rect(this.x+5,this.y-22+this.tempA,20,20);
+			            
+			            if (seesawVals[this.seesawID]===1) {this.y-=15; this.TempB = -10; seesawVals[this.seesawID]=1.1;}
+			            
+			            if (seesawVals[this.seesawID]===1.1) {
+			                this.tempA+=this.TempB;
+			                this.TempB+=Gravity;
+			                
+			                if (this.tempA > 0) {
+			                    seesawVals[this.seesawID] = 2; this.y+=15;
+			                    this.tempA = 0; this.tempB = 0;
+			                }
+			            } else {
+			                this.tempA = 0; this.tempB = 0;
+			            }
+			            
+			            
+			        } else if (this.id===8) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            
+			            if (this.timer>99+50) {this.x--;} else {this.x++;}
+			            if (this.timer>199+100) {this.timer=-2;}
+			            this.timer++;
+			            if (Player.inRect(this.x,this.y-2,this.w,this.h)&&!editor) {
+			                if (this.timer>99+50) {
+			                    Player.x--;
+			                    if (Player.inObjectList(blocks)) {
+			                        Player.x++;
+			                    }
+			                } else {
+			                    Player.x++;
+			                    if (Player.inObjectList(blocks)) {
+			                        Player.x--;
+			                    }
+			                }
+			            }
+			        
+			        } else if (this.id===9) {
+			            fill(15, 120, 186);
+			            rect(this.x,this.y,this.w,this.h);
+			            stroke(0, 42, 133); strokeWeight(8);
+			            line(this.x+10,this.y+10,this.x+40,this.y+40);
+			            line(this.x+40,this.y+10,this.x+10,this.y+40);
+			            if (Player.inRect(this.x-100,this.y,this.w*5,this.h)&&this.timer<1&&Player.canControl===1) {
+			                this.timer=60;
+			                var x;
+			                if (this.x>Player.x) {x=-90;} else {x=90;}
+			                enemies.push(new Enemy(this.x+7,this.y+35,2,x));
+			            }
+			            if (this.timer>0) {this.timer--;}
+			        
+			        } else if (this.id===10) {
+			            if (gateTimer>0) {fill(10, 44, 99);} else {fill(SpikeColor);}
+			            rect(this.x,this.y,this.w,this.h);
+			            if (Player.inRect(this.x,this.y-3,this.w,this.h)) {
+			                gateTimer = 200;
+			            }
+			        } else if (this.id===11) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            if (gateTimer>0) {this.h--;} else {this.h++;}
+			            this.h = constrain(this.h,0,50);
+			        
+			        } else if (this.id===12) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            fill(shapeKeyDoor[0]*250);
+			            ellipse(this.x+15,this.y+15,10,10);
+			            fill(shapeKeyDoor[1]*250);
+			            rect(this.x+30,this.y+10,10,10);
+			            strokeWeight(2); stroke(shapeKeyDoor[2]*250);
+			            line(this.x+20,this.y+30,this.x+30,this.y+40);
+			            line(this.x+30,this.y+30,this.x+20,this.y+40);
+			            if (shapeKeyDoor[0]&&shapeKeyDoor[1]&&shapeKeyDoor[2]) {this.x=-99999; this.y=this.x;}
+			        }
+			    };
+			};
+			Water = function(x,y,w,h) {
+			    this.x = x; this.y = y; this.w = w; this.h = h;
+			    
+			    this.drawOutline = function() {
+			        noFill(); stroke(0); strokeWeight(6);
+			        rect(this.x,this.y,this.w,this.h);
+			    };
+			    this.draw = function() {
+			        
+			        var z = 1+sin(millis()/3)*2;
+			        
+			        noStroke();
+			        fill(WaterColor);
+			        rect(this.x,this.y+z,50,50);
+			    };
+			};
+			Hazzard = function(x,y,id) {
+			    this.x = x; this.y = y; this.id = id;
+			    this.sx = x; this.sy = y;
+			    this.w = 0; this.h = 0;
+			    this.tickA=0;
+			    this.draw = function() {
+			        fill(SpikeColor); noStroke();
+			        if (this.id===1) {
+			            this.w = 50;
+			            this.h = 20;
+			            triangle(this.x,this.y+25,this.x+25,this.y+25,this.x+12.5,this.y);
+			            triangle(this.x+25,this.y+25,this.x+50,this.y+25,this.x+37.5,this.y);
+			        } else if (this.id===2) {
+			            this.w = 50; this.h = 190;
+			            triangle(this.x,this.y+175,this.x+25,this.y+174,this.x+12.5,this.y+200);
+			            triangle(this.x+25,this.y+175,this.x+50,this.y+174,this.x+37.5,this.y+200);
+			            rect(this.x,this.y,50,175);
+			        } else if (this.id===3||this.id===4) {
+			            this.w=35;
+			            this.h=35;
+			            pushMatrix();
+			            translate(-7.5,-7.5);
+			            fill(SpikeColor);
+			            triangle(this.x+13,this.y+25,this.x+38,this.y+25,this.x+25.5,this.y+0);
+			            triangle(this.x+13,this.y+25,this.x+38,this.y+25,this.x+25.5,this.y+50);
+			            triangle(this.x+25,this.y+12.5,this.x+25,this.y+37.5,this.x+0,this.y+25);
+			            triangle(this.x+25,this.y+12.5,this.x+25,this.y+37.5,this.x+50,this.y+25);
+			            stroke(SpikeColor-20); strokeWeight(5);
+			            line(this.x+25,this.y+25,this.sx+25,this.sy+25);
+			            popMatrix();
+			        } else if (this.id===5) {
+			            this.w = 50;
+			            this.h = 20;
+			            triangle(this.x,this.y,this.x+25,this.y,this.x+12.5,this.y+25);
+			            triangle(this.x+25,this.y,this.x+50,this.y,this.x+37.5,this.y+25);
+			        }
+			    };
+			    this.tick = function() {
+			        if (this.id===2) {
+			            if (this.tickA<50) {
+			                this.y-=1;
+			            } else if (this.tickA<70) {
+			                // ;)
+			            } else if (this.tickA<80) {
+			                this.y+=5;
+			            } else if (this.tickA>=115) {
+			                this.tickA=0;
+			                this.y--;
+			            }
+			            this.tickA++;
+			        } else if (this.id===4) {
+			            this.x = this.sx+sin(this.tickA/10)*58;
+			            this.y = this.sy+cos(this.tickA/10)*58;
+			            this.tickA+=20;
+			        }
+			    };
+			};
+			Spring = function(x,y) {
+			    this.x = x; this.y = y; this.w = 30; this.h = 20;
+			    this.draw = function() {
+			        fill(PlayerColor); noStroke();
+			        rect(this.x,this.y,30,10);
+			        rect(this.x+12,this.y+10,6,10);
+			    };
+			};
+			Decor = function(x,y,id) {
+			    this.x = x;
+			    this.y = y;
+			    this.id = id;
+			    this.fade = 255;
+			    this.draw = function() {
+			        if (id===1) {
+			            stroke(21, 104, 237); strokeWeight(8);
+			            line(this.x+25,this.y+20,this.x+40,this.y+99999);
+			            fill(185, 228, 247); stroke(20, 48, 112); strokeWeight(7);
+			            rect(this.x-50,this.y-25,150,100,2);
+			            
+			            fill(42, 132, 235); stroke(23, 81, 189); strokeWeight(4);
+			            rect(this.x-35,this.y+30,30,30);
+			            rect(this.x+3,this.y+30,30,30);
+			            rect(this.x+51,this.y+30,30,30);
+			            
+			            textAlign(LEFT,CENTER); textFont(TxtMain,20); fill(0);
+			            if (settings[0]) {
+			                text("A    D",this.x-28,this.y+45);
+			                text("W",this.x+56,this.y+45);
+			            } else {
+			                text("A    D      J",this.x-28,this.y+45);
+			            }
+			            
+			            stroke(6, 6, 69); strokeWeight(4);
+			            line(this.x-20,this.y+10,this.x+15,this.y+10);
+			            line(this.x+65,this.y+5,this.x+65,this.y+15);
+			            
+			            line(this.x-20,this.y+10,this.x-15,this.y+5);
+			            line(this.x-20,this.y+10,this.x-15,this.y+15);
+			            line(this.x+15,this.y+10,this.x+10,this.y+5);
+			            line(this.x+15,this.y+10,this.x+10,this.y+15);
+			            
+			            line(this.x+65,this.y+5,this.x+60,this.y+10);
+			            line(this.x+65,this.y+5,this.x+70,this.y+10);
+			        }
+			        if (id===2) {
+			            stroke(21, 104, 237); strokeWeight(8);
+			            line(this.x+25,this.y+20,this.x+40,this.y+99999);
+			            fill(185, 228, 247); stroke(20, 48, 112); strokeWeight(7);
+			            rect(this.x,this.y,50,50,2);
+			            
+			            fill(8, 16, 107); noStroke();
+			            ellipse(this.x+25,this.y+40,10,10);
+			            triangle(
+			                this.x+15,this.y+10,
+			                this.x+35,this.y+10,
+			                this.x+25,this.y+35
+			            );
+			        }
+			        if (id===3) {
+			            fill(39, 70, 97); noStroke();
+			            rect(this.x-50,this.y-50,150,150);
+			        }
+			        if (id===4) {
+			            fill(39, 70, 97); noStroke();
+			            rect(this.x-150,this.y-150,300,300);
+			        }
+			        if (id===5) {
+			            stroke(21, 104, 237); strokeWeight(8);
+			            line(this.x-25,this.y+20,this.x+40,this.y+99999);
+			            line(this.x+75,this.y+20,this.x+40,this.y+99999);
+			            fill(185, 228, 247); stroke(20, 48, 112); strokeWeight(7);
+			            rect(this.x-75,this.y-25,200,120,2);
+			            
+			            fill(67, 87, 240); textAlign(LEFT); textFont(TxtTitle3,15);
+			            text("BoredGuy says...",this.x-60,this.y);
+			            
+			            drawInnerArm(this.x-25,this.y+71,0.25,0.25,-15,color(33, 40, 94),color(14, 37, 54),6);
+			            drawArm(this.x-25,this.y+71,0.25,0.25,-30,color(96, 184, 247),color(14, 37, 54),6);
+			            
+			            pushMatrix();
+			            translate(0,-5);
+			            // Head
+			            fill(30, 81, 148);
+			            noStroke();
+			            beginShape();
+			                vertex(this.x-11,this.y+78);
+			                vertex(this.x-16,this.y+80);
+			                vertex(this.x-34,this.y+84);
+			                
+			                vertex(this.x-68,this.y+86);
+			                vertex(this.x-60,this.y+70);
+			                vertex(this.x-65,this.y+55);
+			                
+			                vertex(this.x-60,this.y+55);
+			                vertex(this.x-53,this.y+40);
+			                vertex(this.x-55,this.y+17);
+			            endShape();
+			            drawHead(this.x-35,this.y+46,0.3,0.3,0,color(96, 184, 247),color(14, 37, 54),6);
+			            // Neck
+			            rect(this.x-59,this.y+80,17,12);
+			            fill(96, 184, 247); noStroke();
+			            pushMatrix();
+			            
+			            translate(-5,60);
+			            triangle(
+			                this.x-45,this.y+35,
+			                this.x-33,this.y+19,
+			                this.x-30,this.y+35
+			            );
+			            popMatrix();
+			            popMatrix();
+			            
+			            drawInnerArm(this.x-37,this.y+94,0.25,0.20,12,color(51, 59, 122),color(14, 37, 54),6);
+			            drawArm(this.x-37,this.y+94,0.25,0.25,12,color(96, 184, 247),color(14, 37, 54),6);
+			            
+			            // Face and Stuff
+			            fill(17, 60, 115); noStroke();
+			            ellipse(this.x-12,this.y+65,3,3);
+			            ellipse(this.x-18,this.y+65,3,3);
+			            
+			            ellipse(this.x-30,this.y+55,5,7);
+			            ellipse(this.x-21,this.y+55,5,7);
+			            
+			            fill(182, 207, 237);
+			            ellipse(this.x-29,this.y+54.5,2,2);
+			            ellipse(this.x-21,this.y+54.5,2,2);
+			            
+			            // Box go brrrrrrr
+			            fill(250);
+			            rect(this.x+18,this.y+10,100,75,10);
+			            //fill(255, 0, 0);
+			            triangle(
+			                this.x-5,this.y+59,
+			                this.x+20,this.y+55,
+			                this.x+20,this.y+35
+			            );
+			            
+			            // Text
+			            fill(0);
+			            if (levelOn===0) {
+			                textFont(TxtMain,11); textAlign(LEFT);
+			                text(LevelDataCodes[levelOn][4],this.x+22,this.y+25);
+			            } else {
+			                textFont(TxtMain,11); textAlign(LEFT);
+			                text("Stealing my work\nis a pretty bad\nidea to do...\nDon't ya think?",this.x+22,this.y+25);
+			                
+			                stroke(235, 150, 23); strokeWeight(3);
+			                line(this.x+76,this.y+36,this.x+97,this.y+36);
+			                fill(255, 132, 0);
+			                text("GOOD",this.x+80,this.y+50);
+			            }
+			            
+			        }
+			        if (id===6) {
+			            stroke(21, 104, 237); strokeWeight(8);
+			            line(this.x+25,this.y+20,this.x+40,this.y+99999);
+			            fill(185, 228, 247); stroke(20, 48, 112); strokeWeight(7);
+			            rect(this.x,this.y-25,50,100,2);
+			            
+			            fill(42, 132, 235); stroke(23, 81, 189); strokeWeight(4);
+			            rect(this.x+11,this.y+30,30,30);
+			            
+			            textAlign(LEFT,CENTER); textFont(TxtMain,20); fill(0);
+			            text("R",this.x+18,this.y+45);
+			            
+			            stroke(6, 6, 69); strokeWeight(4); noFill();
+			            arc(this.x+25,this.y+10,20,20,0,270);
+			            
+			            line(this.x+35,this.y+5,this.x+30,this.y+10);
+			            line(this.x+35,this.y+5,this.x+40,this.y+10);
+			        }
+			        if (id===7) {
+			            stroke(21, 104, 237); strokeWeight(8);
+			            line(this.x+25,this.y,this.x+25,this.y+150);
+			        }
+			        if (id===7.1) {
+			            stroke(21, 104, 237); strokeWeight(8);
+			            line(this.x+50,this.y-10,this.x+50,this.y+99999);
+			        }
+			        if (id===8) {
+			            fill(BlockColor,this.fade); noStroke();
+			            rect(this.x,this.y,50,50);
+			            if (Player.inRect(this.x,this.y,50,50)) {
+			                this.fade-=10;
+			            } else {this.fade+=10;}
+			            this.fade = constrain(this.fade,0,255);
+			        }
+			        if (id===9) {
+			            fill(39, 70, 97); noStroke();
+			            rect(this.x,this.y,50,50);
+			        }
+			    };
+			    this.outline = function() {
+			        if (id===8) {
+			            noFill(); stroke(0,this.fade); strokeWeight(6);
+			            rect(this.x,this.y,50,50);
+			        }
+			    };
+			};
+			Enemy = function(x,y,id,dir) {
+			    this.x = x;
+			    this.y = y;
+			    this.w = 0;
+			    this.h = 0;
+			    this.id = id;
+			    this.dir = dir;
+			    this.vx=0; this.vy=0; this.onGround=0;
+			    this.canUnalive=0;
+			    
+			    this.spawn = {x:x, y:y};
+			    
+			    this.tempA=0;
+			    this.tempB=0;
+			    this.unalived = 0;
+			    
+			    var target = {x:Player.x-this.x+10,y:Player.y-this.y+10};
+			    
+			    this.inObjectList = function(object) {
+			        for (var o = 0; o < object.length; o++) {
+			            if (this.x+20>object[o].x && this.x<object[o].x+object[o].w &&
+			                this.y+20>object[o].y && this.y<object[o].y+object[o].h) {
+			                return 1;
+			            }
+			        }
+			        return 0;
+			    };
+			    this.physics = function() {
+			        this.onGround=0;
+			        this.vy+=Gravity;
+			        this.y+=this.vy;
+			        this.onGround = 0;
+			        this.y-=2;
+			        
+			        // floor
+			        if (this.inObjectList(blocks)) {
+			            while (this.inObjectList(blocks)) {
+			                this.y-=abs(this.vy)/this.vy;
+			            }
+			            this.vy=0;
+			            this.onGround=1;
+			        }
+			        
+			        // walls
+			        this.x+=this.vx;
+			        if (this.inObjectList(blocks)) {
+			            while (this.inObjectList(blocks)) {
+			                this.x-=abs(this.vx)/this.vx;
+			            }
+			        }
+			        
+			        this.y+=2;
+			    };
+			    this.unalive = function() {
+			        for (var i=0; i<50; i++) {
+			            particles.push(
+			                new Particle(this.x+15,this.y+15,20,0,rngInt(0,360),2,10,224, 141, 18)
+			            );
+			        }
+			        this.unalived=1;
+			    };
+			    this.checkPlayer = function(x) {
+			        if (!this.unalived&&Player.inRect(this.x,this.y,this.w,this.h)) {
+			            if (Player.vy>1&&Player.onGround===0&&this.canUnalive) {
+			                Player.vy=-10;
+			                this.unalive();
+			            } else {
+			                Player.unalive();
+			            }
+			        }
+			    };
+			    
+			    this.draw = function() {
+			        
+			        //fill(0); text(Player.vy>1&&Player.onGround===0,this.x,this.y-20);
+			        if (this.id===1) { // Squishy
+			            this.canUnalive=1;
+			            this.w=15; this.h=15;
+			            fill(224, 141, 18); stroke(128, 66, 0); strokeWeight(3);
+			            rect(this.x,this.y,this.w,this.h,2);
+			            
+			            this.tempA++;
+			            if ((this.tempA%200)<100) {this.vx=-0.5;} else {this.vx=0.5;}
+			            if ((this.tempA%40)===0&&this.onGround) {this.vy=-4;}
+			            this.physics();
+			        } else if (this.id===2) { // Arrow
+			            this.canUnalive=0;
+			            this.w=35; this.h=5;
+			            fill(0); noStroke();
+			            //rect(this.x,this.y,this.w,this.h);
+			            stroke(247, 178, 17); strokeWeight(5);
+			            line(this.x,this.y+2,this.x+this.w,this.y+2);
+			            
+			            
+			            if (this.dir===90) {
+			                this.x+=7;
+			                line(this.x+this.w,this.y+2,this.x+this.w-5,this.y-2);
+			                line(this.x+this.w,this.y+2,this.x+this.w-5,this.y+6);
+			                line(this.x,this.y+2,this.x-5,this.y-2);
+			                line(this.x,this.y+2,this.x-5,this.y+6);
+			            }
+			            if (this.dir===-90) {
+			                this.x-=7;
+			                line(this.x,this.y+2,this.x+5,this.y-2);
+			                line(this.x,this.y+2,this.x+5,this.y+6);
+			                line(this.x+this.w,this.y+2,this.x+this.w+5,this.y-2);
+			                line(this.x+this.w,this.y+2,this.x+this.w+5,this.y+6);
+			            }
+			        
+			        } else if (this.id===3) { // Flying Squishy
+			            this.canUnalive=1;
+			            this.w=15; this.h=15;
+			            var x = sin(this.tempA*4)*5;
+			            
+			            stroke(77, 41, 10); strokeWeight(3);
+			            if (Player.x+10>this.x+7.5) {
+			                line(this.x+5,this.y+5,this.x+15,this.y+x);
+			                fill(224, 141, 18); stroke(128, 66, 0);
+			                rect(this.x,this.y,this.w,this.h,2);
+			                stroke(77, 41, 10);
+			                line(this.x+5,this.y+5,this.x-5,this.y+x);
+			            } else {
+			                line(this.x+5,this.y+5,this.x-5,this.y+x);
+			                fill(224, 141, 18); stroke(128, 66, 0);
+			                rect(this.x,this.y,this.w,this.h,2);
+			                stroke(77, 41, 10);
+			                line(this.x+10,this.y+5,this.x+20,this.y+x);
+			            }
+			            
+			            this.tempA++;
+			            
+			            if (this.tempA%300<150) {
+			                this.y = (this.y+((this.spawn.y+50)/50))/1.02;
+			            } else {
+			                this.y = (this.y+((this.spawn.y-50)/50))/1.02;
+			            }
+			        
+			        } else if (this.id===4) {
+			            this.w=10; this.h=10;
+			            
+			            var a = atan2(target.y,target.x)-90;
+			            this.x-= sin(a)*3;
+			            this.y+= cos(a)*3;
+			            
+			            //text(a,this.x,this.y);
+			            fill(255, 187, 41); noStroke();
+			            ellipse(this.x,this.y,15,15);
+			        } else if (this.id===5) {
+			            this.w=20; this.h=20;
+			            
+			            var a = atan2(target.y,target.x)-90;
+			            this.tempA++;
+			            if (this.tempA>19) {
+			                this.tempA=0;
+			                this.x-= sin(a)*40;
+			                this.y+= cos(a)*40;
+			            }
+			            
+			            //text(a,this.x,this.y);
+			            fill(237, 172, 43,250-this.tempA*10); noStroke();
+			            ellipse(this.x,this.y,25,25);
+			        }
+			    };
+			};
+			ShapeKey = function(x,y,id) {
+			    this.x=x; this.y=y; this.id=id;
+			    this.sy=y; this.tick=0;
+			    this.draw = function() {
+			        // Floating
+			        this.y=this.sy+sin(this.tick*4)*4;
+			        this.tick++;
+			        
+			        // Draw
+			        noStroke();
+			        if (this.id===1) {
+			            fill(SpikeColor);
+			            ellipse(this.x+25,this.y+25,30,30);
+			        } else if (this.id===2) {
+			            fill(SpikeColor);
+			            rect(this.x+10,this.y+10,30,30);
+			        } else if (this.id===3) {
+			            strokeWeight(6); stroke(SpikeColor);
+			            line(this.x+15,this.y+15,this.x+35,this.y+35);
+			            line(this.x+35,this.y+15,this.x+15,this.y+35);
+			        }
+			        
+			        // Touching?
+			        if (Player.canControl===1&&!editor&&Player.inRect(this.x+5,this.y+5,40,40)) {
+			            this.x=-9999999; this.y=this.x;
+			            shapeKeyDoor[this.id-1]=1;
+			        }
+			    };
+			};
+			
+			Particle = function(x,y,life,grav,dir,speed,scatter,r,g,b) {
+			    this.x = x; this.y = y; this.vy=0;
+			    this.grav = grav;
+			    this.dir = dir+=rngInt(-scatter,scatter);
+			    this.speed = speed;
+			    this.startLife = life; this.life = life;
+			    this.r=r||77;
+			    this.g=g||114;
+			    this.b=b||235;
+			    this.drawTick = function() {
+			        // tick
+			        this.life--;
+			        this.x+=sin(this.dir)*this.speed;
+			        this.y+=(cos(this.dir)*this.speed);
+			        this.vy+=this.grav;
+			        this.y+=this.vy;
+			        
+			        // draw
+			        noStroke(); fill(this.r,this.g,this.b,this.life/this.startLife*255); rectMode(CENTER);
+			        rect(this.x,this.y,4,4);
+			        rectMode(CORNER);
+			        
+			    };
+			};
+			var QuickBtn = function(x,y,w,h,color,hoverColor,txt,onClick) {
+			    fill(color);
+			    if (mouseInBox(x-w/2,y-h/2,w,h)) {
+			        fill(hoverColor);
+			        if (mouse===1) {onClick(); mouse = 2;}
+			    }
+			    stroke(0); strokeWeight(5);
+			    rectMode(CENTER);
+			    rect(x,y,w,h,10);
+			    rectMode(CORNER);
+			    fill(250);
+			    textFont(TxtMain,20);
+			    textAlign(CENTER,CENTER);
+			    text(txt,x,y);
+			};
+			var LvlBtn = function(x,y,w,h,color,hoverColor,txt) {
+			    fill(color);
+			    if (mouseInBox(x-w/2,y-h/2,w,h)&&levelCurtain<1) {
+			        fill(hoverColor);
+			        if (mouse===1) {
+			            mouse = 2;
+			            levelCurtain=1;
+			            lvlTransit=txt;
+			            
+			            lvl30cutscene = 0;
+			            if (txt===30) {
+			                lvl30cutscene = 1;
+			                lvl30time = 0;
+			                Boss = {x:200,y:500,vy:0,hurt:0};
+			                bossHealth=8;
+			                var Hands = {
+			                    l:{x:90,y:240,mode:0,harm:0}, r:{x:270,y:240,mode:0,harm:0}
+			                };
+			                bossTxt = [0,0,0];
+			                
+			                Cam.s = 1;
+			                Player.canControl = 0;
+			            }
+			        }
+			    }
+			    stroke(0); strokeWeight(5);
+			    rectMode(CENTER);
+			    rect(x,y,w,h,10);
+			    rectMode(CORNER);
+			    fill(250);
+			    textFont(TxtMain,20);
+			    textAlign(CENTER,CENTER);
+			    text(txt,x,y);
+			};
+			
+			// Obtain custom level data
+			var fetchCustomLevel= function() {
+			    LevelDataCodes[levelOn][4]=decodeLineFeed(LevelDataCodes[levelOn][4]);
+			    var r = 0;
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][2] = s;
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][3] = s;
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][0] = Number(s);
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][1] = Number(s);
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][4] = s;
+			    
+			    LevelCodes[0] = [];
+			    for (var j=0; j<LevelDataCodes[0][1]; j++) {
+			        var temp = [];
+			        for (var i=0; i<LevelDataCodes[0][0]; i++) {
+			            var item = Number(CustomLevel[r]+CustomLevel[r+1]);
+			            temp.push(Number(item));
+			            r+=2; 
+			        }
+			        LevelCodes[0].push(temp);
+			    }
+			};
+			if (CustomLevel!=="") {fetchCustomLevel();}
+			
+			// Draw Loop
+			draw = function() {
+			    if (!mouse && mouseIsPressed) {mouse=1;}
+			    else if (mouse===1 && mouseIsPressed) {mouse=2;}
+			    if (!mouseIsPressed) {mouse=0;}
+			    
+			    // Background
+			    background(218, 229, 237);
+			    stroke(BackgroundLineColor); strokeWeight(10);
+			    var bx = mod(millis()/-40,40)+200;
+			    for (var b = 0; b < 15; b++) { 
+			        line(bx+b*40-400,-100,bx+b*40-200,500);
+			    }
+			    fill(0);
+			    if (levelOn===30&&MENU===2) {fill(0,200); rect(-100,-100,600,600);}
+			    
+			    // Title Particles
+			    if (MENU===1) {
+			    fill(9, 30, 71,constrain((titleTime-90)*4,0,200)); noStroke();
+			    rect(0,0,400,400);
+			    }
+			    if ((MENU===1&&titleTime>89) || MENU===3 || MENU===4 || MENU===4.1 || MENU===7) {
+			        particles.push(
+			            new Particle(rngInt(10,390),410,100,0.1,180,rngInt(2,5),20,232,130,21)
+			        );
+			        for (var p=0; p<particles.length;p++) {
+			            particles[p].drawTick();
+			            if (particles[p].life<1) {
+			                particles.shift();
+			            }
+			        }
+			    }
+			    if (MENU!==1) {titleTime=999;}
+			    
+			    if (MENU === 1) {
+			        textAlign(CENTER,CENTER);
+			        
+			        // Orange Three
+			        textFont(TxtTitle3);
+			        fill(179, 105, 14,(titleTime-90)*4);
+			        text("3",constrain((300-(titleTime-90)),260,300) ,135);
+			        fill(235, 143, 30,(titleTime-90)*4);
+			        text("3",constrain((290-(titleTime-90)),250,300) ,135);
+			        
+			        // Title
+			        titleTime++;
+			        if (titleTime < 50) {
+			            drawTitle(200,200, log(titleTime)*30);
+			        } else if (titleTime < 90) {
+			            drawTitle(200,200,120);
+			        } else if (titleTime < 130) {
+			            drawTitle(200, sin( (titleTime-90)*-2 )*50 +200,120);
+			        } else {
+			            drawTitle(200,150,120);
+			        }
+			        
+			        if (titleTime > 89) {
+			            fill(250,(titleTime-90)*4);
+			            textFont(TxtMain,20);
+			            text("The Final Shade",200,205);
+			            textFont(TxtMain,15);
+			            text("Made by BoredGuy",70,390);
+			            text("v1.1.3",375,390);
+			            
+			            QuickBtn(120,constrain(450-((titleTime-90)*4),260,900),100,40,color(41, 130, 255),color(136, 180, 242),"Play",function() {
+			                curtainFlash=255;
+			                MENU=5;
+			            });
+			            QuickBtn(260,constrain(450-((titleTime-90)*4),260,900),130,40,color(41, 130, 255),color(136, 180, 242),"Level Editor",function() {
+			                curtainFlash = 255;
+			                MENU=4;
+			            });
+			            
+			            QuickBtn(140,constrain(450-((titleTime-105)*4),320,900),100,40,color(41, 130, 255),color(136, 180, 242),"Settings",function() {
+			                curtainFlash = 255;
+			                MENU = 7;
+			            });
+			            QuickBtn(260,constrain(450-((titleTime-105)*4),320,900),100,40,color(41, 130, 255),color(136, 180, 242),"Credits",function() {
+			                curtainFlash = 255;
+			                MENU = 3;
+			            });
+			        }
+			        
+			        
+			        
+			    }
+			    if (MENU === 2) {
+			        /**Update**/
+			        
+			        // Update Hazzards and Enemies
+			        for (var h=0;h<hazzards.length;h++) {
+			            hazzards[h].tick();
+			        }
+			        
+			        // Boss
+			        if (Boss.hurt>0) {Boss.hurt--;}
+			        if (levelOn===30&&!lvl30cutscene&&bossHealth>0) {
+			            bossTime++;
+			            Hands.l.x = 30*sin(bossTime*3)+90;
+			            Hands.l.y = 20*cos(bossTime*5)+90;
+			            if (bossTime%50===0) {
+			                enemies.push(new Enemy(Hands.l.x+20,Hands.l.y+20,4,0));
+			            }
+			            if (bossTime%75===0&&bossHealth<3) {
+			                enemies.push(new Enemy(Hands.l.x+20,Hands.l.y+20,4,0));
+			            }
+			            
+			            Hands.r.x = 30*cos(bossTime*3)+270;
+			            Hands.r.y = 20*sin(bossTime*5)+90;
+			            if (bossTime%200===0&&bossHealth<7) {
+			                enemies.push(new Enemy(Hands.r.x+20,Hands.r.y+20,5,0));
+			            }
+			            if (bossTime%370===0&&bossHealth<5) {
+			                watchOut.x = ((Player.x>200)*350)+20;
+			                watchOut.y = Player.y;
+			                watchOut.act = 50;
+			            }
+			        }
+			        
+			        // Player
+			        if (levelOn===30&&lvl30cutscene===1) {Player.canControl = 0;}
+			        if (bossHealth<1) {Player.fall();}
+			        if (editor) {if (!editorMenu) {Player.godMode();}} else {
+			            var px = Player.x;
+			            if (curtainFlash < 1 && Player.canControl===1) {Player.tick();}
+			            if (px!==Player.x && Player.onGround) {
+			                particles.push(
+			                    new Particle(Player.x+10+Player.vx,Player.y+15,20,0.2,0,1,40)
+			                );  
+			            }
+			        }
+			        
+			        // Unalive'd
+			        if (Player.canControl===2) {
+			            Player.unaliveTick++;
+			            if (Player.unaliveTick>50) {
+			                Player.unaliveTick=0;
+			                Player.canControl=1;
+			                resetLevel();
+			            }
+			        }
+			        //fill(0); text( bossTxt ,Player.x,Player.y);
+			        
+			        /**Camera**/
+			        
+			        translate(0,0);
+			        
+			        if (lvl30cutscene) {
+			            Cam.y = 0;
+			            if (lvl30time>209 && lvl30time<360) {
+			                Cam.x = -3+lvl30time%6;
+			            }
+			            if (lvl30time===360) {Cam.x = 0;}
+			            if (lvl30time>419) {
+			                Cam.x = (Cam.x+(-65/10))/1.1;
+			                Cam.s = (Cam.s+(0.15))/1.1;
+			                scale(floor(Cam.s*100)/100);
+			                
+			                //println(Cam.s);
+			            }
+			        } else {
+			            // Scrolling
+			            var x = (-Player.x+200);
+			            var y = floor(-Player.y)+200;
+			            Cam.x = (Cam.x+(x/10))/1.1;
+			            Cam.y = (Cam.y+(y/10))/1.1;
+			            
+			            // Constrain Scrolling
+			            Cam.x = constrain(floor(Cam.x),(levelW-8)*-50,0);
+			            Cam.y = constrain(floor(Cam.y),0,(levelH-8)*50);
+			            
+			            if (levelOn===30 && Boss.hurt>0) {Cam.x = -5+millis()%10;}
+			        }
+			        
+			        translate(Cam.x,Cam.y);
+			        
+			        /**Draw**/
+			        
+			        // Boss
+			        if (levelOn===30) {
+			            drawBoss(Boss.x,Boss.y);
+			            if (!lvl30cutscene) {
+			                drawHands();
+			            }
+			        }
+			        
+			        // Draw Level
+			        for (var d = 0; d < decors.length; d++) {
+			            if (decors[d].id!==8) {decors[d].draw();}
+			        }
+			        for (var w = 0; w < waters.length; w++) {
+			            waters[w].draw();
+			        }
+			        for (var h = 0; h < hazzards.length; h++) {
+			            hazzards[h].draw();
+			        }
+			        for (var s = 0; s < springs.length; s++) {
+			            springs[s].draw();
+			        }
+			        for (var e = 0; e < enemies.length; e++) {
+			            if (enemies[e].id===2) {enemies[e].draw();}
+			        }
+			        for (var b = 0; b < blocks.length; b++) {
+			            blocks[b].drawOutline();
+			        }
+			        for (var d = 0; d < decors.length; d++) {
+			            decors[d].outline();
+			        }
+			        for (var b = 0; b < blocks.length; b++) {
+			            blocks[b].draw();
+			        }
+			        for (var d = 0; d < decors.length; d++) {
+			            if (decors[d].id===8) {decors[d].draw();}
+			        }
+			        for (var e = 0; e < enemies.length; e++) {
+			            if (enemies[e].id!==2&&!enemies[e].unalived) {enemies[e].draw();}
+			        }
+			        for (var k=0; k < shapeKeys.length; k++) {
+			            shapeKeys[k].draw();
+			        }
+			        
+			        // Watchout
+			        if (watchOut.act>0) {
+			            watchOut.act--;
+			            fill(255, 225, 0);
+			            if (watchOut.act%10>5) {
+			                textFont(TxtTitle3,60);
+			                text("!",watchOut.x,watchOut.y);
+			            }
+			            if (watchOut.act===0) {
+			                if (watchOut.x<200) {
+			                    enemies.push(new Enemy(watchOut.x-80,watchOut.y,2,90));
+			                } else {
+			                    enemies.push(new Enemy(watchOut.x+70,watchOut.y,2,-90));
+			                }
+			            }
+			        }
+			        
+			        // Flag
+			        if (Flag.x!==null) {
+			            noStroke(); fill(PlayerColor);
+			            rect(Flag.x*50+10,Flag.y*50+10,30,20);
+			            rect(Flag.x*50+10,Flag.y*50+30,5,20);
+			        }
+			        
+			        // Player
+			        if (Player.canControl!==2) {
+			        fill(PlayerColor); stroke(37, 88, 125); strokeWeight(3);
+			        rect(Player.x,Player.y,18,18,2);
+			        stroke(127, 217, 227); line(Player.x+5,Player.y+6,Player.x+7,Player.y+5);
+			        noStroke();
+			        }
+			        
+			        // Key
+			        if (!(gottenKey || Key.x === null)) {
+			            fill(PlayerColor);
+			            Key.ani = sin(millis()/3)*2;
+			            ellipse(Key.x*50+25,Key.y*50+20+Key.ani,30,20);
+			            rect(Key.x*50+20,Key.y*50+20+Key.ani,5,25);
+			            rect(Key.x*50+20,Key.y*50+40+Key.ani,15,5);
+			            rect(Key.x*50+20,Key.y*50+32+Key.ani,15,5);
+			        }
+			        
+			        // Player Spawn
+			        if (Player.spawnX!==null && levelEditorMode) {
+			            fill(PlayerColorHighlight); noStroke();
+			            rect(Player.spawnX*50+15,Player.spawnY*50+15,20,20);
+			        }
+			        
+			        /**Level Editor**/
+			        if (levelEditorMode) {
+			            if (keys[79]&&!editorMenu) {editor=0; editorBrush=0;} if (keys[80]) {editor=1; Player.canControl=1;}
+			        }
+			        if (editor) {
+			            
+			            if (keys[32]&&keys[10]) {saveLevel();}
+			            
+			            noStroke();
+			            var mX = floor((mouseX-Cam.x)/50)*50;
+			            var mY = (floor((mouseY-Cam.y-100)/50)*50)+100;
+			            
+			            if (keys[32] && !editorMenu) {editorMenu=1;}
+			            
+			            // User-Friendly Brush Select
+			            if (editorMenu) {
+			                // Draw Box
+			                fill(255); stroke(0); strokeWeight(5);
+			                rect(60-Cam.x,60-Cam.y,280,280,5);
+			                fill(42, 73, 189); rect(60-Cam.x,60-Cam.y,280,40,5);
+			                fill(0); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			                text("Level Manager",70-Cam.x,80-Cam.y);
+			                
+			                // Red X
+			                {
+			                if (mouseInBox(300,60,40,40)) {
+			                    fill(240, 94, 87);
+			                    if (mouseIsPressed&&mouse===1) {editorMenu=0; editorRename=0;}
+			                } else {fill(222, 24, 13);}
+			                rect(300-Cam.x,60-Cam.y,40,40,5);
+			                fill(0); textFont(TxtLvlNumber); textAlign(CENTER,CENTER);
+			                text("X",320-Cam.x,80-Cam.y);
+			                }
+			                
+			                // Tab Switchers
+			                {
+			                    stroke(0); strokeWeight(5);
+			                    if (mouseInBox(60,310,48,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed&&mouse===1) {editorMenu=1; editorRename=0;}
+			                    } else {fill(33, 217, 20);}
+			                    rect(60-Cam.x,310-Cam.y,48,30,5);
+			                    
+			                    if (mouseInBox(108,310,62,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed&&mouse===1) {editorMenu=2; editorRename=0;}
+			                    } else {fill(33, 217, 20);}
+			                    rect(108-Cam.x,310-Cam.y,62,30,5);
+			                    
+			                    if (mouseInBox(170,310,44,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed&&mouse===1) {editorMenu=2.1; editorRename=0;}
+			                    } else {fill(33, 217, 20);}
+			                    rect(170-Cam.x,310-Cam.y,44,30,5);
+			                    
+			                    if (mouseInBox(214,310,50,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed&&mouse===1) {editorMenu=2.2; editorRename=0;}
+			                    } else {fill(33, 217, 20);}
+			                    rect(214-Cam.x,310-Cam.y,50,30,5);
+			                    
+			                    if (mouseInBox(264,310,46,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed&&mouse===1) {editorMenu=3; editorRename=0;}
+			                    } else {fill(33, 217, 20);}
+			                    rect(264-Cam.x,310-Cam.y,46,30,5);
+			                    
+			                    if (mouseInBox(310,310,30,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed&&mouse===1) {editorMenu=4; editorRename=0;} 
+			                    } else {fill(33, 217, 20);}
+			                    rect(310-Cam.x,310-Cam.y,30,30,5);
+			                    
+			                    fill(0); textFont(TxtLvlName1,10); textAlign(LEFT,CENTER);
+			                    text("Blocks",65-Cam.x,325-Cam.y);
+			                    text("Hazzards",113-Cam.x,325-Cam.y);
+			                    text("Decor",175-Cam.x,325-Cam.y);
+			                    text("Gizmos",218-Cam.x,325-Cam.y);
+			                    text("Misc.",273-Cam.x,325-Cam.y);
+			                    textFont(TxtLvlSetting);
+			                    text("☀",315-Cam.x,325-Cam.y);
+			                }
+			                
+			                // Options
+			                noStroke();
+			                if (editorMenu===1) {
+			                    // Draw Options
+			                    {
+			                        fill(BlockColor); rect(70-Cam.x,110-Cam.y,50,50);
+			                        fill(BlockColor,120); rect(250-Cam.x,170-Cam.y,50,50);
+			                        
+			                        fill(BlockColor); rect(130-Cam.x,110-Cam.y,50,50);
+			                        fill(SpikeColor); rect(135-Cam.x,115-Cam.y,40,40);
+			                        
+			                        fill(BlockColor); rect(190-Cam.x,110-Cam.y,50,25);
+			                        fill(BlockColor); rect(250-Cam.x,135-Cam.y,50,25);
+			                        
+			                        fill(SpikeColor);
+			                        rect(70-Cam.x,170+25-Cam.y,50,15);
+			                        rect(130-Cam.x,170+25-Cam.y,50,15);
+			                        rect(190-Cam.x,170+25-Cam.y,50,15);
+			                    }
+			                    if (mouseIsPressed) {
+			                        if (mouseInBox(70,110,50,50)) {editorBrush=1;}
+			                        if (mouseInBox(130,110,50,50)) {editorBrush=11;}
+			                        if (mouseInBox(190,110,50,50)) {editorBrush=2;}
+			                        if (mouseInBox(250,110,50,50)) {editorBrush=12;}
+			                        
+			                        if (mouseInBox(70,170,50,50)) {editorBrush=18;}
+			                        if (mouseInBox(130,170,50,50)) {editorBrush=15;}
+			                        if (mouseInBox(190,170,50,50)) {editorBrush=16;}
+			                        if (mouseInBox(250,170,50,50)) {editorBrush=30;}
+			                    }
+			                } else if (editorMenu===2) {
+			                    // Draw Options
+			                    {
+			                        
+			                        fill(SpikeColor); 
+			                        triangle(70-Cam.x,110+50-Cam.y,70+25-Cam.x,110+50-Cam.y,70+12.5-Cam.x,110+25-Cam.y);
+			                        triangle(70+25-Cam.x,110+50-Cam.y,70+50-Cam.x,110+50-Cam.y,70+37.5-Cam.x,110+25-Cam.y);
+			                        
+			                        triangle(70-Cam.x,110+60-Cam.y,70+25-Cam.x,110+60-Cam.y,70+12.5-Cam.x,110+85-Cam.y);
+			                        triangle(70+25-Cam.x,110+60-Cam.y,70+50-Cam.x,110+60-Cam.y,70+37.5-Cam.x,110+85-Cam.y);
+			                        
+			                        triangle(70-Cam.x+60,110+25-Cam.y,70+25-Cam.x+60,110+25-Cam.y,70+12.5-Cam.x+60,110+25-Cam.y+25);
+			                        triangle(70+25-Cam.x+60,110+25-Cam.y,70+50-Cam.x+60,110+25-Cam.y,70+37.5-Cam.x+60,110+25-Cam.y+25);
+			                        rect(130-Cam.x,110-Cam.y,50,25);
+			                        
+			                        for (var i=0; i<61; i+=60) {
+			                            triangle(i+190+13-Cam.x,110+25-Cam.y,i+190+38-Cam.x,110+25-Cam.y,i+190+25.5-Cam.x,110+0-Cam.y);
+			                            triangle(i+190+13-Cam.x,110+25-Cam.y,i+190+38-Cam.x,110+25-Cam.y,i+190+25.5-Cam.x,110+50-Cam.y);
+			                            triangle(i+190+25-Cam.x,110+12.5-Cam.y,i+190+25-Cam.x,110+37.5-Cam.y,i+190+0-Cam.x,110+25-Cam.y);
+			                            triangle(i+190+25-Cam.x,110+12.5-Cam.y,i+190+25-Cam.x,110+37.5-Cam.y,i+190+50-Cam.x,110+25-Cam.y);
+			                            
+			                            
+			                        }
+			                        
+			                        fill(15, 120, 186);
+			                        rect(130-Cam.x,170-Cam.y,50,50);
+			                        stroke(0, 42, 133); strokeWeight(8);
+			                        line(130+10-Cam.x,170+10-Cam.y,130+40-Cam.x,170+40-Cam.y);
+			                        line(130+40-Cam.x,170+10-Cam.y,130+10-Cam.x,170+40-Cam.y);
+			                    }
+			                    if (mouseIsPressed) {
+			                        if (mouseInBox(70,110,50,50)) {editorBrush=3;}
+			                        if (mouseInBox(70,170,50,50)) {editorBrush=19;}
+			                        if (mouseInBox(130,110,50,50)) {editorBrush=4;}
+			                        if (mouseInBox(190,110,50,50)) {editorBrush=13;}
+			                        if (mouseInBox(250,110,50,50)) {editorBrush=14;}
+			                        if (mouseInBox(130,170,50,50)) {editorBrush=27;}
+			                    }
+			                } else if (editorMenu===2.1) {
+			                    // Draw Options
+			                    {
+			                    fill(185, 228, 247);
+			                    stroke(20, 48, 112); strokeWeight(7);
+			                    rect(70-Cam.x,110-Cam.y,50,50,2);
+			                    rect(130-Cam.x,110-Cam.y,50,50,2);
+			                    rect(70-Cam.x,170-Cam.y,50,50,2);
+			                    rect(130-Cam.x,170-Cam.y,50,50,2);
+			                    fill(39, 70, 97); noStroke();
+			                    rect(190-Cam.x,110-Cam.y,50,50);
+			                    rect(250-Cam.x,110-Cam.y,50,50);
+			                    rect(250-Cam.x,170-Cam.y,50,50);
+			                    
+			                    fill(0); textFont(TxtMain,12); textAlign(CENTER);
+			                    text("W A  J",70+25-Cam.x,110-Cam.y+30);
+			                    textFont(TxtMain,17);
+			                    text("R",130+25-Cam.x,170-Cam.y+31);
+			                    fill(8, 16, 107); noStroke();
+			                    ellipse(130+25-Cam.x,110-Cam.y+40,10,10);
+			                    triangle(
+			                        130+15-Cam.x,110-Cam.y+10,
+			                        130+35-Cam.x,110-Cam.y+10,
+			                        130+25-Cam.x,110-Cam.y+35
+			                    );
+			                    drawSmallHead(70-Cam.x,170-Cam.y,0.5,255);
+			                    
+			                    stroke(21, 104, 237); strokeWeight(8);
+			                    line(215-Cam.x,170-Cam.y,215-Cam.x,220-Cam.y);
+			                    
+			                    }
+			                    if (mouseIsPressed) {
+			                        if (mouseInBox(70,110,50,50)) {editorBrush=21;}
+			                        if (mouseInBox(130,110,50,50)) {editorBrush=22;}
+			                        if (mouseInBox(190,110,50,50)) {editorBrush=23;}
+			                        if (mouseInBox(250,110,50,50)) {editorBrush=24;}
+			                        if (mouseInBox(70,170,50,50)) {editorBrush=25;}
+			                        if (mouseInBox(130,170,50,50)) {editorBrush=28;}
+			                        if (mouseInBox(190,170,50,50)) {editorBrush=29;}
+			                        if (mouseInBox(250,170,50,50)) {editorBrush=31;}
+			                    }
+			                } else if (editorMenu===2.2) {
+			                    // Draw Options
+			                    {
+			                        fill(PlayerColor);
+			                        rect(70+10-Cam.x,110+30-Cam.y,30,10);
+			                        rect(70+22-Cam.x,110+40-Cam.y,6,10);
+			                        
+			                        fill(SpikeColor); rect(70-Cam.x,170-Cam.y,50,50);
+			                        fill(BlockColor);
+			                        ellipse(70+25-Cam.x,170+20-Cam.y,15,15);
+			                        triangle(190+25-Cam.x-120,110+20-Cam.y+60,190+20-Cam.x-120,110+40-Cam.y+60,190+30-Cam.x-120,110+40-Cam.y+60);
+			                        
+			                        fill(PlayerColor);
+			                        ellipse(130+25-Cam.x,170+20-Cam.y,30,20);
+			                        rect(130+20-Cam.x,170+20-Cam.y,5,25);
+			                        rect(130+20-Cam.x,170+40-Cam.y,15,5);
+			                        rect(130+20-Cam.x,170+32-Cam.y,15,5);
+			                        
+			                        stroke(21, 104, 237); strokeWeight(7);
+			                        line(130+25-Cam.x,110+20-Cam.y,130+25-Cam.x,110+45-Cam.y);
+			                        fill(BlockColor); noStroke();
+			                        rect(130-Cam.x,110+20-Cam.y,18,10);
+			                        rect(130+32-Cam.x,110+20-Cam.y,18,10);
+			                        fill(SpikeColor); noStroke();
+			                        rect(130+36-Cam.x,110+10-Cam.y,10,10);
+			                        
+			                        fill(SpikeColor);
+			                        rect(205-Cam.x,150-Cam.y,20,10);
+			                        rect(255-Cam.x,110-Cam.y,40,50);
+			                        
+			                        //Shape Key
+			                        fill(SpikeColor);
+			                        rect(70-Cam.x,230-Cam.y,50,50);
+			                        fill(0);
+			                        ellipse(70+15-Cam.x,230+15-Cam.y,10,10);
+			                        rect(70+30-Cam.x,230+10-Cam.y,10,10);
+			                        strokeWeight(2); stroke(0);
+			                        line(70+20-Cam.x,230+30-Cam.y,70+30-Cam.x,230+40-Cam.y);
+			                        line(70+30-Cam.x,230+30-Cam.y,70+20-Cam.x,230+40-Cam.y);
+			                        
+			                        fill(SpikeColor); noStroke();
+			                        ellipse(130+25-Cam.x,230+25-Cam.y,30,30);
+			                        rect(190+10-Cam.x,230+10-Cam.y,30,30);
+			                        strokeWeight(6); stroke(SpikeColor);
+			                        line(250+15-Cam.x,230+15-Cam.y,250+35-Cam.x,230+35-Cam.y);
+			                        line(250+35-Cam.x,230+15-Cam.y,250+15-Cam.x,230+35-Cam.y);
+			                        
+			                    }
+			                    if (mouseIsPressed) {
+			                        if (mouseInBox(70,110,50,50)) {editorBrush=5;}
+			                        if (mouseInBox(130,110,50,50)) {editorBrush=17;}
+			                        if (mouseInBox(70,170,50,50)) {editorBrush=6;}
+			                        if (mouseInBox(130,170,50,50)) {editorBrush=10;}
+			                        if (mouseInBox(190,110,50,50)) {editorBrush=34;}
+			                        if (mouseInBox(250,110,50,50)) {editorBrush=35;}
+			                        
+			                        if (mouseInBox(70,230,50,50)) {editorBrush=37;}
+			                        if (mouseInBox(130,230,50,50)) {editorBrush=38;}
+			                        if (mouseInBox(190,230,50,50)) {editorBrush=39;}
+			                        if (mouseInBox(250,230,50,50)) {editorBrush=40;}
+			                    }
+			                } else if (editorMenu===3) {
+			                    // Draw Options
+			                    {
+			                        fill(PlayerColor);
+			                        
+			                        rect(130+10-Cam.x,110+10-Cam.y,30,20);
+			                        rect(130+10-Cam.x,110+30-Cam.y,5,20);
+			                        
+			                        textAlign(CENTER,CENTER); textSize(10);
+			                        text("Start",95-Cam.x,125-Cam.y);
+			                        rect(70+15-Cam.x,140-Cam.y,20,20);
+			                        
+			                        fill(224, 141, 18);
+			                        stroke(128, 66, 0); strokeWeight(3);
+			                        rect(190+15-Cam.x,110+15-Cam.y,15,15,2);
+			                        
+			                        stroke(77, 41, 10); strokeWeight(3);
+			                        line(250+20-Cam.x,110+20-Cam.y,250+10-Cam.x,110+13-Cam.y);
+			                        fill(224, 141, 18); stroke(128, 66, 0);
+			                        rect(250+15-Cam.x,110+15-Cam.y,15,15,2);
+			                        stroke(77, 41, 10);
+			                        line(250+25-Cam.x,110+20-Cam.y,250+35-Cam.x,110+13-Cam.y);
+			                        
+			                        noStroke();
+			                        fill(WaterColor); rect(70-Cam.x,170-Cam.y,50,50);
+			                    }
+			                    if (mouseIsPressed) {
+			                        if (mouseInBox(70,110,50,50)) {editorBrush=8;}
+			                        if (mouseInBox(130,110,50,50)) {editorBrush=9;}
+			                        if (mouseInBox(190,110,50,50)) {editorBrush=26;}
+			                        if (mouseInBox(250,110,50,50)) {editorBrush=36;}
+			                        
+			                        if (mouseInBox(70,170,50,50)) {editorBrush=7;}
+			                    }
+			                } else if (editorMenu===4) {
+			                    fill(0); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			                    text("Settings -------------",70-Cam.x,120-Cam.y);
+			                    textFont(TxtLvlName2);
+			                    text("Name: "+LevelDataCodes[levelOn][2],90-Cam.x,151-Cam.y);
+			                    text("Author: "+LevelDataCodes[levelOn][3],90-Cam.x,174-Cam.y);
+			                    text("Dimensions: "+LevelDataCodes[levelOn][0]+" x "+LevelDataCodes[levelOn][1],68-Cam.x,255-Cam.y);
+			                    text("Billboard Text",68-Cam.x,195-Cam.y);
+			                    
+			                    textFont(TxtLvlName1,11); textAlign(LEFT);
+			                    LevelDataCodes[levelOn][4]=decodeLineFeed(LevelDataCodes[levelOn][4]);
+			                    text(LevelDataCodes[levelOn][4],68-Cam.x,215-Cam.y);
+			                    textAlign(LEFT,CENTER);
+			                    
+			                    // Rename Buttons
+			                    {
+			                    if (mouseInBox(67,141,18,18)) {
+			                        fill(87, 161, 235);
+			                        if (mouseIsPressed) {
+			                            editorRename=1; LevelDataCodes[levelOn][2]="";
+			                        }
+			                    } else {fill(31, 124, 217);}
+			                    stroke(0); strokeWeight(3);
+			                    rect(67-Cam.x,141-Cam.y,18,18,5);
+			                    
+			                    if (mouseInBox(67,165,18,18)) {
+			                        fill(87, 161, 235);
+			                        if (mouseIsPressed) {
+			                            editorRename=2; LevelDataCodes[levelOn][3]="";
+			                        }
+			                    } else {fill(31, 124, 217);}
+			                    stroke(0); strokeWeight(3);
+			                    rect(67-Cam.x,165-Cam.y,18,18,5);
+			                    
+			                    if (mouseInBox(190,186,18,18)) {
+			                        fill(87, 161, 235);
+			                        if (mouseIsPressed) {
+			                            editorRename=3; LevelDataCodes[levelOn][4]="";
+			                        }
+			                    } else {fill(31, 124, 217);}
+			                    stroke(0); strokeWeight(3);
+			                    rect(190-Cam.x,186-Cam.y,18,18,5);
+			                    
+			                    fill(0); textFont(TxtLvlName1,15);
+			                    text("⎋",69-Cam.x,151-Cam.y);
+			                    text("⎋",69-Cam.x,175-Cam.y);
+			                    text("⎋",192-Cam.x,196-Cam.y);
+			                    }
+			                    
+			                    // Save and Quit Buttons
+			                    stroke(0); strokeWeight(3);
+			                    if (mouseInBox(210,270,130,30)) {
+			                        fill(87, 161, 235);
+			                    } else {fill(31, 124, 217);}
+			                    rect(210-Cam.x,270-Cam.y,105,30,5);
+			                    if (mouseInBox(67,270,130,30)) {
+			                        fill(87, 161, 235);
+			                        if (mouse===1) {
+			                            MENU = 4;
+			                            curtainFlash=255;
+			                            editorMenu=1;
+			                            levelEditorMode=0;
+			                            editor = 0;
+			                            editorMenu=0;
+			                            editorRename=0;
+			                            mouse=2;
+			                        }
+			                    } else {fill(31, 124, 217);}
+			                    rect(67-Cam.x,270-Cam.y,130,30,5);
+			                    fill(0);
+			                    textFont(TxtLvlName2);
+			                    text("Save level",219-Cam.x,285-Cam.y);
+			                    text("Quit to Menu",75-Cam.x,285-Cam.y);
+			                    
+			                }
+			                
+			                if (editorMenu&&editorMenu<4) {
+			                    fill(0); textFont(TxtLvlName2,12); textAlign(LEFT,CENTER);
+			                    text("Item Selected: "+ItemNames[editorBrush],70-Cam.x,295-Cam.y);
+			                }
+			            }
+			            
+			            // Select Brush via hotkeys
+			            if (!editorMenu) {
+			            if (keys[69]) {editorBrush=0; hotkeyID=[0,0];}
+			            for (var i=1; i<7; i++) {
+			                if (keys[48+i] && !hotkeysDown) {
+			                    hotkeysDown = 1;
+			                    if (hotkeyID[0]===i) {
+			                        hotkeyID[1]++;
+			                        
+			                    } else {
+			                        hotkeyID = [i,0];
+			                    }
+			                    if (hotkeyID[1]>HotkeyTables[i].length-1) {hotkeyID=[i,0];}
+			                    editorBrush = HotkeyTables[i][hotkeyID[1]];
+			                }
+			            }
+			            if (keys.reduce(listSum, 0)===0) {hotkeysDown=0;} 
+			            }
+			            
+			            // Show the object on the cursor
+			            if (!editorMenu) {
+			                if (editorBrush===1||editorBrush===30) {fill(BlockColorHighlight); rect(mX,mY,50,50);}
+			                if (editorBrush===11) {
+			                    fill(BlockColorHighlight); rect(mX,mY,50,50);
+			                    fill(SpikeColorHighlight); rect(mX+5,mY+5,40,40);
+			                }
+			                if (editorBrush===2) {fill(BlockColorHighlight); rect(mX,mY,50,25);}
+			                if (editorBrush===12) {
+			                    fill(BlockColorHighlight); rect(mX,mY+25,50,25);
+			                }
+			                if (editorBrush===3) {fill(SpikeColorHighlight); 
+			                triangle(mX,mY+50,mX+25,mY+50,mX+12.5,mY+25);
+			                triangle(mX+25,mY+50,mX+50,mY+50,mX+37.5,mY+25);
+			                }
+			                if (editorBrush===19) {fill(SpikeColorHighlight); 
+			                triangle(mX,mY,mX+25,mY,mX+12.5,mY+25);
+			                triangle(mX+25,mY,mX+50,mY,mX+37.5,mY+25);
+			                }
+			                if (editorBrush===13||editorBrush===14) {
+			                    fill(SpikeColorHighlight);
+			                    triangle(mX+13,mY+25,mX+38,mY+25,mX+25.5,mY+0);
+			                    triangle(mX+13,mY+25,mX+38,mY+25,mX+25.5,mY+50);
+			                    triangle(mX+25,mY+12.5,mX+25,mY+37.5,mX+0,mY+25);
+			                    triangle(mX+25,mY+12.5,mX+25,mY+37.5,mX+50,mY+25);
+			                }
+			                if (editorBrush===4) {fill(SpikeColorHighlight); 
+			                triangle(mX,mY+25,mX+25,mY+25,mX+12.5,mY+50);
+			                triangle(mX+25,mY+25,mX+50,mY+25,mX+37.5,mY+50);
+			                rect(mX,mY,50,25);
+			                }
+			                if (editorBrush===5) {
+			                    fill(PlayerColorHighlight);
+			                    rect(mX+10,mY+30,30,10);
+			                    rect(mX+22,mY+40,6,10);
+			                }
+			                if (editorBrush===15||editorBrush===16||editorBrush===18) {
+			                    fill(SpikeColorHighlight);
+			                    rect(mX,mY+25,50,15);
+			                }
+			                if (editorBrush===6) {
+			                    fill(SpikeColorHighlight);
+			                    rect(mX,mY,50,50);
+			                    
+			                    fill(BlockColorHighlight);
+			                    ellipse(mX+25,mY+20,15,15);
+			                    triangle(mX+25,mY+20,mX+20,mY+40,mX+30,mY+40);
+			                }
+			                if (editorBrush===7) {
+			                    fill(WaterColorHighlight);
+			                    rect(mX,mY,50,50);
+			                }
+			                if (editorBrush===8) {
+			                    fill(PlayerColorHighlight);
+			                    rect(mX+15,mY+15,20,20);
+			                }
+			                if (editorBrush===9) {
+			                    fill(PlayerColorHighlight);
+			                    rect(mX+10,mY+10,30,20);
+			                    rect(mX+10,mY+30,5,20);
+			                }
+			                if (editorBrush===10) {
+			                    fill(PlayerColorHighlight);
+			                    ellipse(mX+25,mY+20,30,20);
+			                    rect(mX+20,mY+20,5,25);
+			                    rect(mX+20,mY+40,15,5);
+			                    rect(mX+20,mY+32,15,5);
+			                }
+			                if (editorBrush===17) {
+			                    stroke(21, 104, 237,120); strokeWeight(7);
+			                    line(mX+25,mY+20,mX+25,mY+45);
+			                    
+			                    fill(BlockColor,120); noStroke();
+			                    rect(mX,mY+20,18,10);
+			                    rect(mX+32,mY+20,18,10);
+			                    
+			                    fill(SpikeColor,120); noStroke();
+			                    rect(mX+36,mY+10,10,10);
+			                }
+			                if (editorBrush===21) {
+			                    fill(185, 228, 247,120);
+			                    stroke(20, 48, 112,120); strokeWeight(7);
+			                    rect(mX,mY,50,50,2);
+			                    fill(0,120); textFont(TxtMain,12); textAlign(CENTER);
+			                    text("W A  J",mX+25,mY+30);
+			                }
+			                if (editorBrush===22) {
+			                    fill(185, 228, 247,120); 
+			                    stroke(20, 48, 112,120); strokeWeight(7);
+			                    rect(mX,mY,50,50,2);
+			                    fill(8, 16, 107,120); noStroke();
+			                    ellipse(mX+25,mY+40,10,10);
+			                    triangle(
+			                        mX+15,mY+10,
+			                        mX+35,mY+10,
+			                        mX+25,mY+35
+			                    );
+			                }
+			                if (editorBrush===23) {
+			                    fill(39, 70, 97,120); noStroke();
+			                    rect(mX-50,mY-50,150,150);
+			                }
+			                if (editorBrush===24) {
+			                    fill(39, 70, 97,120); noStroke();
+			                    rect(mX-150,mY-150,300,300);
+			                }
+			                if (editorBrush===25) {
+			                    fill(185, 228, 247,120);
+			                    stroke(20, 48, 112,120); strokeWeight(7);
+			                    rect(mX,mY,50,50,2);
+			                    drawSmallHead(mX,mY,0.5,120);
+			                }
+			                if (editorBrush===26) {
+			                    fill(224, 141, 18,120); stroke(128, 66, 0,120); strokeWeight(3);
+			                    rect(mX+15,mY+15,15,15,2);
+			                }
+			                if (editorBrush===27) {
+			                    fill(15, 120, 186,120);
+			                    rect(mX,mY,50,50);
+			                    stroke(0, 42, 133,120); strokeWeight(8);
+			                    line(mX+10,mY+10,mX+40,mY+40);
+			                    line(mX+40,mY+10,mX+10,mY+40);
+			                }
+			                if (editorBrush===28) {
+			                    fill(185, 228, 247,120);
+			                    stroke(20, 48, 112,120); strokeWeight(7);
+			                    rect(mX,mY,50,50,2);
+			                    fill(0,120); textFont(TxtMain,20); textAlign(CENTER);
+			                    text("R",mX+25,mY+32);
+			                }
+			                if (editorBrush===29) {
+			                    stroke(21, 104, 237,120); strokeWeight(8);
+			                    line(mX+25,mY,mX+25,mY+150);
+			                }
+			                if (editorBrush===31) {
+			                    fill(39, 70, 97,120); noStroke();
+			                    rect(mX,mY,50,50);
+			                }
+			                if (editorBrush===34) {
+			                    fill(10, 44, 99,120);
+			                    rect(mX+15,mY+40,20,10);
+			                }
+			                if (editorBrush===35) {
+			                    rect(mX+5,mY,40,50);
+			                }
+			                if (editorBrush===36) {
+			                    stroke(77, 41, 10,120); strokeWeight(3);
+			                    line(mX+20,mY+20,mX+10,mY+13);
+			                    fill(224, 141, 18,120); stroke(128, 66, 0,120);
+			                    rect(mX+15,mY+15,15,15,2);
+			                    stroke(77, 41, 10,120);
+			                    line(mX+25,mY+20,mX+35,mY+13);
+			                }
+			                if (editorBrush===37) {
+			                    fill(SpikeColor,120);
+			                    rect(mX,mY,50,50);
+			                    fill(0,120);
+			                    ellipse(mX+15,mY+15,10,10);
+			                    rect(mX+30,mY+10,10,10);
+			                    strokeWeight(2); stroke(0,120);
+			                    line(mX+20,mY+30,mX+30,mY+40);
+			                    line(mX+30,mY+30,mX+20,mY+40);
+			                }
+			                if (editorBrush===38) {
+			                    fill(SpikeColor,120);
+			                    ellipse(mX+25,mY+25,30,30);
+			                }
+			                if (editorBrush===39) {
+			                    fill(SpikeColor,120);
+			                    rect(mX+10,mY+10,30,30);
+			                }
+			                if (editorBrush===40) {
+			                    strokeWeight(6); stroke(SpikeColor,120);
+			                    line(mX+15,mY+15,mX+35,mY+35);
+			                    line(mX+35,mY+15,mX+15,mY+35);
+			                }
+			            }
+			        }
+			        
+			        /**Other stuff**/
+			        // Particles
+			        for (var p=0; p<particles.length;p++) {
+			            particles[p].drawTick();
+			            if (particles[p].life<1) {
+			                particles.shift();
+			            }
+			        }
+			        
+			        // Timer Update
+			        if (Player.canControl===1) {levelTimer++;}
+			        
+			        // Level Txt
+			        if (levelOn<1) {
+			            fill(255); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			            text(LevelDataCodes[levelOn][2],13-Cam.x,23-Cam.y);
+			            fill(0);
+			            text(LevelDataCodes[levelOn][2],10-Cam.x,25-Cam.y);
+			            fill(255); textFont(TxtLvlName2); textAlign(LEFT,CENTER);
+			            
+			            text("By "+LevelDataCodes[levelOn][3],13-Cam.x,52-Cam.y);
+			            fill(0);
+			            text("By "+LevelDataCodes[levelOn][3],10-Cam.x,53-Cam.y);
+			        } else if (!lvl30cutscene) {
+			            fill(0); textFont(TxtLvlNumber); textAlign(CENTER,CENTER);
+			            text(levelOn,25-Cam.x,25-Cam.y);
+			            fill(255); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			            text(LevelDataCodes[levelOn][2],53-Cam.x,23-Cam.y);
+			            fill(0);
+			            text(LevelDataCodes[levelOn][2],50-Cam.x,25-Cam.y);
+			            
+			            
+			            var seconds = (levelTimer/60);
+			            var mill = floor((seconds-floor(seconds))*1000);
+			            var minutes = floor(floor(seconds)/60);
+			            
+			            var fullTimer;
+			            if (floor(seconds)%60 > 9) {
+			                fullTimer = minutes+" : "+floor(seconds)%60+" . "+mill;
+			            } else {
+			                fullTimer = minutes+" : 0"+floor(seconds)%60+" . "+mill;
+			            }
+			            fill(255); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			            text(fullTimer,263-Cam.x,23-Cam.y);
+			            fill(0);
+			            text(fullTimer,260-Cam.x,25-Cam.y);
+			        }
+			        
+			        // Editor Txt and Btn
+			        if (levelEditorMode) {
+			            textAlign(LEFT,CENTER);
+			            textFont(TxtMain);
+			            if (editor) {
+			                text("Editor Mode",2-Cam.x,388-Cam.y);
+			            } else {
+			                text("Play Mode",2-Cam.x,388-Cam.y);
+			            }
+			            textFont(TxtMain,13);
+			            text("Object: #"+editorBrush+", "+ItemNames[editorBrush],172-Cam.x,390-Cam.y);
+			        } else if (!lvl30cutscene&&bossHealth>0) {
+			            if (mouseInBox(353,355,40,40)) {
+			                fill(89, 217, 121);
+			                if (mouseIsPressed) {
+			                    if (levelOn===0) {
+			                        MENU = 4;
+			                        curtainFlash=255;
+			                        editorMenu=1;
+			                        levelEditorMode=0;
+			                        editor = 0;
+			                        editorRename=0;
+			                    } else {
+			                        MENU = 5;
+			                        curtainFlash=255;
+			                        titleTime=0;
+			                        levelCurtain=0;
+			                    }
+			                }
+			            } else {fill(11, 186, 55);}
+			            stroke(0); strokeWeight(5);
+			            rect(353-Cam.x,355-Cam.y,40,40,5);
+			            fill(0); textFont(TxtMain); textAlign(CENTER,CENTER);
+			            text("◀",373-Cam.x,377-Cam.y);
+			        }
+			        
+			        // Gate Timer
+			        {
+			        if (gateTimer>0) {
+			            gateTimer--;
+			            gateTimerPos = (gateTimerPos)/1.1;
+			        } else {
+			            gateTimerPos = (gateTimerPos+4)/1.1;
+			        }
+			        
+			        pushMatrix();
+			            translate(-Cam.x,gateTimerPos-Cam.y);
+			            fill(3, 6, 23); noStroke();
+			            rect(160,360,80,30);
+			            fill(21, 176, 237);
+			            for (var i=0; i<4; i++) {
+			                if (i*50<gateTimer) {rect(164+(i*19),363,15,24);}
+			            }
+			        popMatrix();
+			        }
+			        
+			        // Boss Health
+			        if (levelOn===30&&!lvl30cutscene&&bossHealth>0) {
+			            fill(0);
+			            pushMatrix();
+			                translate(95,375);
+			                quad(5,-10,215,-10,200,20,-10,20);
+			            popMatrix();
+			            fill(240, 153, 24);
+			            for (var i=0; i<bossHealth; i++) {
+			                pushMatrix();
+			                translate(105+(i*25),370);
+			                quad(0,0,20,0,10,20,-10,20);
+			                popMatrix();
+			            }
+			        }
+			    }
+			    if (MENU === 3) {
+			        if (keys[80]&&keys[81]&&keys[67]&&keys[77]&&keys[32]&&mouse===2) {MENU=6; thumbnail=1;}
+			        fill(0,200); rectMode(CORNER);
+			        rect(0,0,400,400);
+			        
+			        QuickBtn(345,375,90,30,color(41, 130, 255),color(136, 180, 242),"Back",function() {
+			                curtainFlash=255;
+			                MENU=1;
+			        });
+			        
+			        fill(196, 234, 255); textFont(TxtTitle3,50); textAlign(CENTER);
+			        text("Credits",200,60);
+			        
+			        fill(173, 178, 255); textFont(TxtLvlName2,15);
+			        text("Made by                 ",200,100);
+			        fill(46, 108, 232); text("BoredGuy",237,100);
+			        
+			        fill(173, 178, 255); text("Programed in",100,130);
+			        fill(104, 173, 43); text("KA's PJS Enviroment",248,130);
+			        image(getImage("avatars/leaf-green"),340,110,30,30);
+			        
+			        fill(173, 178, 255);
+			        text("Billboard Functions created with",200,170);
+			        fill(250, 40, 54);
+			        text("Troy Cook's Vertex(x,y) Program",200,190);
+			        
+			        fill(173, 178, 255);
+			        text("Orignal KeyboardInput Code by",160,220);
+			        fill(232, 230, 114);
+			        text("Akbaba©",336,220);
+			        
+			        fill(173, 178, 255);
+			        text("Special Thanks      ",200,260);
+			        fill(255, 51, 51);
+			        text("<3",266,260);
+			        fill(143, 150, 255);
+			        text("My classmate for positive support",200,280);
+			        text("My sibling for feedback",200,300);
+			        fill(224, 238, 255);
+			        text("And all of you guys. You guys are cool\nand I thank you for your appreciation.",200,330);
+			    }
+			    if (MENU === 4) {
+			        fill(50, 121, 201); textFont(TxtLvlName2,50); textAlign(CENTER,CENTER);
+			        text("Level Editor",200,50);
+			        
+			        if (CustomLevel==="") {
+			            fill(0); textFont(TxtLvlName1,20); textAlign(CENTER,CENTER);
+			            text("There is no level loaded.",200,150);
+			        } else {
+			            fill(0); textFont(TxtLvlName1,20); textAlign(CENTER,CENTER);
+			            text("Name: "+LevelDataCodes[0][2]+"\nAuthor: "+LevelDataCodes[0][3],200,150);
+			            
+			            QuickBtn(200,250,100,40,color(41, 130, 255),color(136, 180, 242),"Start",function() {
+			                menuToLevel(0);
+			            });
+			        }
+			        QuickBtn(200,300,130,40,color(41, 130, 255),color(136, 180, 242),"New Level",function() {
+			            MENU = 4.1;
+			            levelW = 8;
+			            levelH = 8;
+			        });
+			        if (LevelCodes[0].length>7) {QuickBtn(200,350,130,40,color(41, 130, 255),color(136, 180, 242),"Edit Level",function() {
+			            particles = [];
+			            levelEditorMode = 1;
+			            menuToLevel(0);
+			        });}
+			        QuickBtn(40,375,70,40,color(41, 130, 255),color(136, 180, 242),"Exit",function() {
+			            MENU = 1;
+			            curtainFlash = 255;
+			        });
+			        
+			    }
+			    if (MENU === 4.1) {
+			        fill(50, 121, 201); textFont(TxtLvlName2,50); textAlign(CENTER,CENTER);
+			        text("Level Editor",200,50);
+			        fill(0); textFont(TxtLvlName1,20); textAlign(CENTER,CENTER);
+			        text("Set the dimensions of the level.",200,100);
+			        text("Width",200,180);
+			        text(levelW,200,210);
+			        text("Height",200,250);
+			        text(levelH,200,280);
+			        QuickBtn(200,350,160,40,color(41, 130, 255),color(136, 180, 242),"Get started!",function() {
+			            LevelDataCodes[0] = [levelW,levelH,"Your Level","Your Name","Edit this text\nin the settings!"];
+			            LevelCodes[0] = [];
+			            particles = [];
+			            menuToLevel(0);
+			            levelEditorMode = 1; editorMenu=0; editor=1;
+			        });
+			        
+			        if (levelW>8) {
+			        QuickBtn(140,180,40,40,color(11, 186, 55),color(89, 217, 121),"◀",function() {
+			            levelW--;
+			        });}
+			        if (levelW<32) {
+			        QuickBtn(260,180,40,40,color(11, 186, 55),color(89, 217, 121),"▶",function() {
+			            levelW++;
+			        });}
+			        if (levelH>8) {
+			        QuickBtn(135,250,40,40,color(11, 186, 55),color(89, 217, 121),"◀",function() {
+			            levelH--;
+			        });}
+			        if (levelH<32) {
+			        QuickBtn(265,250,40,40,color(11, 186, 55),color(89, 217, 121),"▶",function() {
+			            levelH++;
+			        });}
+			    }
+			    if (MENU===5) {
+			        Cam.x = 0; Cam.y = 0;
+			        
+			        levelTimer = 0;
+			        fill(0); textAlign(CENTER); textFont(TxtTitle3,40);
+			        text("Level Select",140,50);
+			        
+			        QuickBtn(320,40,100,40,color(41, 130, 255),color(136, 180, 242),"Back",function() {
+			                if (levelCurtain<1) {curtainFlash=255; MENU=1;}
+			        });
+			        
+			        for (var j=0; j<5; j++) {
+			            for (var i=0; i<6; i++) {
+			                LvlBtn(i*60+50,j*60+100,40,40,color(41, 130, 255),color(136, 180, 242),
+			                i+1+(j*6));
+			            }
+			        }
+			    }
+			    if (MENU===6) {
+			        var x = bossUnaliveTime-650;
+			        var y = constrain(x,0,167);
+			            
+			        noStroke(); fill(0,200); rect(-100,-100,600,600);
+			        
+			        IAmAMountain(100,200);
+			        IAmAMountain(210,170);
+			        IAmAMountain(360,230);
+			        
+			        for (var i=0; i<2; i++) {
+			            noStroke();
+			            if (!i) {noFill(); stroke(0); strokeWeight(6);}
+			            
+			            fill(17, 142, 219);
+			            ellipse(200,300,150,150);
+			            rect(0,280,400,400);   
+			        }
+			        
+			        for (var i=0; i<2; i++) {
+			            noStroke();
+			            if (!i) {noFill(); stroke(0); strokeWeight(6);}
+			            fill(BlockColor,i*255);
+			            rect(0,350,250,400);
+			        }
+			        
+			        // I am a building
+			        if (x<319) {
+			        for (var i=0; i<2; i++) {
+			            noStroke();
+			            if (!i) {noFill(); stroke(0); strokeWeight(6);}
+			            fill(SpikeColor,i*255);
+			            rect(150,170,100,80);
+			            rect(210,110,30,80);
+			        }
+			        }
+			        
+			        if (bossUnaliveTime>649) {
+			            if (x<319) {fill(255,x);} else {fill(255,255-(x-320)*1.7);}
+			            ellipse(225,105,y*2,y*2);
+			        }
+			        if (x>519) {
+			            noStroke(); fill(0, constrain((x-520)*5,0,200) );
+			            rect(-100,-100,600,600);
+			            var z = x-520;
+			            var z2 = z-3440;
+			            fill(250); textFont(TxtTitle2,20); textAlign(LEFT);
+			            fill(0,z2);
+			            rect(-10,-10,500,500);
+			            
+			            pushMatrix();
+			            translate(0, constrain(420-(z/3),-820,420) ); fill(250);
+			            text(
+			            "And so, as the giant machine implodes,\nthe fortress vaporizes as if it was never\na thing...\n\nAs along with George and the\nrecord, never to be seen again.\n\nThe record was a such valuable piece.\nA interactable video documentaion of\nthe many adventures he has recorded\nthrough out over the course of more\nthan an entire year's worth.\n\nThe many who had seen and played with\nit has loved and embraced the novelty.\n\nBut, as the many people who embraced\nit, so were people who wanted it.\nThey wanted the love that George have\nreceived for themselves only.\n\nBut as the record is now forever gone to\ntime, it now only persits in the minds of\nthe people who simply cherished it,\nhowever being hazy at best.\n\n\n\nAsking a soul who has witnessed the\nrecord would say...",
+			            10,0);
+			            textAlign(CENTER);
+			            fill(250);
+			            text("That it's just                       .",200,1030);
+			            fill(20, 176, 184);
+			            text("basically cyan",258,1030);
+			            popMatrix();
+			            if (z2 > 399) {
+			                fill(0,z2-400);
+			                rect(-10,-10,500,500);
+			            }
+			            if (z2 > 699) {
+			                MENU=3;
+			                bossUnaliveTime=0;
+			                bossHealth=8;
+			            }
+			        }
+			        
+			        // Thumbnail
+			        if (thumbnail) {
+			            fill(9, 30, 71,150); noStroke();
+			            rect(0,0,400,400);
+			            
+			            textAlign(CENTER,CENTER);
+			            textFont(TxtTitle3);
+			            fill(179, 105, 14);
+			            text("3",260 ,175);
+			            fill(235, 143, 30);
+			            text("3",250 ,175);
+			            drawTitle(200,190,120);
+			            
+			            fill(250);
+			            textFont(TxtMain,20);
+			            text("The Final Shade",200,250);
+			            textFont(TxtMain,15);
+			            text("BoredGuy's",200,120);
+			            if (mouse===1) {MENU=1;}
+			        }
+			    }
+			    if (MENU===7) {
+			        fill(0,200); rectMode(CORNER); noStroke();
+			        rect(0,0,400,400);
+			        
+			        textFont(TxtTitle3,50);
+			        fill(166, 209, 255);
+			        text("Settings",200,40);
+			        textFont(TxtTitle3,12);
+			        fill(75, 110, 163);
+			        text("idk what else to add\nbut hey you have better\ncontrols, so you're welcome.",200,170);
+			        
+			        
+			        var x;
+			        if (settings[0]) {x="W to Jump";} else {x="J to Jump";}
+			        QuickBtn(200,110,120,40,color(41, 130, 255),color(136, 180, 242),x,function() {
+			                settings[0]=!settings[0];
+			        });
+			        
+			        QuickBtn(345,375,90,30,color(41, 130, 255),color(136, 180, 242),"Back",function() {
+			                curtainFlash=255;
+			                MENU=1;
+			        });
+			    }
+			    
+			    // Curtain
+			    noStroke(); fill(250,curtainFlash);
+			    rect(-9999,-9999,999999,999999);
+			    curtainFlash-=10;
+			    
+			    // Lvl30 Cutscene
+			    if (lvl30cutscene && MENU===2) {
+			        if (lvl30time===0) {Player.y=450;}
+			        
+			        if (lvl30time>129) {
+			            if (lvl30time===130) {
+			                Player.vy=-13;
+			            }
+			            Player.vy+=Gravity;
+			            Player.y+=Player.vy;
+			            if (Player.inObjectList(blocks)&&Player.vy>0) {
+			                while (Player.inObjectList(blocks)) {
+			                    Player.y--;
+			                }
+			                Player.vy=0;
+			            }
+			        }
+			        if (lvl30time>289 && lvl30time<360) {
+			            if (lvl30time===290) {
+			                Boss.vy=-12;
+			            }
+			            Boss.vy+=0.25;
+			            Boss.y+=Boss.vy;
+			        }
+			        if (lvl30time>429) {
+			            fill(250,(lvl30time-430)*10); noStroke(); rectMode(CENTER);
+			            rect(Boss.x,Boss.y-200,220,100,10); rectMode(CORNER);
+			            noFill();stroke(250,(lvl30time-430)*10); strokeWeight(10);
+			            arc(Boss.x+35,Boss.y-145,50,50,-40,60);
+			            
+			            // Speaking and Stuff
+			            if (lvl30time>439) {
+			                if (lvl30time===440) {}
+			                fill(0); textFont(TxtMain,15); pushStyle();
+			                textAlign(CENTER);
+			                text(extractBossTxt(bossTxt[0],bossTxt[1]),Boss.x,Boss.y-220);
+			                popStyle();
+			                
+			                //text(bossTxt[1],Boss.x,Boss.y-160);
+			                
+			                bossTxt[2]++;
+			                if ((bossTxt[2]>2||keys[32]) && bossTxt[1]<BossLines[bossTxt[0]].length) {
+			                    bossTxt[1]++;
+			                    bossTxt[2]=0;
+			                }
+			                if (bossTxt[1]>=BossLines[bossTxt[0]].length) {
+			                    if (keys[32]) {
+			                        bossTxt[0]++;
+			                        bossTxt[1]=0;
+			                        bossTxt[2]=0;
+			                        if (bossTxt[0]>11) {startBoss();}
+			                    }
+			                }
+			                
+			                if (keys[80]) {startBoss();}
+			            }
+			        }
+			        
+			        lvl30time++;
+			        
+			    }
+			    
+			    // Boss Unalive Cutscene
+			    if (bossHealth<1) {
+			        bossUnaliveTime++;
+			        if (bossUnaliveTime===120) {
+			            Boss.hurt=50;
+			        }
+			        if (bossUnaliveTime>239) {
+			            Boss.hurt=50;
+			        }
+			        if (bossUnaliveTime>29&&bossUnaliveTime<580) {
+			            fill(255,bossUnaliveTime-300); noStroke();
+			            rect(-10,-10,500,500);
+			        }
+			        if (bossUnaliveTime>579) {
+			            MENU=6;
+			            fill(255,255-(bossUnaliveTime-560)*5); noStroke();
+			            rect(-10,-10,500,500);
+			        }
+			    }
+			    
+			    // Level Curtain
+			    if (levelCurtain>0) {
+			        var x;
+			        if (levelCurtain<100) {
+			            x = -500+log(levelCurtain*3)*90;
+			        } else {
+			            if (levelCurtain===100) {
+			                // Level Curtain Action
+			                if (lvlTransit===-1) {
+			                    MENU=5; Cam.x=0; Cam.y=0;
+			                    levelTimer=0;
+			                } else {
+			                    menuToLevel(lvlTransit);
+			                }
+			            }
+			            x = 120-log((levelCurtain-100)*3)*90;
+			            if (levelCurtain>250) {levelCurtain=-1;}
+			        }
+			        
+			        pushMatrix();
+			        translate(constrain(x,-800,0)-Cam.x,0-Cam.y);
+			        
+			        fill(45, 119, 204);
+			        rect(0,0,400,400);
+			        for (var i=0; i<12; i++) {
+			            var y = i*40-(levelCurtain%40)-40;
+			            fill(231, 237, 245);
+			            triangle(0,y+20,0,60+y,40,40+y);
+			            fill(168, 191, 219);
+			            triangle(0,y,0,40+y,40,20+y);
+			        }
+			        popMatrix();
+			        
+			        levelCurtain++;
+			    }
+			};
+			
+			// Other
+			keyPressed = function() {keys[keyCode]=1;};
+			keyReleased = function() {keys[keyCode]=0;};
+			keyTyped = function() {
+			    if (editorRename===1) {
+			        if (keys[8]) {
+			            LevelDataCodes[levelOn][2]=LevelDataCodes[levelOn][2].substring(0,LevelDataCodes[levelOn][2].length-1);
+			        } else if (LevelDataCodes[levelOn][2].length<13) {LevelDataCodes[levelOn][2]+=key.toString();}
+			    } else if (editorRename===2) {
+			        if (keys[8]) {
+			            LevelDataCodes[levelOn][3]=LevelDataCodes[levelOn][3].substring(0,LevelDataCodes[levelOn][3].length-1);
+			        } else if (LevelDataCodes[levelOn][3].length<12){LevelDataCodes[levelOn][3]+=key.toString();}
+			    } else if (editorRename===3) {
+			        if (keys[8]) {
+			            LevelDataCodes[levelOn][4]=LevelDataCodes[levelOn][4].substring(0,LevelDataCodes[levelOn][4].length-1);
+			        } else if (LevelDataCodes[levelOn][4].length<150){LevelDataCodes[levelOn][4]+=key.toString();}
+			    }
+			};
+			mousePressed = function() {
+			    // Get Save Code Button
+			    if (mouseInBox(210,270,130,30) && editorMenu===4) {
+			        getSaveCode();
+			        fetchCustomLevel();
+			    }
+			    
+			    // EDITOR
+			    if (editor && !editorMenu) {
+			        var mX = floor((mouseX-Cam.x)/50);
+			        var mY = floor((mouseY-Cam.y-100)/50)+(levelH-8)+2;
+			        
+			        if (level[mY][mX]!==0) {
+			            if (level[mY][mX]===8) {
+			                Player.spawnX = null; Player.spawnY = null;
+			            }
+			            if (level[mY][mX]===9) {
+			                return;
+			            }
+			            if (level[mY][mX]===10) {
+			                Key.x = null; Key.y = null;
+			            }
+			            level[mY][mX]=0;
+			        } else {
+			            if (editorBrush===8) {
+			                if (Player.spawnX!==null) {
+			                    level[Player.spawnY+(levelH-8)][Player.spawnX]=0;
+			                }
+			            } else if (editorBrush===9) {
+			                if (Flag.x!==null) {
+			                    level[Flag.y+(levelH-8)][Flag.x]=0;
+			                }
+			            } else if (editorBrush===10) {
+			                if (Key.x!==null) {
+			                    level[Key.y+(levelH-8)][Key.x]=0;
+			                }
+			            }
+			            level[mY][mX]=editorBrush;
+			            if (editorBrush===8) {
+			                Player.spawnX = mX;
+			                Player.spawnY = mY;
+			            } else if (editorBrush===9) {
+			                Flag.x = mX;
+			                Flag.y = mY;
+			            } else if (editorBrush===10) {
+			                Key.x = mX;
+			                Key.y = mY;
+			            }
+			        }
+			        
+			        generateLevel();
+			    }
+			};
+			}
+		}
+		
+		runPJS(program);
+		
+		// Add reload button on KA --> <script>
+		
+	</script>
+</body>
+
+</html>
