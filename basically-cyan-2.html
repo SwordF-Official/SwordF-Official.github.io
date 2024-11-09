@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Program exported to HTML using the KA Project Exporter by @MushyAvocado 
+https://www.khanacademy.org/computer-programming/ka-project-exporter/5195486791385088
+-->
+	
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Basically Cyan 2</title>
+	<style>
+		
+		
+		/* Change the color as you want */
+		:root {
+			--background-color: #000000;
+		}
+		
+		
+		html, body, #wrapper {
+			overflow: hidden;
+			width: 100%;
+		    height: 100%;
+			margin: 0px;
+			padding: 0px;
+		    width: calc(100% + 1px);
+		}
+		
+		body {
+		    background-color: var(--background-color);
+		}
+		
+		
+		canvas {
+			width: fit-content;
+			height: fit-content;
+		}
+		
+		canvas:focus {
+			outline: none;
+		}
+		
+		/* Automatically fits to the remaining height and centers the canvas it contains */
+		#wrapper {
+			padding: 0px;
+			margin: 0px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+		}
+		
+</style>
+</head>
+<body id="wrapper">
+    <!-- Canvases with a class of "sketch" are applied to the program in the order runPJS() is called. -->
+    <canvas class="sketch"></canvas>
+	<!-- Load the PJS library -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Khan/processing-js@master/processing.js"></script>
+	<!-- The exporter script must be loaded before the program script -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Mushy-Avocado/KA-exporter@v1.0.1/exporter.js"></script>
+	<!-- Run Khan Academy program and import PJS -->
+	<script type="application/javascript">
+		
+		
+		function program() {
+		    
+		    title("Basically Cyan 2");
+		    size(400, 400);
+		    
+		    // All code goes here
+			/**
+			 * =================================================
+			 *  Paste the level code here to play custom levels
+			 * =================================================
+			**/
+			
+			var CustomLevel = "";
+			
+			/**
+			 * ================================================
+			 *                 Basicaly CYAN 2
+			 * ================================================
+			 * The sequel to a silly little platformer I made 
+			 * for f̶u̶n̶ no reason what so ever. :P
+			 * 
+			 * ================================================
+			 *                     Controls
+			 * ================================================
+			 * A and D to move, J to jump.
+			 * The tringles cripple you so no touchy.
+			 * Touching the Flag r̶e̶b̶i̶r̶t̶h̶s̶ takes you to the
+			 * next level. There are definitly 12 levels.
+			 * 
+			 *          Tottally not more than that...
+			 * 
+			 * ================================================
+			 *                   Level Editor
+			 * ================================================
+			 * Wow there's actually a level editor? I know
+			 * crazy yeah? Anyways, this is how you use it.
+			 * 
+			 * In the LevelEditor menu, clicking on "New Level"
+			 * will bring you to a screen asking you to set
+			 * the dimensions of the level.
+			 * 
+			 * The level can be small as 8x8, up to a 32x32.
+			 * After that, you can click on "Get started!".
+			 * 
+			 * In the level editor mode, there are two modes.
+			 * Play mode (press O), and Editor mode (Press P).
+			 * While in editor mode, you can freely move around
+			 * and can place and remove blocks. 
+			 * 
+			 * Pressing Space (in editor mode) brings you to a
+			 * manager screen. Here you can select mutiple
+			 * things like blocks and tringles that cripple you.
+			 * Going to the level settings can let you rename
+			 * the level, the author of said level. And also
+			 * quit out (which is the best thing to do right now).
+			 * 
+			 * To save the level, click on "Get Save Code" to get
+			 * a code that you can copy, and paste to share
+			 * your a̶b̶o̶m̶i̶n̶a̶t̶i̶o̶n̶ level to other people.
+			 * 
+			 * To load a custom level, paste the level code into
+			 * the variable in the code above, make sure the type
+			 * is a string, or else it won't work. Then you
+			 * click on "Start" in the LevelEditor menu.
+			 * 
+			 * ================================================
+			 *                    Update Log
+			 * ================================================
+			 * 5-12-23
+			 * - There is nothing special in Level 4.
+			 * - Added new items to use in the editor.
+			 * 
+			 * 5-4-23
+			 * - GetLevelCode button now saves your level so it can be re-edited
+			 * - Extended Coyote Time by a few frames
+			 * 
+			 * 5-2-23
+			 * - Added Coyote Time (Precise Jumps are now easier)
+			 * - Changed level 7 to be easier
+			 * - Changed level 11 to be "Inconvience"
+			 * 
+			 * 5-1-23
+			 * - Don't hover on the corner of the title screen...
+			 * - Fixed Back Button in gameplay mode.
+			 * 
+			 * 4-30-23
+			 * - Released.
+			 * 
+			**/
+			
+			// The entire game lies here.
+			{
+			// Constants
+			var PlayerColor = color(77, 114, 235);
+			var PlayerColorHighlight = color(77, 114, 235,120);
+			var BlockColor = color(86, 179, 237);
+			var BlockColorHighlight = color(86, 179, 237,120);
+			var SpikeColor = color(39, 104, 145);
+			var SpikeColorHighlight = color(39, 104, 145,120);
+			var BackgroundLineColor = color(159, 167, 237);
+			var WaterColorHighlight = color(54, 201, 209,100);
+			var WaterColor = color(54, 201, 209);
+			
+			var TxtLvlNumber = createFont("Verdana Bold Italics", 30);
+			var TxtLvlName1 = createFont("Verdana Bold Italics", 20);
+			var TxtLvlName2 = createFont("Verdana Bold Italics", 15);
+			var TxtLvlSetting = createFont("Verdana Bold", 20);
+			var TxtMain = createFont("Helvetica Bold", 20);
+			var TxtTitle1 = createFont("Times Bold");
+			var TxtTitle2 = createFont("Trebuchet MS Bold");
+			var TxtTitle3 = createFont("Trebuchet MS Bold Italics",120);
+			
+			var SoundBtn = getSound("retro/hit1");
+			var SoundJump = getSound("retro/jump2"); SoundJump.audio.volume = 0.10;
+			var SoundSpring = getSound("retro/jump1"); SoundSpring.audio.volume = 0.10;
+			var SoundWin = getSound("retro/whistle2"); SoundWin.audio.volume = 0.40;
+			var SoundDie = getSound("retro/laser2");
+			var SoundCrusher = getSound("rpg/hit-thud"); SoundCrusher.audio.volume = 0.5;
+			var SoundKey = getSound("rpg/metal-clink"); SoundKey.audio.volume = 0.5;
+			
+			textAlign(CENTER,CENTER);
+			
+			var Gravity = 0.5;
+			
+			var LevelDataCodes = [
+			    [0,0,,"",""],
+			    [8,8,"Welcome","Bored Guy"],
+			    [8,8,"Hallways","Bored Guy"],
+			    [8,8,"Hazard","Bored Guy"],
+			    [8,8,"Bounce","Bored Guy"],
+			    [12,8,"I Have a Crush","Bored Guy"],
+			    [8,8,"Key Blocked","Bored Guy"],
+			    [8,12,"Backtracker","Bored Guy"],
+			    [8,8,"Against a Cycle","Bored Guy"],
+			    [8,15,"Platforms","Bored Guy"],
+			    [12,15,"Dungeon","Bored Guy"],
+			    [8,8,"Inconvience","Bored Guy"],
+			    [8,12,"Up and Down","Bored Guy"],
+			    [32,32,"Massive Oatmeal","Bored Guy"],
+			    [8,8,"Swimming Lesson","Bored Guy"],
+			    [8,8,"Diving","Bored Guy"],
+			    [16,8,"Your a Weight","Bored Guy"],
+			    [8,32,"Falling","Bored Guy"],
+			    [32,12,"Bridge","Bored Guy"]
+			];
+			var LevelCodes = [
+			[],
+			
+			// Welcome
+			[[1,1,1,1,1,1,1,1],
+			[1,2,0,0,0,0,2,1],
+			[1,9,0,0,0,0,0,1],
+			[1,1,1,0,0,0,0,1],
+			[1,2,0,0,2,0,0,1],
+			[1,0,8,0,0,0,1,1],
+			[1,0,11,0,0,1,1,1],
+			[1,1,1,1,1,1,1,1]],
+			
+			// Hallways
+			[[1,1,1,1,1,1,1,1,0],
+			[1,2,0,0,0,0,0,1,0],
+			[1,0,9,0,1,1,0,1,0],
+			[1,11,2,11,1,0,12,1,0],
+			[1,0,0,0,1,12,0,1,0],
+			[1,8,0,0,0,0,0,1,0],
+			[1,1,3,1,0,3,1,1,0],
+			[1,1,1,1,1,1,1,1,0]],
+			
+			// Hazard
+			[[1,1,1,1,1,1,1,1,0],
+			[1,2,0,2,11,2,1,1,0],
+			[1,0,9,0,0,0,0,1,0],
+			[1,0,11,0,0,0,0,1,0],
+			[1,0,0,0,0,0,0,1,0],
+			[1,5,0,0,4,0,0,1,0],
+			[1,11,3,11,1,1,8,1,0],
+			[1,1,11,1,1,1,1,1,0]],
+			
+			// Bounce
+			[[1,1,1,1,1,1,1,1,0],
+			[1,2,0,0,11,2,11,1,0],
+			[0,0,0,0,0,0,0,1,0],
+			[1,1,2,0,0,0,0,1,0],
+			[1,0,0,0,13,0,13,1,0],
+			[1,8,0,5,0,0,0,1,0],
+			[1,1,1,1,0,9,0,1,0],
+			[1,1,1,1,11,1,11,1,0]],
+			
+			// I have a Crush
+			[[1,1,1,1,1,1,1,1,1,1,1,1],
+			[1,1,11,1,11,1,11,1,11,1,11,1],
+			[1,11,1,11,1,11,1,1,2,11,2,1],
+			[1,1,2,0,2,0,2,1,0,0,,1],
+			[1,0,0,0,0,0,0,11,0,0,,1],
+			[1,8,0,4,0,0,0,2,0,0,0,1],
+			[1,1,1,1,0,4,0,0,0,4,9,1],
+			[1,1,1,1,1,1,1,1,11,1,11,1]],
+			
+			// Key Blocked
+			[[1,1,1,1,1,1,1,1,0],
+			[1,2,0,2,1,1,1,1,0],
+			[1,0,10,0,0,0,2,1,0],
+			[1,0,0,0,0,0,0,1,0],
+			[1,0,0,12,0,3,0,1,0],
+			[1,12,0,0,0,1,0,1,0],
+			[1,8,0,3,0,6,9,1,0],
+			[1,1,1,1,1,1,1,1,0]],
+			
+			// Backtracker
+			[[1,1,1,1,1,1,1,1,0],
+			[1,2,11,2,0,0,2,1,0],
+			[1,0,0,0,13,0,0,1,0],
+			[1,0,0,0,0,0,10,1,0],
+			[1,8,4,0,0,0,3,1,0],
+			[1,11,6,11,3,0,2,1,0],
+			[1,2,0,1,1,5,3,1,0],
+			[1,0,0,2,11,1,1,1,0],
+			[1,0,0,0,0,0,2,1,0],
+			[1,3,0,0,0,0,9,1,0],
+			[1,1,11,0,4,0,11,1,0],
+			[1,1,1,1,1,1,1,1,0]],
+			
+			// Against a Cycle
+			[[1,1,1,1,1,1,1,1,0],
+			[1,1,1,1,1,1,2,1,0],
+			[1,11,10,11,1,0,0,1,0],
+			[1,0,0,0,1,9,0,1,0],
+			[1,0,14,0,1,2,0,1,0],
+			[1,12,0,0,6,0,5,1,0],
+			[1,11,8,11,1,1,1,1,0],
+			[1,1,1,1,1,1,1,1,0]],
+			
+			// Platforms
+			[[1,1,1,1,1,1,1,1],
+			[1,2,0,1,1,1,1,1],
+			[1,0,0,0,2,0,1,1],
+			[1,9,0,0,0,0,2,1],
+			[1,2,0,0,4,0,0,1],
+			[1,3,0,2,2,2,0,1],
+			[1,1,3,0,0,0,12,1],
+			[1,1,1,12,0,1,11,1],
+			[1,2,0,0,0,0,2,1],
+			[1,0,0,0,0,0,0,1],
+			[1,3,0,0,15,0,0,1],
+			[1,1,11,0,0,0,3,1],
+			[1,2,0,0,0,0,11,1],
+			[1,8,0,0,15,0,1,1],
+			[1,1,1,0,0,0,1,1]],
+			
+			// Dungeon
+			[[1,1,1,1,1,1,1,1,1,1,0,0],
+			[1,1,2,0,0,0,0,4,11,1,1,12],
+			[1,1,0,0,2,1,1,0,0,0,2,1],
+			[1,1,11,0,0,0,1,0,0,0,0,1],
+			[1,2,0,0,14,0,1,0,0,0,9,1],
+			[1,4,0,0,0,0,1,3,0,3,1,1],
+			[1,0,2,1,1,5,1,11,15,11,1,1],
+			[1,2,0,1,1,1,2,0,0,0,2,1],
+			[1,0,1,2,0,0,0,0,0,10,0,1],
+			[1,0,1,0,0,0,0,0,0,0,0,1],
+			[1,5,6,0,0,0,0,13,0,0,0,1],
+			[1,1,2,0,0,3,5,0,0,15,0,1],
+			[1,0,0,0,0,11,2,11,3,0,3,1,1],
+			[1,8,0,15.1,0,1,2,1,2,0,2,1],
+			[1,1,1,0,0,1,2,1,0,0,0,1]],
+			
+			// Inconvience
+			[[8,0,0,0,1,1,1,1],
+			[1,0,0,0,0,0,2,1],
+			[0,0,0,13,0,0,0,1],
+			[0,0,0,0,0,13,0,4],
+			[0,0,0,0,0,0,0,4],
+			[4,0,5,0,0,0,0,4],
+			[3,0,1,0,0,0,0,9],
+			[1,3,1,3,1,3,3,1]],
+			
+			// Up and Down
+			[[1,1,1,1,1,1,1,1],
+			[1,2,0,2,1,10,0,0],
+			[1,0,0,0,1,6,1,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,14,0,3,0,3,5],
+			[2,0,1,1,1,6,1,1],
+			[12,0,1,2,0,0,2,1],
+			[1,0,0,0,0,0,0,1],
+			[1,5,4,0,0,0,0,1],
+			[1,2,11,0,3,8,3,1],
+			[1,12,1,5,11,6,11,1],
+			[1,0,1,2,1,9,1,1]],
+			
+			// MASSIVE OATMEAL
+			[[1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1],
+			[1,2,0,0,0,13,1,1,0,0,0,0,0,0,0,0,2,1,1,1,1,1,1,1,2,0,0,0,0,0,2,1],
+			[1,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,0,0,0,0,1],
+			[1,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,0,0,12,0,0,0,0,0,0,0,1],
+			[1,0,0,5,0,5,0,1,0,0,0,0,14,0,0,14,0,0,0,1,0,12,0,13,0,0,12,0,11,0,0,1],
+			[1,0,0,12,0,2,0,1,0,15,0,3,0,0,0,0,3,0,0,1,0,11,0,0,0,0,0,0,0,0,0,0],
+			[1,0,3,3,3,3,3,1,0,0,0,11,3,0,0,3,11,0,0,0,0,11,0,5,0,0,0,0,0,0,0,0],
+			[1,5,1,1,1,1,1,1,0,3,0,1,11,3,3,11,1,0,0,0,13,2,13,2,13,2,0,0,0,0,0,0],
+			[1,0,0,0,0,0,0,0,0,2,0,0,2,11,11,2,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0],
+			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,3,0,3,0,3,5,0,3,0,0,0],
+			[0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,1,11,1,11,1,11,1,11,0,1,0,9,0],
+			[0,2,0,0,14,0,0,14,0,0,14,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,2,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,3,3,3],
+			[0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1],
+			[3,3,3,0,11,1,11,1,11,1,11,0,0,0,0,1,12,0,0,3,0,3,0,3,0,3,0,0,4,0,0,1],
+			[11,1,1,0,0,0,0,0,0,0,0,0,0,4,0,2,1,0,11,2,11,2,11,2,11,2,11,0,1,11,5,11],
+			[1,2,0,0,0,0,0,0,0,0,0,0,0,11,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+			[1,0,0,0,3,0,3,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1],
+			[2,0,12,1,11,1,11,0,0,0,0,0,5,1,3,0,0,1,14,1,14,1,14,1,14,1,14,0,1,11,5,11],
+			[0,0,1,2,0,0,0,0,0,0,0,12,11,1,11,12,0,12,1,2,0,0,2,1,2,0,0,0,1,1,0,1],
+			[0,5,1,0,0,0,0,0,1,1,11,1,2,4,2,1,1,1,1,1,12,0,0,1,0,0,0,0,0,1,0,1],
+			[6,2,2,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,1,11,1,1,0,0,3,0,3,11,5,11],
+			[0,0,0,0,4,0,4,0,0,0,1,0,0,0,0,0,11,1,1,0,14,3,11,1,0,0,11,5,11,1,0,1],
+			[5,0,13,2,0,0,11,0,0,0,1,0,0,15,0,0,0,2,1,0,1,14,3,1,0,13,2,1,1,1,0,1],
+			[1,0,0,0,0,1,1,1,0,4,1,0,3,0,3,0,2,0,1,0,14,3,11,1,0,0,13,0,1,11,5,11],
+			[1,0,5,0,0,2,1,1,3,0,1,0,11,1,2,0,0,0,1,0,1,11,3,1,0,0,0,0,2,1,0,1],
+			[1,0,11,0,0,0,2,1,11,0,11,0,1,0,12,0,3,5,1,0,14,3,11,1,3,0,0,13,0,1,0,1],
+			[1,0,0,0,0,0,0,6,0,0,0,0,1,0,1,0,2,1,1,0,1,11,3,1,1,0,0,0,0,11,5,11],
+			[1,0,0,0,15,0,11,1,11,0,11,12,12,15,1,0,0,0,1,0,1,3,11,1,0,0,0,0,0,1,0,1],
+			[1,0,0,0,0,5,1,2,0,0,0,2,1,0,6,0,0,0,6,10,1,11,3,1,0,1,0,0,0,1,0,1],
+			[8,0,4,0,3,11,1,3,0,0,3,0,1,3,1,0,11,0,1,2,1,3,11,1,3,1,3,0,0,4,5,1],
+			[1,1,1,1,1,1,1,2,0,0,1,0,1,2,1,0,0,0,1,0,1,11,3,1,2,11,2,0,1,1,11,1]],
+			
+			// Swimming Lesson
+			[[1,1,1,0,1,1,1,1],
+			[1,2,0,0,0,0,2,1],
+			[0,0,3,0,0,0,0,8],
+			[9,0,11,0,0,0,0,1],
+			[1,7,1,0,0,0,0,1],
+			[1,7,11,7,1,7,7,1],
+			[1,7,7,7,1,7,7,1],
+			[1,1,1,1,1,1,1,1]],
+			
+			
+			// Diving
+			[[1,1,1,2,1,0,0,1],
+			[1,1,8,0,1,9,0,1],
+			[1,11,1,7,1,1,6,1],
+			[1,0,1,7,1,7,7,1],
+			[1,10,1,7,14,7,7,1],
+			[1,0,1,7,7,7,7,1],
+			[1,7,7,7,1,7,7,1],
+			[1,1,1,1,1,1,1,1]],
+			
+			// Your a Weight
+			[[0,0,0,0,0,0,0,2,1,1,1,0,2,1,1,1],
+			[0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,2],
+			[0,0,0,3,0,0,0,0,0,2,11,0,0,0,1,0],
+			[0,0,0,11,1,12,0,16,0,0,0,0,12,16,1,0],
+			[8,0,15,0,2,11,0,0,0,0,4,0,1,0,11,0],
+			[11,3,0,0,0,1,3,0,0,11,0,5,1,0,0,0],
+			[1,2,0,0,3,1,1,3,3,1,3,1,1,0,3,9],
+			[1,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1]],
+			
+			// Falling
+			[[1,1,1,1,1,1,1,1],
+			[1,2,0,0,0,0,2,1],
+			[1,0,0,0,0,0,3,1],
+			[1,8,0,3,11,16,11,1],
+			[1,1,1,1,1,0,2,1],
+			[1,2,0,2,13,0,0,1],
+			[1,0,0,0,0,0,0,1],
+			[1,0,3,0,3,0,3,1],
+			[1,16,1,5,1,0,1,1],
+			[1,0,2,11,1,3,1,1],
+			[1,0,0,0,1,1,2,1],
+			[1,0,0,0,6,10,0,1],
+			[11,6,11,7,11,1,7,1],
+			[1,0,1,7,1,7,7,1],
+			[1,0,1,7,14,7,14,1],
+			[1,0,1,7,7,7,7,1],
+			[1,0,1,1,1,1,1,1],
+			[1,0,11,2,0,0,0,2],
+			[1,0,0,0,3,0,0,0],
+			[1,0,4,0,1,0,12,0],
+			[1,0,11,0,1,16,1,0],
+			[1,3,1,0,0,0,0,5],
+			[1,1,1,1,1,0,1,1],
+			[7,7,1,2,0,0,0,1],
+			[7,7,1,0,0,0,3,1],
+			[7,7,1,0,3,3,1,1],
+			[7,7,1,0,1,1,2,0],
+			[7,1,1,0,0,0,0,0],
+			[7,1,0,0,0,0,0,9],
+			[1,1,0,0,0,16,0,1],
+			[1,0,0,5,0,0,0,1],
+			[1,0,0,1,0,0,0,1]],
+			
+			// Bridge
+			[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,1,11,0,3,0,0,0],
+			[0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,12,11,0,0,0,0,0,2,1,1,11,0,0,0],
+			[0,0,0,3,1,1,0,0,0,0,0,12,12,3,0,3,12,12,1,1,0,0,0,0,0,0,1,2,0,0,0,0],
+			[8,0,1,1,1,1,0,0,0,11,3,1,2,11,12,11,2,1,12,1,0,17,0,0,0,0,1,0,0,0,9,0],
+			[1,1,1,1,1,1,0,1,1,1,1,1,0,0,2,0,0,1,12,1,0,0,0,0,0,0,1,0,0,1,1,1],
+			[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7]]
+			
+			];
+			var ItemNames = [
+			"Erase","Block","Top Slab","Spikes","Crush Trap","Spring",
+			"Key Block","Water","Player Spawn","End Flag","Key","Decor Block","Bottom Slab",
+			"Floating Spikes","Spike Chain","Moving Platform","Falling Platform","Seesaw"
+			];
+			
+			// Variables
+			var Settings = [0,0];
+			
+			var Player = {x:0, y:0, vx:0, vy:0, onGround:0, spawnX:null, spawnY:null, coyoteTime:0};
+			var Flag = {x:null, y:null, ani:0};
+			var Key = {x:null, y:null};
+			var levelOn = 0;
+			var level = [];
+			
+			var levelW = 8;
+			var levelH = 8;
+			
+			var Block;
+			var blocks = [];
+			var Hazzard;
+			var hazzards = [];
+			var Spring;
+			var springs = [];
+			var Water;
+			var waters = [];
+			var gottenKey = 0;
+			
+			var seesawVal = 0;
+			
+			var particles = [];
+			var curtainFlash = 0;
+			var titleTime = 0;
+			var MENU = 1;
+			
+			var keys = []; for (var k=0;k<127;k++) {keys[k]=0;}
+			var mouse = 0;
+			
+			var levelEditorMode = 0;
+			var editor = 0;
+			var editorBrush = 1;
+			var editorMenu = 0;
+			var editorRename = 0;
+			
+			var l13btn = 0;
+			
+			var Cam = {x:0, y:0};
+			
+			// Etc. Functions
+			var rngInt = function(min,max) {
+			    return floor(random(min,max));
+			};
+			var mod = function(x,n) {
+			    var a = floor(x/n)*n; return x-a;
+			};
+			var mouseInBox = function(x,y,w,h) {
+			    return mouseX>x&&mouseX<x+w&&mouseY>y&&mouseY<y+h;
+			};
+			
+			// Level Functions
+			var emptyLevel = function(w,h) {
+			    level = [];
+			    for (var j = 0; j < h; j++) {
+			        var t = [];
+			        for (var i = 0; i < w; i++) {
+			            t.push(0);
+			        }
+			        level.push(t);
+			    }
+			};
+			var saveLevel = function() {
+			    println("");
+			    println("Level Code Here");
+			    for (var i = 0; i < levelH; i++) {
+			        if (i===0) {
+			            println("[["+level[i]+"],");
+			        } else if (i===levelH-1) {
+			            println("["+level[i]+"]]");
+			        } else {
+			            println("["+level[i]+"],");
+			        }
+			    }
+			};
+			var generateLevel = function() {
+			    
+			    blocks = []; hazzards = []; springs = []; waters = [];
+			    var oy = (levelH-8)*-50;
+			    for (var j = 0; j < levelH; j++) { for (var i = 0; i < levelW; i++) {
+			        if (level[j][i]===1) {blocks.push(new Block(i*50,j*50+oy,50,50,1));}
+			        if (level[j][i]===2) {blocks.push(new Block(i*50,j*50+oy,50,25,1));}
+			        if (level[j][i]===3) {hazzards.push(new Hazzard(i*50,j*50+25+oy,1));}
+			        if (level[j][i]===4) {hazzards.push(new Hazzard(i*50,j*50-150+oy,2));}
+			        if (level[j][i]===5) {springs.push(new Spring(i*50+10,j*50+30+oy));}
+			        if (level[j][i]===6) {blocks.push(new Block(i*50,j*50+oy,50,50,2));}
+			        if (level[j][i]===7) {waters.push(new Water(i*50,j*50+oy,50,50));}
+			        if (level[j][i]===8) {Player.spawnX=i; Player.spawnY=j+(oy/50);}
+			        if (level[j][i]===9) {Flag.x=i;Flag.y=j+(oy/50);}
+			        if (level[j][i]===10) {Key.x=i;Key.y=j+(oy/50);}
+			        if (level[j][i]===11) {blocks.push(new Block(i*50,j*50+oy,50,50,3));}
+			        if (level[j][i]===12) {blocks.push(new Block(i*50,j*50+oy+25,50,25,1));}
+			        if (level[j][i]===13) {hazzards.push(new Hazzard(i*50,j*50+oy,3));}
+			        if (level[j][i]===14) {
+			            blocks.push(new Block(i*50,j*50+oy,50,50,3));
+			            hazzards.push(new Hazzard(i*50,j*50+oy,4));
+			        }
+			        if (level[j][i]===15) {blocks.push(new Block(i*50,j*50+oy+25,50,15,4));}
+			        if (level[j][i]===15.1) {blocks.push(new Block(i*50+25,j*50+oy+25,50,15,4));}
+			        if (level[j][i]===16) {blocks.push(new Block(i*50,j*50+oy+25,50,15,5));}
+			        if (level[j][i]===17) {
+			            blocks.push(new Block(i*50+10,j*50+oy,30,10,6));
+			            blocks.push(new Block(i*50+60,j*50+oy,30,10,7));
+			        }
+			    }}
+			};
+			var resetLevel = function() {
+			    Key.x = null; Key.y = null;
+			    Flag.x = null; Flag.y = null;
+			    
+			    generateLevel();
+			    Player.x = Player.spawnX*50+15; Player.y = Player.spawnY*50+30;
+			    Player.vx = 0; Player.vy = 0;
+			    gottenKey = 0; seesawVal = 0;
+			    curtainFlash = 255;
+			};
+			var loadLevel = function() {
+			    level=LevelCodes[levelOn];
+			    levelW=LevelDataCodes[levelOn][0];
+			    levelH=LevelDataCodes[levelOn][1];
+			    
+			    if (level.length!==levelH) {
+			        emptyLevel(LevelDataCodes[levelOn][0],LevelDataCodes[levelOn][1]);
+			        level[4][0]=8; level[5][0]=1; level[4][7]=9; level[5][7]=1;
+			    }
+			    resetLevel();
+			};
+			var getSaveCode = function() {
+			    println("This is your save code, copy this and paste this\nin the comments to share your level with others!");
+			    var str = LevelDataCodes[levelOn][2]+"|"+LevelDataCodes[levelOn][3]+"|"+LevelDataCodes[levelOn][0]+"|"+LevelDataCodes[levelOn][1]+"|";
+			    for (var j=0; j<LevelDataCodes[levelOn][1]; j++) {
+			        for (var i= 0; i<LevelDataCodes[levelOn][0]; i++) {
+			            if (level[j][i]>9) {str+=level[j][i];}
+			            else {str+="0"+level[j][i];}
+			        }
+			    }
+			    println(str);
+			    CustomLevel = str;
+			};
+			var menuToLevel = function(l) {
+			    levelOn = l;
+			    MENU = 2;
+			    particles = [];
+			    loadLevel();
+			};
+			
+			var drawTitle = function(x,y,size) {
+			    pushMatrix();
+			    translate(x,y);
+			    scale(size/100);
+			    
+			    fill(60, 118, 252);
+			    textFont(TxtTitle1,25);
+			    
+			    pushMatrix();
+			    translate(-40,-28);
+			    rotate(-12);
+			    text("Basically",0,0);
+			    popMatrix();
+			    
+			    textFont(TxtTitle2,40);
+			    fill(39, 187, 245);
+			    text("CYAN",0,0);
+			    
+			    popMatrix();
+			};
+			
+			// Player Functions
+			Player.inObjectList = function(object) {
+			    for (var o = 0; o < object.length; o++) {
+			        if (Player.x+20>object[o].x && Player.x<object[o].x+object[o].w &&
+			            Player.y+20>object[o].y && Player.y<object[o].y+object[o].h) {
+			            return 1;
+			        }
+			    }
+			    return 0;
+			};
+			Player.inRect = function(x,y,w,h) {
+			        return Player.x+20>x&&Player.x<x+w&&Player.y+20>y && Player.y<y+h;
+			};
+			Player.fixup = function() {
+			    // Are we already inside a Block?
+			    if (Player.inObjectList(blocks)) {
+			        var fix = 0;
+			        for (var i=0; i<4; i++) {
+			            fix++;
+			            Player.y+=fix;
+			            if (!Player.inObjectList(blocks)) {return;}
+			            
+			            fix++;
+			            Player.y-=fix;
+			            if (!Player.inObjectList(blocks)) {return;}
+			        }
+			        // Assumed the player gotten squahed
+			        resetLevel();
+			    }
+			};
+			Player.control = function() {
+			    
+			    while ((Player.inObjectList(blocks))) {Player.fixup();}
+			    
+			    if (Player.onGround) {Player.coyoteTime=0;}
+			    else {Player.coyoteTime++;}
+			    
+			    Player.vy+=Gravity;
+			    Player.y+=Player.vy;
+			    Player.onGround = 0;
+			    
+			    // Moving
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.y-=abs(Player.vy)/Player.vy;
+			        }
+			        if (abs(Player.vy)/Player.vy===-1) {Player.vy = 0;} else {
+			            Player.onGround = 1; Player.vy=0;
+			            if (Settings[1]&&keys[74]) {
+			                playSound(SoundJump);
+			            }
+			        }
+			    }
+			    if (Player.coyoteTime<4 && keys[74]) {Player.vy=-9; Player.coyoteTime=99; Player.onGround = 0;}
+			    
+			    Player.vx=(keys[68]-keys[65])*3;
+			    Player.x+=Player.vx;
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.x-=abs(Player.vx)/Player.vx;
+			        }
+			    }
+			    if (Player.x<0) {Player.x=0; Player.vx=0;}
+			    if (Player.x+20>levelW*50) {Player.x=(levelW*50)-20;}
+			    if (Player.y>400) {resetLevel();}
+			    
+			};
+			Player.waterControl = function() {
+			    
+			    while ((Player.inObjectList(blocks))) {Player.fixup();}
+			    
+			    if (Player.onGround) {Player.coyoteTime=99;}
+			    else {Player.coyoteTime++;}
+			    
+			    Player.onGround = 0;
+			    Player.coyoteTime = 0;
+			    
+			    if (keys[74]) {
+			        Player.vy = -2;
+			        if (Settings[1]) {
+			            playSound(SoundJump);
+			        }
+			    } else {
+			        Player.vy = 1;
+			    }
+			    Player.y+=Player.vy;
+			    
+			    // Moving
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.y-=abs(Player.vy)/Player.vy;
+			        }
+			        if (abs(Player.vy)/Player.vy===-1) {Player.vy = 0;} else {
+			        Player.onGround = 1; Player.vy=0;}
+			    }
+			    
+			
+			    Player.vx=(keys[68]-keys[65])*2;
+			    Player.x+=Player.vx;
+			    if (Player.inObjectList(blocks)) {
+			        while (Player.inObjectList(blocks)) {
+			            Player.x-=abs(Player.vx)/Player.vx;
+			        }
+			    }
+			    if (Player.x<0) {Player.x=0; Player.vx=0;}
+			    if (Player.x+20>levelW*50) {Player.x=(levelW*50)-20;}
+			    if (Player.y>400) {resetLevel();}
+			    
+			};
+			Player.tick = function() {
+			    
+			    if (!Player.inObjectList(waters)) {Player.control();}
+			    else {Player.waterControl();}
+			    
+			    // Touching hazzards
+			    if (Player.inObjectList(hazzards)) {
+			        resetLevel();
+			        if (Settings[1]) {playSound(SoundDie);}
+			    }
+			    // Touching Springs
+			    if (Player.inObjectList(springs)) {
+			        Player.vy=-12;
+			        if (Settings[1]) {playSound(SoundSpring);}
+			    }
+			    // Touching flag
+			    if (Player.x+20>Flag.x*50&&Player.x<Flag.x*50+50&&
+			        Player.y+20>Flag.y*50&&Player.y<Flag.y*50+50) {
+			        if (levelOn===12||levelOn===18) {
+			            MENU = 1; titleTime = 0; curtainFlash = 255;
+			        } else {
+			            if (levelEditorMode && levelOn===0) {
+			                resetLevel();
+			            } else {
+			                levelOn++;
+			                if (Settings[1]) {playSound(SoundWin);}
+			                if (levelOn===1) {
+			                    levelOn=0;
+			                    MENU = 4; curtainFlash = 255;
+			                } else {
+			                    loadLevel();
+			                }
+			            }
+			        }
+			    }
+			    // Touching Key
+			    if (Player.x+20>Key.x*50&&Player.x<Key.x*50+50&&
+			        Player.y+20>Key.y*50&&Player.y<Key.y*50+50) {
+			        Key.x=null; Key.y=null;
+			        gottenKey=1;
+			        if (Settings[1]) {playSound(SoundKey);}
+			    }
+			};
+			Player.godMode = function() {
+			    Player.vx = 0; Player.vy = 0;
+			    Player.x+=(keys[68]-keys[65])*3;
+			    Player.y+=(keys[83]-keys[87])*3;
+			};
+			
+			// OOP
+			Block = function(x,y,w,h,id) {
+			    this.x = x; this.y = y; this.w = w; this.h = h;
+			    this.id = id;
+			    this.timer = 0;
+			    
+			    this.tempA = 0;
+			    this.TempB = 0;
+			    
+			    this.drawOutline = function() {
+			        if (gottenKey && this.id===2) {this.y = -9999;}
+			        noFill(); stroke(0); strokeWeight(6);
+			        rect(this.x,this.y,this.w,this.h);
+			    };
+			    this.draw = function() {
+			        noStroke();
+			        if (this.id===1) {
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			        } else if (this.id===2) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,50,50);
+			            
+			            fill(BlockColor);
+			            ellipse(this.x+25,this.y+20,15,15);
+			            triangle(this.x+25,this.y+20,this.x+20,this.y+40,this.x+30,this.y+40);
+			        } else if (this.id===3) {
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            fill(SpikeColor);
+			            rect(this.x+5,this.y+5,this.w-10,this.h-10);
+			        } else if (this.id===4) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            
+			            if (this.timer>99) {this.y++;} else {this.y--;}
+			            if (this.timer>199) {this.timer=-2;}
+			            this.timer++;
+			        } else if (this.id===5) {
+			            fill(SpikeColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            
+			            if (Player.inRect(this.x,this.y-3,this.w,this.h)&&!editor) {
+			                this.y+=3;
+			                Player.y=this.y-this.w/2+4;
+			            }
+			        } else if (this.id===6) {
+			            // seesaw
+			            
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            if (Player.inRect(this.x,this.y-3,this.w,this.h)&&seesawVal===0&&!editor) {
+			                seesawVal = 1;
+			                this.y+=15;
+			                Player.y=this.y-this.w;
+			            }
+			            if (seesawVal===2) {
+			                this.y-=15;
+			                if (Player.inRect(this.x,this.y-3,this.w,this.h)) {
+			                    Player.y=this.y-this.w;
+			                    Player.vy = -15;
+			                }
+			                seesawVal = 0;
+			            }
+			            
+			            stroke(21, 104, 237); strokeWeight(8);
+			            line(this.x+40,this.y-10,this.x+40,this.y+99999);
+			            if (seesawVal===1||seesawVal===1.1) {
+			                line(this.x+40,this.y-25,this.x+40,this.y+99999);
+			            }
+			            
+			        } else if (this.id===7) {
+			            // seesaw
+			            
+			            fill(BlockColor);
+			            rect(this.x,this.y,this.w,this.h);
+			            stroke(0); strokeWeight(3);
+			            fill(SpikeColor);
+			            rect(this.x+5,this.y-22+this.tempA,20,20);
+			            
+			            if (seesawVal===1) {this.y-=15; this.TempB = -10; seesawVal=1.1;}
+			            
+			            if (seesawVal===1.1) {
+			                this.tempA+=this.TempB;
+			                this.TempB+=Gravity;
+			                
+			                if (this.tempA > 0) {
+			                    seesawVal = 2; this.y+=15;
+			                    this.tempA = 0; this.tempB = 0;
+			                }
+			            } else {
+			                this.tempA = 0; this.tempB = 0;
+			            }
+			            
+			            
+			        }
+			    };
+			};
+			Water = function(x,y,w,h) {
+			    this.x = x; this.y = y; this.w = w; this.h = h;
+			    
+			    this.drawOutline = function() {
+			        noFill(); stroke(0); strokeWeight(6);
+			        rect(this.x,this.y,this.w,this.h);
+			    };
+			    this.draw = function() {
+			        
+			        var z = 1+sin(millis()/3)*2;
+			        
+			        noStroke();
+			        fill(WaterColor);
+			        rect(this.x,this.y+z,50,50);
+			    };
+			};
+			Hazzard = function(x,y,id) {
+			    this.x = x; this.y = y; this.id = id;
+			    this.sx = x; this.sy = y;
+			    this.w = 0; this.h = 0;
+			    this.tickA=0;
+			    this.draw = function() {
+			        fill(SpikeColor); noStroke();
+			        if (this.id===1) {
+			            this.w = 50;
+			            this.h = 25;
+			            triangle(this.x,this.y+25,this.x+25,this.y+25,this.x+12.5,this.y);
+			            triangle(this.x+25,this.y+25,this.x+50,this.y+25,this.x+37.5,this.y);
+			        } else if (this.id===2) {
+			            this.w = 50; this.h = 200;
+			            triangle(this.x,this.y+175,this.x+25,this.y+174,this.x+12.5,this.y+200);
+			            triangle(this.x+25,this.y+175,this.x+50,this.y+174,this.x+37.5,this.y+200);
+			            rect(this.x,this.y,50,175);
+			        } else if (this.id===3||this.id===4) {
+			            this.w=50;
+			            this.h=50;
+			            fill(SpikeColor);
+			            triangle(this.x+13,this.y+25,this.x+38,this.y+25,this.x+25.5,this.y+0);
+			            triangle(this.x+13,this.y+25,this.x+38,this.y+25,this.x+25.5,this.y+50);
+			            triangle(this.x+25,this.y+12.5,this.x+25,this.y+37.5,this.x+0,this.y+25);
+			            triangle(this.x+25,this.y+12.5,this.x+25,this.y+37.5,this.x+50,this.y+25);
+			            stroke(SpikeColor-20); strokeWeight(5);
+			            line(this.x+25,this.y+25,this.sx+25,this.sy+25);
+			        }
+			    };
+			    this.tick = function() {
+			        if (this.id===2) {
+			            if (this.tickA<50) {
+			                this.y-=1;
+			            } else if (this.tickA<60) {
+			                // ;)
+			            } else if (this.tickA<70) {
+			                this.y+=5;
+			            } else if (this.tickA>=105) {
+			                this.tickA=0;
+			                this.y--;
+			            }
+			            if (this.tickA===65 && Settings[1]) {playSound(SoundCrusher);}
+			            this.tickA++;
+			        } else if (this.id===4) {
+			            this.x = this.sx+sin(millis()/10)*58;
+			            this.y = this.sy+cos(millis()/10)*58;
+			        }
+			    };
+			};
+			Spring = function(x,y) {
+			    this.x = x; this.y = y; this.w = 30; this.h = 20;
+			    this.draw = function() {
+			        fill(PlayerColor); noStroke();
+			        rect(this.x,this.y,30,10);
+			        rect(this.x+12,this.y+10,6,10);
+			    };
+			};
+			
+			var Particle = function(x,y,life,grav,dir,speed,scatter) {
+			    this.x = x; this.y = y; this.vy=0;
+			    this.grav = grav;
+			    this.dir = dir+=rngInt(-scatter,scatter);
+			    this.speed = speed;
+			    this.startLife = life; this.life = life;
+			    this.drawTick = function() {
+			        // tick
+			        this.life--;
+			        this.x+=sin(this.dir)*this.speed;
+			        this.y+=(cos(this.dir)*this.speed);
+			        this.vy+=this.grav;
+			        this.y+=this.vy;
+			        
+			        // draw
+			        noStroke(); fill(77, 114, 235,this.life/this.startLife*255); rectMode(CENTER);
+			        rect(this.x,this.y,4,4);
+			        rectMode(CORNER);
+			        
+			    };
+			};
+			var QuickBtn = function(x,y,w,h,color,hoverColor,txt,onClick) {
+			    fill(color);
+			    if (mouseInBox(x-w/2,y-h/2,w,h)) {
+			        fill(hoverColor);
+			        if (mouse===1) {onClick(); mouse = 2;}
+			    }
+			    stroke(0); strokeWeight(5);
+			    rectMode(CENTER);
+			    rect(x,y,w,h,10);
+			    rectMode(CORNER);
+			    fill(250);
+			    textFont(TxtMain,20);
+			    textAlign(CENTER,CENTER);
+			    text(txt,x,y);
+			};
+			
+			// Fetch the custom level data like the good boi I am :3
+			var fetchCustomLevel= function() {
+			    var r = 0;
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][2] = s;
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][3] = s;
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][0] = Number(s);
+			    var s = "";
+			    while (CustomLevel[r]!=="|") {
+			        s+=CustomLevel[r];
+			        r++;
+			    } r++;
+			    LevelDataCodes[0][1] = Number(s);
+			    
+			    LevelCodes[0] = [];
+			    for (var j=0; j<LevelDataCodes[0][1]; j++) {
+			        var temp = [];
+			        for (var i=0; i<LevelDataCodes[0][0]; i++) {
+			            var item = Number(CustomLevel[r]+CustomLevel[r+1]);
+			            temp.push(Number(item));
+			            r+=2; 
+			        }
+			        LevelCodes[0].push(temp);
+			    }
+			};
+			if (CustomLevel!=="") {fetchCustomLevel();}
+			
+			// Draw Loop
+			draw = function() {
+			    if (!mouse && mouseIsPressed) {mouse=1;}
+			    else if (mouse===1 && mouseIsPressed) {mouse=2;}
+			    if (!mouseIsPressed) {mouse=0;}
+			    
+			    // Background
+			    background(225, 239, 250);
+			    stroke(BackgroundLineColor); strokeWeight(10);
+			    var bx = mod(millis()/-40,40)+200;
+			    for (var b = 0; b < 15; b++) { 
+			        line(bx+b*40-400,-100,bx+b*40-200,500);
+			    }
+			    
+			    // Title Particles
+			    if ((MENU===1&&titleTime>89) || MENU===3 || MENU===4 || MENU===4.1) {
+			        particles.push(new Particle(rngInt(10,390),410,100,0.1,180,rngInt(2,5),20));
+			        for (var p=0; p<particles.length;p++) {
+			            particles[p].drawTick();
+			            if (particles[p].life<1) {
+			                particles.shift();
+			            }
+			        }
+			    }
+			    if (MENU!==1) {l13btn=0;}
+			    
+			    if (MENU === 1) {
+			        textAlign(CENTER,CENTER);
+			        
+			        // 2!
+			        fill(31, 57, 222,(titleTime-90)*4);
+			        textFont(TxtTitle3);
+			        text("2",constrain((titleTime-80)+190,0,240),135);
+			        
+			        // Title
+			        titleTime++;
+			        if (titleTime < 50) {
+			            drawTitle(200,200, log(titleTime)*30);
+			        } else if (titleTime < 90) {
+			            drawTitle(200,200,120);
+			        } else if (titleTime < 130) {
+			            drawTitle(200, sin( (titleTime-90)*-2 )*50 +200,120);
+			        } else {
+			            drawTitle(200,150,120);
+			        }
+			        
+			        if (titleTime > 89) {
+			            fill(0,(titleTime-90)*4);
+			            textFont(TxtMain,15);
+			            text("The Sequel That\nNo One Asked For",200,210);
+			            text("Made by BoredGuy",70,390);
+			            QuickBtn(200,constrain(450-((titleTime-90)*4),260,450),100,40,color(41, 130, 255),color(136, 180, 242),"Play",function() {
+			                menuToLevel(1);
+			            });
+			            QuickBtn(200,constrain(450-((titleTime-102.5)*4),310,450),130,40,color(41, 130, 255),color(136, 180, 242),"Level Editor",function() {
+			                curtainFlash = 255;
+			                MENU=4;
+			            });
+			            
+			            // 13
+			            if (l13btn > 99) {
+			                l13btn++;
+			            } else {
+			               if (mouseX>370 && mouseY>370) {l13btn++;} else {l13btn=0;}
+			            }
+			            
+			            QuickBtn(380,constrain(520-l13btn,380,420),30,30,color(255, 43, 43),color(240, 136, 136),"!",function() {
+			                MENU = 5; curtainFlash = 255;
+			            });
+			            
+			            /**QuickBtn(200,constrain(450-((titleTime-115)*4),360,450),100,40,color(41, 130, 255),color(136, 180, 242),"Settings",function() {
+			                curtainFlash = 255;
+			                MENU = 3;
+			            });**/
+			        }
+			        
+			        
+			        
+			    }
+			    if (MENU === 2) {
+			        
+			        translate(0,0);
+			        // Scrolling
+			        Cam.x = -Player.x+200;
+			        Cam.y = floor(-Player.y)+100;
+			        
+			        // Constrain Scrolling
+			        if (Player.x<200) {Cam.x=0;}
+			        if (Player.x>200+((levelW-8)*50)) {Cam.x=(levelW-8)*-50;}
+			        if (Player.y>200) {Cam.y=-100;}
+			        if (Player.y<200-((levelH-8)*50)) {Cam.y=-100+((levelH-8)*50);}
+			        Cam.y+=100;
+			        
+			        translate(Cam.x,Cam.y);
+			        
+			        // Update Hazzards
+			        for (var h=0;h<hazzards.length;h++) {
+			            hazzards[h].tick();
+			        }
+			        
+			        // Flag
+			        if (Flag.x!==null) {
+			            noStroke(); fill(PlayerColor);
+			            rect(Flag.x*50+10,Flag.y*50+10,30,20);
+			            rect(Flag.x*50+10,Flag.y*50+30,5,20);
+			        }
+			        
+			        // Draw Level
+			        for (var w = 0; w < waters.length; w++) {
+			            waters[w].draw();
+			        }
+			        for (var h = 0; h < hazzards.length; h++) {
+			            hazzards[h].draw();
+			        }
+			        for (var s = 0; s < springs.length; s++) {
+			            springs[s].draw();
+			        }
+			        for (var b = 0; b < blocks.length; b++) {
+			            blocks[b].drawOutline();
+			        }
+			        for (var b = 0; b < blocks.length; b++) {
+			            blocks[b].draw();
+			        }
+			        
+			        // Player
+			        if (editor) {if (!editorMenu) {Player.godMode();}} else {
+			            var px = Player.x;
+			            if (curtainFlash < 1) {Player.tick();}
+			            if (px!==Player.x && Player.onGround) {
+			                particles.push(
+			                    new Particle(Player.x+10+Player.vx,Player.y+15,20,0.2,0,1,40)
+			                );
+			            }
+			        }
+			        fill(PlayerColor); stroke(37, 88, 125); strokeWeight(3);
+			        rect(Player.x,Player.y,18,18);
+			        stroke(127, 217, 227); line(Player.x+5,Player.y+6,Player.x+7,Player.y+5);
+			        noStroke();
+			        
+			        // Key
+			        if (!(gottenKey || Key.x === null)) {
+			            fill(PlayerColor);
+			            Key.ani = sin(millis()/3)*2;
+			            ellipse(Key.x*50+25,Key.y*50+20+Key.ani,30,20);
+			            rect(Key.x*50+20,Key.y*50+20+Key.ani,5,25);
+			            rect(Key.x*50+20,Key.y*50+40+Key.ani,15,5);
+			            rect(Key.x*50+20,Key.y*50+32+Key.ani,15,5);
+			        }
+			        
+			        // Player Spawn
+			        if (Player.spawnX!==null && levelEditorMode) {
+			            fill(PlayerColorHighlight);
+			            rect(Player.spawnX*50+15,Player.spawnY*50+15,20,20);
+			        }
+			        
+			        // Level Editor
+			        if (levelEditorMode) {
+			            if (keys[79]&&!editorMenu) {editor=0; editorBrush=0;} if (keys[80]) {editor=1;}
+			        }
+			        if (editor) {
+			            
+			            if (keys[32]&&keys[10]) {saveLevel();}
+			            
+			            noStroke();
+			            var mX = floor((mouseX-Cam.x)/50)*50;
+			            var mY = (floor((mouseY-Cam.y-100)/50)*50)+100;
+			            
+			            if (keys[32] && !editorMenu) {editorMenu=1;}
+			            
+			            // User-Friendly Brush Select
+			            if (editorMenu) {
+			                // Draw Box
+			                fill(255); stroke(0); strokeWeight(5);
+			                rect(60-Cam.x,60-Cam.y,280,280,5);
+			                fill(42, 73, 189); rect(60-Cam.x,60-Cam.y,280,40,5);
+			                fill(0); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			                text("Level Manager",70-Cam.x,80-Cam.y);
+			                
+			                // Red X
+			                if (mouseInBox(300,60,40,40)) {
+			                    fill(240, 94, 87);
+			                    if (mouseIsPressed) {editorMenu=0; editorRename=0;}
+			                } else {fill(222, 24, 13);}
+			                rect(300-Cam.x,60-Cam.y,40,40,5);
+			                fill(0); textFont(TxtLvlNumber); textAlign(CENTER,CENTER);
+			                text("X",320-Cam.x,80-Cam.y);
+			                
+			                // Tab Switchers
+			                {
+			                    stroke(0); strokeWeight(5);
+			                    if (mouseInBox(60,310,85,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed) {editorMenu=1; editorRename=0;}
+			                    } else {fill(33, 217, 20);}
+			                    rect(60-Cam.x,310-Cam.y,85,30,5);
+			                    if (mouseInBox(145,310,115,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed) {editorMenu=2; editorRename=0;}
+			                    } else {fill(33, 217, 20);}
+			                    rect(145-Cam.x,310-Cam.y,115,30,5);
+			                    if (mouseInBox(260,310,50,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed) {editorMenu=3; editorRename=0;}
+			                    } else {fill(33, 217, 20);}
+			                    rect(260-Cam.x,310-Cam.y,50,30,5);
+			                    if (mouseInBox(310,310,30,30)) {
+			                        fill(75, 235, 64);
+			                        if (mouseIsPressed) {editorMenu=4; editorRename=0;} 
+			                    } else {fill(33, 217, 20);}
+			                    rect(310-Cam.x,310-Cam.y,30,30,5);
+			                    
+			                    fill(0); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			                    text("Blocks",65-Cam.x,325-Cam.y);
+			                    text("Hazzards",150-Cam.x,325-Cam.y);
+			                    text("Etc.",265-Cam.x,325-Cam.y);
+			                    textFont(TxtLvlSetting);
+			                    text("☀",315-Cam.x,325-Cam.y);
+			                }
+			                
+			                // Options
+			                noStroke();
+			                if (editorMenu===1) {
+			                    // Draw Options
+			                    {
+			                        fill(BlockColor); rect(70-Cam.x,110-Cam.y,50,50);
+			                        
+			                        fill(BlockColor); rect(130-Cam.x,110-Cam.y,50,50);
+			                        fill(SpikeColor); rect(135-Cam.x,115-Cam.y,40,40);
+			                        
+			                        fill(BlockColor); rect(190-Cam.x,110-Cam.y,50,25);
+			                        fill(BlockColor); rect(250-Cam.x,135-Cam.y,50,25);
+			                    }
+			                    if (mouseIsPressed) {
+			                        if (mouseInBox(70,110,50,50)) {editorBrush=1;}
+			                        if (mouseInBox(130,110,50,50)) {editorBrush=11;}
+			                        if (mouseInBox(190,110,50,50)) {editorBrush=2;}
+			                        if (mouseInBox(250,110,50,50)) {editorBrush=12;}
+			                    }
+			                } else if (editorMenu===2) {
+			                    // Draw Options
+			                    {
+			                        fill(SpikeColor); 
+			                        triangle(70-Cam.x,110+50-Cam.y,70+25-Cam.x,110+50-Cam.y,70+12.5-Cam.x,110+25-Cam.y);
+			                        triangle(70+25-Cam.x,110+50-Cam.y,70+50-Cam.x,110+50-Cam.y,70+37.5-Cam.x,110+25-Cam.y);
+			                        
+			                        triangle(70-Cam.x+60,110+25-Cam.y,70+25-Cam.x+60,110+25-Cam.y,70+12.5-Cam.x+60,110+25-Cam.y+25);
+			                        triangle(70+25-Cam.x+60,110+25-Cam.y,70+50-Cam.x+60,110+25-Cam.y,70+37.5-Cam.x+60,110+25-Cam.y+25);
+			                        rect(130-Cam.x,110-Cam.y,50,25);
+			                        
+			                        for (var i=0; i<61; i+=60) {
+			                            triangle(i+190+13-Cam.x,110+25-Cam.y,i+190+38-Cam.x,110+25-Cam.y,i+190+25.5-Cam.x,110+0-Cam.y);
+			                            triangle(i+190+13-Cam.x,110+25-Cam.y,i+190+38-Cam.x,110+25-Cam.y,i+190+25.5-Cam.x,110+50-Cam.y);
+			                            triangle(i+190+25-Cam.x,110+12.5-Cam.y,i+190+25-Cam.x,110+37.5-Cam.y,i+190+0-Cam.x,110+25-Cam.y);
+			                            triangle(i+190+25-Cam.x,110+12.5-Cam.y,i+190+25-Cam.x,110+37.5-Cam.y,i+190+50-Cam.x,110+25-Cam.y);
+			                        }
+			                    }
+			                    if (mouseIsPressed) {
+			                        if (mouseInBox(70,110,50,50)) {editorBrush=3;}
+			                        if (mouseInBox(130,110,50,50)) {editorBrush=4;}
+			                        if (mouseInBox(190,110,50,50)) {editorBrush=13;}
+			                        if (mouseInBox(250,110,50,50)) {editorBrush=14;}
+			                    }
+			                } else if (editorMenu===3) {
+			                    // Draw Options
+			                    {
+			                        fill(PlayerColor);
+			                        rect(70+10-Cam.x,110+30-Cam.y,30,10);
+			                        rect(70+22-Cam.x,110+40-Cam.y,6,10);
+			                        
+			                        fill(SpikeColor);
+			                        rect(130-Cam.x,110+25-Cam.y,50,15);
+			                        
+			                        rect(190-Cam.x,110+25-Cam.y,50,15);
+			                        
+			                        fill(WaterColor);
+			                        rect(250-Cam.x,110-Cam.y,50,50);
+			                        
+			                        fill(SpikeColor); rect(70-Cam.x,170-Cam.y,50,50);
+			                        fill(BlockColor);
+			                        ellipse(70+25-Cam.x,170+20-Cam.y,15,15);
+			                        triangle(190+25-Cam.x-120,110+20-Cam.y+60,190+20-Cam.x-120,110+40-Cam.y+60,190+30-Cam.x-120,110+40-Cam.y+60);
+			                        
+			                        fill(PlayerColor);
+			                        ellipse(130+25-Cam.x,170+20-Cam.y,30,20);
+			                        rect(130+20-Cam.x,170+20-Cam.y,5,25);
+			                        rect(130+20-Cam.x,170+40-Cam.y,15,5);
+			                        rect(130+20-Cam.x,170+32-Cam.y,15,5);
+			                        
+			                        rect(190+10-Cam.x,170+10-Cam.y,30,20);
+			                        rect(190+10-Cam.x,170+30-Cam.y,5,20);
+			                        
+			                        textAlign(CENTER,CENTER); textSize(10);
+			                        text("Start",275-Cam.x,185-Cam.y);
+			                        rect(250+15-Cam.x,200-Cam.y,20,20);
+			                    }
+			                    if (mouseIsPressed) {
+			                        if (mouseInBox(70,110,50,50)) {editorBrush=5;}
+			                        if (mouseInBox(130,110,50,50)) {editorBrush=15;}
+			                        if (mouseInBox(190,110,50,50)) {editorBrush=16;}
+			                        if (mouseInBox(250,110,50,50)) {editorBrush=7;}
+			                        
+			                        if (mouseInBox(70,170,50,50)) {editorBrush=6;}
+			                        if (mouseInBox(130,170,50,50)) {editorBrush=10;}
+			                        if (mouseInBox(190,170,50,50)) {editorBrush=9;}
+			                        if (mouseInBox(250,170,50,50)) {editorBrush=8;}
+			                    }
+			                } else if (editorMenu===4) {
+			                    fill(0); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			                    text("Settings -------------",70-Cam.x,120-Cam.y);
+			                    textFont(TxtLvlName2);
+			                    text("Name: "+LevelDataCodes[levelOn][2],90-Cam.x,151-Cam.y);
+			                    text("Author: "+LevelDataCodes[levelOn][3],90-Cam.x,174-Cam.y);
+			                    text("Dimensions: "+LevelDataCodes[levelOn][0]+" x "+LevelDataCodes[levelOn][1],90-Cam.x,197-Cam.y);
+			                    
+			                    // Rename Buttons
+			                    {
+			                    if (mouseInBox(67,141,18,18)) {
+			                        fill(87, 161, 235);
+			                        if (mouseIsPressed) {
+			                            editorRename=1; LevelDataCodes[levelOn][2]="";
+			                        }
+			                    } else {fill(31, 124, 217);}
+			                    stroke(0); strokeWeight(3);
+			                    rect(67-Cam.x,141-Cam.y,18,18,5);
+			                    
+			                    if (mouseInBox(67,165,18,18)) {
+			                        fill(87, 161, 235);
+			                        if (mouseIsPressed) {
+			                            editorRename=2; LevelDataCodes[levelOn][3]="";
+			                        }
+			                    } else {fill(31, 124, 217);}
+			                    stroke(0); strokeWeight(3);
+			                    rect(67-Cam.x,165-Cam.y,18,18,5);
+			                    
+			                    fill(0);
+			                    text("⎋",69-Cam.x,151-Cam.y);
+			                    text("⎋",69-Cam.x,175-Cam.y);
+			                    }
+			                    
+			                    // Save and Quit Buttons
+			                    stroke(0); strokeWeight(3);
+			                    if (mouseInBox(67,230,130,30)) {
+			                        fill(87, 161, 235);
+			                    } else {fill(31, 124, 217);}
+			                    rect(67-Cam.x,230-Cam.y,105,30,5);
+			                    if (mouseInBox(67,270,130,30)) {
+			                        fill(87, 161, 235);
+			                        if (mouse===2) {
+			                            MENU = 4;
+			                            curtainFlash=255;
+			                            editorMenu=1;
+			                            levelEditorMode=0;
+			                            editor = 0;
+			                            editorRename=0;
+			                        }
+			                    } else {fill(31, 124, 217);}
+			                    rect(67-Cam.x,270-Cam.y,130,30,5);
+			                    fill(0);
+			                    textFont(TxtLvlName2);
+			                    text("Save level",75-Cam.x,245-Cam.y);
+			                    text("Quit to Menu",75-Cam.x,285-Cam.y);
+			                    
+			                }
+			                
+			                if (editorMenu&&editorMenu<4) {
+			                    fill(0); textFont(TxtLvlName2); textAlign(LEFT,CENTER);
+			                    text("Item Selected: "+ItemNames[editorBrush],70-Cam.x,295-Cam.y);
+			                }
+			            }
+			            
+			            // Select Brush via hotkeys
+			            {
+			            var eBA = keys[81]*10;
+			            if (keys[49]) {editorBrush=1+eBA;}
+			            if (keys[50]) {editorBrush=2+eBA;}
+			            if (keys[51]) {editorBrush=3+eBA;}
+			            if (keys[52]) {editorBrush=4+eBA;}
+			            if (keys[53]) {editorBrush=5+eBA;}
+			            if (keys[54]) {editorBrush=6+eBA;}
+			            if (keys[55]) {editorBrush=7+eBA;}
+			            if (keys[56]) {editorBrush=8+eBA;}
+			            if (keys[57]) {editorBrush=9+eBA;}
+			            if (keys[75]) {editorBrush=10;}
+			            }
+			            
+			            // Show the object on the cursor
+			            if (!editorMenu) {
+			                if (editorBrush===1) {fill(BlockColorHighlight); rect(mX,mY,50,50);}
+			                if (editorBrush===11) {
+			                    fill(BlockColorHighlight); rect(mX,mY,50,50);
+			                    fill(SpikeColorHighlight); rect(mX+5,mY+5,40,40);
+			                }
+			                if (editorBrush===2) {fill(BlockColorHighlight); rect(mX,mY,50,25);}
+			                if (editorBrush===12) {
+			                    fill(BlockColorHighlight); rect(mX,mY+25,50,25);
+			                }
+			                if (editorBrush===3) {fill(SpikeColorHighlight); 
+			                triangle(mX,mY+50,mX+25,mY+50,mX+12.5,mY+25);
+			                triangle(mX+25,mY+50,mX+50,mY+50,mX+37.5,mY+25);
+			                }
+			                if (editorBrush===13||editorBrush===14) {
+			                    fill(SpikeColorHighlight);
+			                    triangle(mX+13,mY+25,mX+38,mY+25,mX+25.5,mY+0);
+			                    triangle(mX+13,mY+25,mX+38,mY+25,mX+25.5,mY+50);
+			                    triangle(mX+25,mY+12.5,mX+25,mY+37.5,mX+0,mY+25);
+			                    triangle(mX+25,mY+12.5,mX+25,mY+37.5,mX+50,mY+25);
+			                }
+			                if (editorBrush===4) {fill(SpikeColorHighlight); 
+			                triangle(mX,mY+25,mX+25,mY+25,mX+12.5,mY+50);
+			                triangle(mX+25,mY+25,mX+50,mY+25,mX+37.5,mY+50);
+			                rect(mX,mY,50,25);
+			                }
+			                if (editorBrush===5) {
+			                    fill(PlayerColorHighlight);
+			                    rect(mX+10,mY+30,30,10);
+			                    rect(mX+22,mY+40,6,10);
+			                }
+			                if (editorBrush===15||editorBrush===16) {
+			                    fill(SpikeColorHighlight);
+			                    rect(mX,mY+25,50,15);
+			                }
+			                if (editorBrush===6) {
+			                    fill(SpikeColorHighlight);
+			                    rect(mX,mY,50,50);
+			                    
+			                    fill(BlockColorHighlight);
+			                    ellipse(mX+25,mY+20,15,15);
+			                    triangle(mX+25,mY+20,mX+20,mY+40,mX+30,mY+40);
+			                }
+			                
+			                if (editorBrush===8) {
+			                    fill(PlayerColorHighlight);
+			                    rect(mX+15,mY+15,20,20);
+			                }
+			                if (editorBrush===9) {
+			                    fill(PlayerColorHighlight);
+			                    rect(mX+10,mY+10,30,20);
+			                    rect(mX+10,mY+30,5,20);
+			                }
+			                if (editorBrush===10) {
+			                    fill(PlayerColorHighlight);
+			                    ellipse(mX+25,mY+20,30,20);
+			                    rect(mX+20,mY+20,5,25);
+			                    rect(mX+20,mY+40,15,5);
+			                    rect(mX+20,mY+32,15,5);
+			                }
+			                if (editorBrush===7) {
+			                    fill(WaterColorHighlight);
+			                    rect(mX,mY,50,50);
+			                }
+			            }
+			            
+			        }
+			        
+			        // Particles
+			        for (var p=0; p<particles.length;p++) {
+			            particles[p].drawTick();
+			            if (particles[p].life<1) {
+			                particles.shift();
+			            }
+			        }
+			        
+			        // Txt
+			        if (levelOn<1) {
+			            fill(255); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			            text(LevelDataCodes[levelOn][2],13-Cam.x,23-Cam.y);
+			            fill(0);
+			            text(LevelDataCodes[levelOn][2],10-Cam.x,25-Cam.y);
+			            fill(255); textFont(TxtLvlName2); textAlign(LEFT,CENTER);
+			            
+			            text("By "+LevelDataCodes[levelOn][3],13-Cam.x,52-Cam.y);
+			            fill(0);
+			            text("By "+LevelDataCodes[levelOn][3],10-Cam.x,53-Cam.y);
+			        } else {
+			            fill(0); textFont(TxtLvlNumber); textAlign(CENTER,CENTER);
+			            if (levelOn===13) {fill(171, 17, 17);}
+			            text(levelOn,25-Cam.x,25-Cam.y);
+			            fill(255); textFont(TxtLvlName1); textAlign(LEFT,CENTER);
+			            text(LevelDataCodes[levelOn][2],53-Cam.x,23-Cam.y);
+			            fill(0);
+			            text(LevelDataCodes[levelOn][2],50-Cam.x,25-Cam.y);
+			        }
+			        
+			        if (levelEditorMode) {
+			            textAlign(LEFT,CENTER);
+			            textFont(TxtMain);
+			            if (editor) {
+			                text("Editor Mode",2-Cam.x,388-Cam.y);
+			            } else {
+			                text("Play Mode",2-Cam.x,388-Cam.y);
+			            }
+			        } else {
+			            if (mouseInBox(353,5,40,40)) {
+			                fill(89, 217, 121);
+			                if (mouseIsPressed) {
+			                    if (levelOn===0) {
+			                        MENU = 4;
+			                        curtainFlash=255;
+			                        editorMenu=1;
+			                        levelEditorMode=0;
+			                        editor = 0;
+			                        editorRename=0;
+			                    } else {
+			                        MENU = 1;
+			                        curtainFlash=255;
+			                        titleTime=0;
+			                    }
+			                }
+			            } else {fill(11, 186, 55);}
+			            stroke(0); strokeWeight(5);
+			            rect(353-Cam.x,5-Cam.y,40,40,5);
+			            fill(0); textFont(TxtMain); textAlign(CENTER,CENTER);
+			            text("◀",373-Cam.x,26-Cam.y);
+			        }
+			        
+			        if (levelOn===4) {
+			            noStroke();
+			            fill(86, 179, 237,Player.x*10-150);
+			            rect(0,100,50,50);
+			            stroke(0); strokeWeight(3);
+			            line(51,100,51,147);
+			            if (Player.x<10) {
+			                menuToLevel(14);
+			            }
+			        }
+			        
+			    }
+			    if (MENU === 3) {
+			        fill(0,200); rectMode(CORNER);
+			        rect(0,0,400,400);
+			        
+			        
+			    }
+			    if (MENU === 4) {
+			        fill(50, 121, 201); textFont(TxtLvlName2,50); textAlign(CENTER,CENTER);
+			        text("Level Editor",200,50);
+			        
+			        if (CustomLevel==="") {
+			            fill(0); textFont(TxtLvlName1,20); textAlign(CENTER,CENTER);
+			            text("There is no level loaded.",200,150);
+			        } else {
+			            fill(0); textFont(TxtLvlName1,20); textAlign(CENTER,CENTER);
+			            text("Name: "+LevelDataCodes[0][2]+"\nAuthor: "+LevelDataCodes[0][3],200,150);
+			            
+			            QuickBtn(200,250,100,40,color(41, 130, 255),color(136, 180, 242),"Start",function() {
+			                menuToLevel(0);
+			            });
+			        }
+			        QuickBtn(200,300,130,40,color(41, 130, 255),color(136, 180, 242),"New Level",function() {
+			            MENU = 4.1;
+			            levelW = 8;
+			            levelH = 8;
+			        });
+			        if (LevelCodes[0].length>7) {QuickBtn(200,350,130,40,color(41, 130, 255),color(136, 180, 242),"Edit Level",function() {
+			            particles = [];
+			            levelEditorMode = 1;
+			            menuToLevel(0);
+			        });}
+			        QuickBtn(40,375,70,40,color(41, 130, 255),color(136, 180, 242),"Exit",function() {
+			            MENU = 1;
+			            titleTime = 0;
+			            curtainFlash = 255;
+			        });
+			        
+			    }
+			    if (MENU === 4.1) {
+			        fill(50, 121, 201); textFont(TxtLvlName2,50); textAlign(CENTER,CENTER);
+			        text("Level Editor",200,50);
+			        fill(0); textFont(TxtLvlName1,20); textAlign(CENTER,CENTER);
+			        text("Set the dimensions of the level.",200,100);
+			        text("Width",200,180);
+			        text(levelW,200,210);
+			        text("Height",200,250);
+			        text(levelH,200,280);
+			        QuickBtn(200,350,160,40,color(41, 130, 255),color(136, 180, 242),"Get started!",function() {
+			            LevelDataCodes[0] = [levelW,levelH,"Your Level","Your Name"];
+			            LevelCodes[0] = [];
+			            particles = [];
+			            levelEditorMode = 1;
+			            menuToLevel(0);
+			        });
+			        
+			        if (levelW>8) {
+			        QuickBtn(140,180,40,40,color(11, 186, 55),color(89, 217, 121),"◀",function() {
+			            levelW--;
+			        });}
+			        if (levelW<32) {
+			        QuickBtn(260,180,40,40,color(11, 186, 55),color(89, 217, 121),"▶",function() {
+			            levelW++;
+			        });}
+			        if (levelH>8) {
+			        QuickBtn(135,250,40,40,color(11, 186, 55),color(89, 217, 121),"◀",function() {
+			            levelH--;
+			        });}
+			        if (levelH<32) {
+			        QuickBtn(265,250,40,40,color(11, 186, 55),color(89, 217, 121),"▶",function() {
+			            levelH++;
+			        });}
+			    }
+			    if (MENU === 5) {
+			        stroke(143, 20, 20); strokeWeight(20);
+			        fill(0,200); rectMode(CORNER);
+			        rect(0,0,400,400);
+			        
+			        fill(255, 255, 255); textAlign(CENTER,CENTER); textFont(TxtLvlNumber,25);
+			        text("Dare to taste the oats?",200,50);
+			        fill(255, 255, 255); textAlign(CENTER,TOP); textFont(TxtMain,15);
+			        text("Welcome to level 13.\nThe hardest offical level in the game.\n\nThis level is a marathon, where a single\nslip on your keyboard is a free trip straight\nto the beginning of the stage.\n\nYou will never be ready for this massive\nbowl. However, you're free to try out...\n\nDare to devour the Massive Oatmeal?",200,90);
+			        
+			        QuickBtn(160,350,60,30,color(255, 43, 43),color(240, 136, 136),"Yes",function() {
+			            menuToLevel(13);
+			        });
+			        
+			        QuickBtn(240,350,60,30,color(255, 43, 43),color(240, 136, 136),"No",function() {
+			            MENU = 1; curtainFlash = 255; titleTime = 1;
+			        });
+			    }
+			    
+			    // Curtain
+			    noStroke(); fill(250,curtainFlash);
+			    rect(-9999,-9999,999999,999999);
+			    curtainFlash-=15;
+			    
+			};
+			
+			// Other
+			keyPressed = function() {keys[keyCode]=1;};
+			keyReleased = function() {keys[keyCode]=0;};
+			keyTyped = function() {
+			    if (editorRename===1) {
+			        if (keys[8]) {
+			            LevelDataCodes[levelOn][2]=LevelDataCodes[levelOn][2].substring(0,LevelDataCodes[levelOn][2].length-1);
+			        } else if (LevelDataCodes[levelOn][2].length<13) {LevelDataCodes[levelOn][2]+=key.toString();}
+			    } else if (editorRename===2) {
+			        if (keys[8]) {
+			            LevelDataCodes[levelOn][3]=LevelDataCodes[levelOn][3].substring(0,LevelDataCodes[levelOn][3].length-1);
+			        } else if (LevelDataCodes[levelOn][3].length<12){LevelDataCodes[levelOn][3]+=key.toString();}
+			    }
+			};
+			mousePressed = function() {
+			    // Get Save Code Button
+			    if (mouseInBox(67,230,130,30) && editorMenu===4) {
+			        getSaveCode();
+			        fetchCustomLevel();
+			    }
+			    
+			    // EDITOR
+			    if (editor && !editorMenu) {
+			        var mX = floor((mouseX-Cam.x)/50);
+			        var mY = floor((mouseY-Cam.y-100)/50)+(levelH-8)+2;
+			        
+			        if (level[mY][mX]!==0) {
+			            if (level[mY][mX]===8) {
+			                Player.spawnX = null; Player.spawnY = null;
+			            }
+			            if (level[mY][mX]===9) {
+			                Flag.x = null; Flag.y = null;
+			            }
+			            if (level[mY][mX]===10) {
+			                Key.x = null; Key.y = null;
+			            }
+			            level[mY][mX]=0;
+			        } else {
+			            if (editorBrush===8) {
+			                if (Player.spawnX!==null) {
+			                    level[Player.spawnY+(levelH-8)][Player.spawnX]=0;
+			                }
+			            } else if (editorBrush===9) {
+			                if (Flag.x!==null) {
+			                    level[Flag.y+(levelH-8)][Flag.x]=0;
+			                }
+			            } else if (editorBrush===10) {
+			                if (Key.x!==null) {
+			                    level[Key.y+(levelH-8)][Key.x]=0;
+			                }
+			            }
+			            level[mY][mX]=editorBrush;
+			            if (editorBrush===8) {
+			                Player.spawnX = mX;
+			                Player.spawnY = mY;
+			            } else if (editorBrush===9) {
+			                Flag.x = mX;
+			                Flag.y = mY;
+			            } else if (editorBrush===10) {
+			                Key.x = mX;
+			                Key.y = mY;
+			            }
+			        }
+			        
+			        generateLevel();
+			    }
+			};
+			}
+		}
+		
+		runPJS(program);
+		
+		// Add reload button on KA --> <script>
+		
+	</script>
+</body>
+
+</html>
