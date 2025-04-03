@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<title>SwordF Official Website</title>
+    	<!-- <link rel="stylesheet" href="style.css"> -->
+        
+        <!-- Celeste Font because I can -->
+    	<link href="https://fonts.cdnfonts.com/css/renogare" rel="stylesheet">
+        
+        <style>
+        	body {
+        		background-color: #000000;
+        	}
+            p {
+            	color: #FFFFFF;
+                font-family: "Renogare", sans-serif;
+                font-size: 1.2em;
+            }
+            a {
+            	color: #FFFFFF;
+            	text-decoration: none;
+            }
+            
+            #MainTitle {
+            	margin-top: 3em;
+            }
+            
+            .Horiz-Center {
+            	text-align: center;
+                margin-top: 0.2em;
+  				margin-bottom: 0.2em;
+            }
+            
+            .container {
+            	width:90%;
+  				overflow:auto;
+                margin:auto;
+            }
+            .container .section {
+  				float:left;
+                
+                font-size: 1em;
+                line-height: 1em;
+                
+                border: 5px ridge #faffe0;
+                margin-left: 1%;
+                margin-right: 1%;
+            }
+            
+            textarea {
+            	resize: none;
+                font-size: 16px;
+                line-height: 1em;
+                
+                color: white;
+                background-color: #05061c;
+                border: none;
+                margin-left: 0px;
+                
+                tab-size: 2;
+            }
+            
+            textarea:focus {
+            	outline: none;
+            }
+            
+            #codeWindow {
+            	white-space: nowrap;
+            }
+            
+            #numberWindow {
+            	overflow: hidden
+            }
+            
+            #runBtn {
+            	margin-top: 1em;
+                width: 20%;
+                
+                font-family: "Renogare", sans-serif;
+                font-size: 15px;
+                
+                background-color: #1dc220;
+                border: 3px solid #0e2e16;
+                border-radius: 50px;
+                
+                transition: 0.5s;
+            }
+            
+            #runBtn:hover {
+                background-color: #57de59;
+            }
+            
+            #runBtn:active {
+                background-color: #000;
+                border-color: #000;
+                transition: 0s;
+            }
+            
+            
+            #docBtn {
+            	margin-top: 1em;
+                width: 30%;
+                
+                font-family: "Renogare", sans-serif;
+                font-size: 15px;
+                
+                background-color: #3b69d4;
+                border: 3px solid #0f1536;
+                border-radius: 50px;
+                
+                transition: 0.5s;
+            }
+            
+            #docBtn:hover {
+                background-color: #619cfa;
+            }
+            
+            #docBtn:active {
+                background-color: #000;
+                border-color: #000;
+                transition: 0s;
+            }
+            
+            
+            #documentation {
+            	background-color: #05061c;
+                display: none;
+            }
+            
+            .docsCommand {
+            	width:80%;
+  				overflow:auto;
+                margin:auto;
+                background-color: #065c15;
+                border: 10px ridge #0fb855;
+                margin-bottom: 2em;
+            }
+            
+            .docsCommand p {
+            	margin-left: 0.5em;
+            }
+            
+            .docsCommand .title {
+            	font-size: 2em;
+                padding: 0px;
+                margin-top: 0.4em;
+                margin-bottom: 0px;
+            }
+            
+            .mono {
+            	font-family: monospace;
+                font-size: 1.3em;
+                font-style: normal;
+                margin-bottom: 0px;
+            }
+            
+            .subtext {
+                font-size: 1em;
+                color: #88a;
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+            
+            div.codeExample {
+                width: 20%;
+                font-size: 12px;
+                line-height: 1.5em;
+                tab-size: 2;
+                
+                color: white;
+                background-color: #05061c;
+                border: 5px ridge #faffe0;
+                
+            }
+            
+        </style>
+	</head>
+  
+	<body>
+    	<p class="Horiz-Center" style="font-size: 5em;">AstroBot</p>
+        
+        
+        <!-- Main Course -->
+        <div class="container">
+            <div class="section" style="width: 500px;">
+        		<canvas width="500px" height="500px" id="Field"></canvas>
+            </div>
+            
+            <div class="section" style="width: 53%; border: none;">
+            	<div class="section" style="width: auto; display: block;">
+                  <textarea disabled id="numberWindow" cols=3 rows=28 spellcheck="false">1</textarea>
+                  <textarea id="codeWindow" cols=54 rows=28 spellcheck="false"></textarea>
+                </div>
+                
+                <!-- <div style="width: auto; border: 1px solid white ;"> -->
+                	<button id="runBtn" onclick="beginCode();">Run</button>
+                	<button id="docBtn" onclick="toggleDocs();">Documentation</button>
+                <!-- </div> -->
+                
+            </div>
+        </div>
+        
+        <!-- Documentation -->
+        <div id="documentation">
+        	<p class="Horiz-Center" style="font-size: 3em;">Documentation</p>
+            
+            <div class="docsCommand">
+            	<p class="title">Quick Overview</p>
+                <p>The AstroBot field is 500 by 500 pixels, with rocks coming from either the top, bottom, left, or right sides offscreen. Sooting rocks will give you more points the bigger the rock is, along as breaking into smaller pieces.<br><br>Code is read one line per frame, top to botttom. Each line will be a command followed by a number if nessacary, seperating them with spaces. Any tab lines or text that are not commands are ignored.</p>
+            </div>
+            
+            <p class="Horiz-Center" style="font-size: 3em;">Ship Commands</p>
+            
+            <div class="docsCommand">
+            	<p class="title" style="font-family: monospace;">thrust</p>
+                <p>Propells the ship by a bit in the direction it's pointing. the more <em class="mono">thrust</em> is called, the faster the ship goes. The ship will naturally slow back down to a stop.</p>
+            </div>
+            
+            <div class="docsCommand">
+            	<p class="title" style="font-family: monospace;">left</p>
+                <p class="title" style="font-family: monospace;">right</p>
+                <p>Turns the ship left or right by 10 degrees. Degrees start facing up, and go clockwise.<br>The ship starts at zero degrees (facing up).</p>
+            </div>
+            
+            <div class="docsCommand">
+            	<p class="title" style="font-family: monospace;">stop</p>
+                <p>Stops the ship to a halt.</p>
+            </div>
+            
+            <div class="docsCommand">
+            	<p class="title" style="font-family: monospace;">shoot</p>
+                <p>Shoots a bullet to destroy rocks. Note that you have a few frames before you can shoot again.</p>
+            </div>
+            
+            
+            <p class="Horiz-Center" style="font-size: 3em;">Logic Commands</p>
+            
+            <div class="docsCommand">
+            	<p class="title" style="font-family: monospace;">forever</p>
+                <p>A loop that executes code inside of it forever until the player crashes. This is essentially your core game loop. Code before <em class="mono">forever</em> will execute normally but however won't be called again.</p>
+                <div class="codeExample">
+                	<pre><p class="mono">forever<br>	thrust<br>end</p></pre>
+                    <p class="subtext">Thrusts forward forever.</p>
+                </div>
+            </div>
+            
+            <div class="docsCommand">
+            	<p class="title" style="font-family: monospace;">loop 10</p>
+                <p>A loop that executes code inside of it an amount of times specified by the number.</p>
+                <div class="codeExample">
+                	<pre><p class="mono">loop 9<br>	left<br>end</p></pre>
+                    <p class="subtext">Turns left by 90 degrees.</p>
+                </div>
+            </div>
+            
+            <div class="docsCommand">
+            	<p class="title" style="font-family: monospace;">ifRock 45</p>
+                <p>A conditional that checks if there is a rock a specified amount of degrees from the ship.<br>However, the ship can only see within a distance of 180 pixels. Positive numbers check to the right, while negitive numbers check to the left.<br><br>So for example, <em class="mono">ifRock 180</em> will check a rock behind of the player.</p>
+                <div class="codeExample">
+                	<pre><p class="mono">forever<br>	right<br>	ifRock 0<br>		shoot<br>	end<br>end</pre>
+                    <p class="subtext">Spins around shooting any rocks the ship sees in front.</p>
+                </div>
+            </div>
+            
+            <div class="docsCommand">
+            	<p class="title" style="font-family: monospace;">end</p>
+                <p>Used to close loops and conditionals.</p>
+            </div>
+            
+        </div>
+        
+	</body>
+    
+    <script>
+    	// Toggle Docs
+        var docsToggled = false;
+        var toggleDocs = function() {
+        	const display = document.getElementById("documentation").style.display;
+            if (docsToggled) {
+            	document.getElementById("documentation").style.display = "none";
+                docsToggled = false;
+            } else {
+            	document.getElementById("documentation").style.display = "block";
+                docsToggled = true;
+            }
+        };
+        
+        // Change in Code Window
+        function countCharacter(str, char) {
+          let count = 0;
+          for (let i = 0; i < str.length; i++) {
+            if (str[i] === char) {
+              count++;
+            }
+          }
+          return count;
+        }
+        
+        const codeWindow = document.getElementById("codeWindow");
+        const numberWindow = document.getElementById("numberWindow");
+        
+        codeWindow.addEventListener('input', () => {
+        	const c = codeWindow.value;
+            var lineCount = countCharacter(c,"\n");
+            var output = "1";
+            for (var i=0; i < lineCount; i++) {
+            	output += "\n"+(i+2)
+            }
+            document.getElementById("numberWindow").value = output;
+        })
+        
+        codeWindow.addEventListener('keydown', function(e) {
+          if (e.key === 'Tab') {
+            e.preventDefault();
+            var start = this.selectionStart;
+            var end = this.selectionEnd;
+
+            // set textarea value to: text before caret + tab + text after caret
+            this.value = this.value.substring(0, start) +
+              "\t" + this.value.substring(end);
+
+            // put caret at right position again
+            this.selectionStart =
+              this.selectionEnd = start + 1;
+          }
+        });
+        
+        
+        // keep scroll the same
+        function sameScroll() {
+            let percent = codeWindow.scrollTop / (codeWindow.scrollHeight - codeWindow.clientHeight);
+            numberWindow.scrollTop =  (numberWindow.scrollHeight - numberWindow.clientHeight)* percent;
+        }
+        
+        
+        function iHateRadians(degrees) {
+        	return (Math.PI/180)*degrees;
+        }
+        
+        // Define canvas
+        let c = document.getElementById("Field");
+		let ctx = c.getContext("2d");
+        
+        // Globals
+        var score, time, seconds, player, rocks, pellets, alive, running;
+        var code, codeLine, codeRunning, stack;
+        
+        // Drawing Functions
+		var rect = function(x,y,w,h,c) {
+        	ctx.fillStyle = c;
+        	ctx.fillRect(x,y,w,h);
+		};
+        
+        // Functions
+        var touchingRocks = function() {
+        	for (var i=0; i<rocks.length; i++) {
+            	var rock = rocks[i]
+            	var dist = Math.sqrt( (player.x-rock.x)**2 + (player.y-rock.y)**2 ) - 10;
+                if (dist < rock.d) { return true; }
+            }
+            return false;
+        };
+        
+        var shootPellet = function() {
+        	if (player.cooldown > 0) {return}
+            pellets.push(new Pellet(
+            	player.x, player.y, player.dir
+            ));
+            player.cooldown = 5;
+        };
+        
+        var findNextEnd = function(index) {
+        	var l = index
+            const endWords = ["forever","loop","ifRock"];
+            while (code[l][0] !== "end") {
+            	l += 1;
+                var line = code[l][0];
+                if (endWords.includes(line)) {l = findNextEnd(l) + 1;}
+                if (l >= code.length) {return false;}
+            }
+            return l;
+        };
+        
+        var performCondition = function(condition) {
+        	const endLine = findNextEnd(codeLine);
+            if (condition) {
+            	stack.push({
+                	line: endLine,
+                	loop: 0
+                });
+            } else {
+            	codeLine = endLine;
+            }
+        };
+        
+        
+        // Rock Class
+        var Rock = function(x,y,tier,dir) {
+        	const rockSizes = [10,20,40];
+            const rockSpeeds = [2,1,0.5];
+            
+            this.x = x, this.y = y, this.d = rockSizes[tier-1];
+            this.dir = dir, this.speed = rockSpeeds[tier-1];
+            this.dead = Math.sqrt( (player.x-this.x)**2 + (player.y-this.y)**2 ) - 10 < this.d;
+            this.life = (5-this.speed)*400;
+            this.tier = tier;
+            
+            this.draw = function() {
+                ctx.beginPath();
+                  ctx.arc(this.x, this.y, this.d, 0, 2 * Math.PI);
+                  ctx.fillStyle = "#000";
+                  ctx.fill();
+                  ctx.lineWidth = 4;
+                  ctx.strokeStyle = "#fff";
+				ctx.stroke();
+            };
+            
+            this.update = function() {
+                if (this.dead) {return}
+                this.x += Math.sin(this.dir) * this.speed;
+            	this.y -= Math.cos(this.dir) * this.speed;
+                
+                this.life -= 1;
+                this.dead = this.life < 1;
+                
+                for (var i=0; i<pellets.length; i++) {
+                	var pel = pellets[i];
+                    var dist = Math.sqrt( (pel.x-this.x)**2 + (pel.y-this.y)**2 );
+                    
+                    // Get hit by pellets
+                    if (dist < this.d) {
+                    	score += tier**2
+                        pellets[i].dead = true, this.dead = true;
+                        for (var i=0; i<2; i++) {
+                          if (this.tier > 1) {
+                            rocks.push(new Rock(
+                              this.x, this.y,
+                              this.tier-1,
+                              iHateRadians(Math.random()*360)
+                            ));
+                          }
+                        }
+                        return
+                    }
+                }
+            };
+        };
+        
+        
+        // Pellet Class
+        var Pellet = function(x,y,dir) {
+            this.x = x, this.y = y, this.dir = dir;
+            this.dead = false, this.life = 200;
+            
+            this.draw = function() {
+                ctx.beginPath();
+                  ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+                  ctx.fillStyle = "#000";
+                  ctx.fill();
+                  ctx.lineWidth = 2;
+                  ctx.strokeStyle = "#fff";
+				ctx.stroke();
+            };
+            
+            this.update = function() {
+                this.x += Math.sin(iHateRadians(this.dir)) * 5;
+            	this.y -= Math.cos(iHateRadians(this.dir)) * 5;
+                
+                this.life -= 1;
+                this.dead = this.life < 1;
+            };
+        };
+        
+        
+        // Init
+        var resetField = function() {
+        	time = 0, seconds = 0, alive = true; running = false;
+            score = 0;
+            player = {
+            	x: 250, y:250,
+                w: 40, h:40,
+                dir:0, speed:0,
+                cooldown: 0,
+                
+                seesRock: function(angle) {
+                	const px = player.x, py = player.y;
+                    var found = false;
+                    for (var i=0; i<90; i++) {
+                    	player.x += Math.sin(iHateRadians(angle)) * 2;
+            			player.y -= Math.cos(iHateRadians(angle)) * 2;
+                        if (touchingRocks()) {found = true; break}
+                    }
+                    player.x = px, player.y = py;
+                    return found
+                }
+            };
+            
+            rocks = [], pellets = [];
+        };
+        
+        var beginCode= function() {
+        	resetField();
+            running = true;
+            
+            // Phrase the code list
+            var codeRef = codeWindow.value, str = "";
+            code = [], codeLine=0, codeRunning = true, stack = [];
+            for (var i=0; i<codeRef.length; i++) {
+            	var char = codeRef[i];
+                if (char === "\n") {
+                	code.push(str);
+                    str = "";
+                } else if (char !== "\t") {
+                	str = str + char;
+                }
+            } code.push(str);
+            
+            // Split each line into "tokens", seperated by spaces
+            for (var i=0; i<code.length; i++) {
+            	const line = code[i]
+                var newLine = [], str = "";
+                for (var j=0; j<line.length; j++) {
+                	var char = line[j];
+                    if (char === " ") {
+                    	newLine.push(str);
+                    	str = "";
+                    } else {
+                    	str = str + char;
+                    }
+                } newLine.push(str);
+                
+                code[i] = newLine;
+            }
+        };
+        
+        var runCommand = function() {
+          var line = code[codeLine][0], number = code[codeLine][1];
+                    
+          // Logic
+          if (line === "forever") {stack.push({
+            line: codeLine,
+            loop: Infinity
+          });}
+          if (line === "loop") {stack.push({
+            line: codeLine,
+            loop: number
+          });}
+
+          if (line === "ifRock") {
+            performCondition(player.seesRock(player.dir + Number(number)));
+          }
+
+          if (line === "end") {
+            stack[stack.length-1].loop -= 1;
+            const stackSlice = stack[stack.length-1];
+            if (stackSlice.loop > 0) {
+              codeLine = stackSlice.line;
+            } else {
+              stack.pop();
+            }
+          }
+
+
+          // Commands
+          if (line === "left") {player.dir -= 10;}
+          if (line === "right") {player.dir += 10;}
+          if (line === "thrust") {player.speed += 0.5;}
+          if (line === "stop") {player.speed*= 0.5;}
+          if (line === "shoot") {shootPellet();}
+
+          codeLine += 1;
+          if (codeLine >= code.length) {codeRunning = false;}
+        };
+        
+        
+        // Draw Loop
+    	resetField();
+        var drawAndUpdateField = function() {
+        	// Update
+        	if (running) {
+            	if (codeRunning) {
+                	//for (var i=0; i<code.length; i++) {
+                    	runCommand();
+                    //}
+                }
+            	
+            	// Timer ticking upwards
+                time += 1
+                if ( time == 60 ) { time = 0; seconds += 1;}
+                
+                // Move player
+                player.cooldown -= 1;
+                
+                player.speed *= 0.98;
+                if (player.speed > 3) {player.speed = 3;}
+                
+                player.x += Math.sin(iHateRadians(player.dir)) * player.speed;
+            	player.y -= Math.cos(iHateRadians(player.dir)) * player.speed;
+                
+                if (player.x < 0) {player.x = 500;}
+                if (player.x > 500) {player.x = 0;}
+                if (player.y < 0) {player.y = 500;}
+                if (player.y > 500) {player.y = 0;}
+                
+                // Spawn new rocks
+                if (Math.random() > 0.98) {
+                	var side = Math.floor(Math.random()*4);
+                    var xPos = [
+                    	Math.random()*400 + 50,
+                        Math.random()*400 + 50,
+                        -100,
+                        600
+                    ];
+                    
+                    var yPos = [
+                    	-100,
+                        600,
+                        Math.random()*400 + 50,
+                        Math.random()*400 + 50
+                    ];
+                    
+                    rocks.push(new Rock(
+                    	xPos[side],
+                        yPos[side],
+                        1 + Math.floor(Math.random()*3),
+                        Math.atan2(
+                        	yPos[side]-250,
+                            xPos[side]-250
+                        )-iHateRadians(90)
+                	));
+                }
+                
+                // Update rocks
+                for (var i=0; i<pellets.length; i++) { pellets[i].update(); }
+                for (var i=0; i<rocks.length; i++) { rocks[i].update(); }
+                
+                // Kill rocks and pellets
+                for (var i=0; i<rocks.length; i++) {
+                	if (rocks[i].dead) { rocks.splice(i, 1); i -= 1; }
+                }
+                
+                for (var i=0; i<pellets.length; i++) {
+                	if (pellets[i].dead) { pellets.splice(i, 1); i -= 1; }
+                }
+                
+                // skill issue lmao
+                if (touchingRocks()) {
+                	alive = false, running = true, codeRunning = false;
+                	player.speed = 0;
+                }
+            }
+            
+            // Clear
+            rect(0,0,500,500,"#000");
+            
+            for (var i=0; i<pellets.length; i++) { pellets[i].draw(); }
+            
+            // Player
+            if (alive) {
+              ctx.lineWidth = 2, ctx.fillStyle = "#000", ctx.strokeStyle = "#fff";
+              ctx.translate(player.x, player.y); ctx.rotate(iHateRadians(player.dir));
+                  ctx.beginPath();
+                  ctx.moveTo(0,-20);
+                  ctx.lineTo(-10,20);
+                  ctx.lineTo(0,10);
+                  ctx.lineTo(10,20);
+                  ctx.lineTo(0,-20);
+                  ctx.stroke();
+              ctx.rotate(-iHateRadians(player.dir)); ctx.translate(-player.x, -player.y);
+            }
+            
+            for (var i=0; i<rocks.length; i++) { rocks[i].draw(); }
+            
+            // Score
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#dff7df";
+            ctx.font = "30px Renogare";
+            ctx.fillText(score,250,30);
+            
+            // i had nowhere else to put it
+            sameScroll();
+        };
+        setInterval(drawAndUpdateField,1000/60);
+        //var loadMain = function(n) {window.location.href = "https://swordf-official.github.io";}
+    </script>
+</html>
