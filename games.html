@@ -8,7 +8,7 @@
     	<link href="https://fonts.cdnfonts.com/css/renogare" rel="stylesheet">
         
         <style>
-        	body {
+            body {
         		background-color: #000000;
         	}
             p {
@@ -232,6 +232,13 @@
         <div class="wrapper">
         	
         </div>
+        
+        <div id="page"style="width: auto; display:none; margin-top: 35em">
+        <div style="float: left; width: 15%; display: block;"><p></p></div>
+        <div style="float: left; width: 70%; display: block;">
+        <p>Page 2</p>
+        <img src="https://www.lexaloffle.com/media/69779/18_Page%202.png"></img>
+        </div></div>
 	</body>
     
     <script>
@@ -242,6 +249,7 @@
     	var incrementTime = function() {
         	time++;
             time = time%160000;
+            if(window.scrollY>700)document.getElementById("page").style.display="block";
         };
         
         
