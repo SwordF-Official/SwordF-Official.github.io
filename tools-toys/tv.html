@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TV</title>
+<style>
+  html {overflow: hidden;}
+  
+  .main {
+  	display: flex;
+    align-items: center;
+    height: 600px
+  }
+  
+  .container {
+    position: relative;
+    width: 100%;
+    float: left;
+    display:block;
+  }
+
+  .container img {
+    width: 100%;
+    height: auto;
+  }
+
+  .container button {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    padding: 3% 5%;
+    border: none;
+    cursor: pointer;
+    border-radius: 10%;
+    display:block;
+  }
+  
+  .container button:hover {
+    background-color: #222;
+  }
+  
+  .container video {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    border: none;
+  }
+</style>
+</head>
+<body style=" background-color: #000;">
+  <div class="main">  
+  
+    <div class="container" style="width:25%"><p></p></div>
+    <div class="container" style="width:50%">
+      <img src="https://www.lexaloffle.com/media/69779/tv.png"><img>
+
+      <video id="axf4" width=55% height=55%>
+        <source src="https://cdn.discordapp.com/attachments/903109160403599391/1366980861622227065/a4-fx_1_1_1.mp4?ex=6812eba2&is=68119a22&hm=72e337a9aa5a8047b796783d47cee53f96be688ac5bcfa382b616a67570cef02&">
+    </video>
+
+    <button id="playBtn" onClick="playVideo();">▶</button>
+    </div>
+  </div>
+
+</body>
+
+<script>
+	let video = document.getElementById("axf4");
+    let t=0;
+    
+    function playVideo() {
+    	document.getElementById("playBtn").style.display="none";
+        video.play();
+    }
+    
+    function update() {
+    	if (t>0) {
+        	t++;
+            if(t===60){location.replace("https://www.lexaloffle.com/bbs/?tid=148689&tkey=n9jJxoj5mVs7zFie3Cn6");}
+        }
+    }
+    
+    video.addEventListener("ended", (event) => {
+      t=1;
+    });
+    
+    setInterval(update,16);
+</script>
+
+</html>
