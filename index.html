@@ -2,13 +2,22 @@
 <html>
 	<head>
     	<title>SwordF Official Website</title>
+        <link rel="icon" type="image/watermark" href="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/watermark.png">
     	<!-- <link rel="stylesheet" href="style.css"> -->
         
         <!-- Celeste Font because I can -->
     	<link href="https://fonts.cdnfonts.com/css/renogare" rel="stylesheet">
         
+        <!-- Sound Effects -->
+        <audio id="sfx0" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/Click.mp3" type="audio/mpeg"></audio>
+        <audio id="sfx1" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/Notify.mp3" type="audio/mpeg"></audio>
+        <audio id="sfx2" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/NotifyNegitive.mp3" type="audio/mpeg"></audio>
+        <audio id="sfx3" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/Pass.mp3" type="audio/mpeg"></audio>
+        
+        
         <style>
-        	body {
+        	html { scroll-behavior: smooth; }
+            body {
         		background-color: #000000;
         	}
             p {
@@ -103,34 +112,40 @@
     	<!-- Button UI on top -->
         <p class="Horiz-Center">
         	
-            <a id="EtcButton" class="TopUI" href="https://swordf-official.github.io/games.html">My Games</a>
+            <a id="EtcButton" class="TopUI" href="https://swordf-official.github.io/games.html" onClick="playClickSfx();">My Games</a>
             
         	<!-- https://www.youtube.com/@swordf5345 -->
-        	<a id="YoutubeButton" class="TopUI" href="#YoutubeCheckpoint">Youtube</a>
+        	<a id="YoutubeButton" class="TopUI" href="#YoutubeCheckpoint" onClick="playSfx(0);">Youtube</a>
             
             <!-- https://github.com/SwordF-Official -->
-            <a id="GithubButton" class="TopUI" href="#GithubCheckpoint">Github</a>
+            <a id="GithubButton" class="TopUI" href="#GithubCheckpoint" onClick="playSfx(0);">Github</a>
             
             <!-- https://www.lexaloffle.com/bbs/?uid=69779 -->
-            <a id="PicoButton" class="TopUI" href="#PicoCheckpoint">Pico8</a>
+            <a id="PicoButton" class="TopUI" href="#PicoCheckpoint" onClick="playSfx(0);">Pico8</a>
             
             <!-- https://scratch.mit.edu/users/the_super_sonic/ -->
-            <a id="ScratchButton" class="TopUI" href="#ScratchCheckpoint">Scratch</a>
+            <a id="ScratchButton" class="TopUI" href="#ScratchCheckpoint" onClick="playSfx(0);">Scratch</a>
             
-            <a id="KhanButton" class="TopUI" href="#KhanCheckpoint">Khan Academy</a>
+            <a id="KhanButton" class="TopUI" href="#KhanCheckpoint" onClick="playSfx(0);">Khan Academy</a>
             
             <!-- https://soundcloud.com/user-560669104 -->
-            <a id="CloudButton" class="TopUI" href="#CloudCheckpoint">Soundcloud</a>
+            <a id="CloudButton" class="TopUI" href="#CloudCheckpoint" onClick="playSfx(0);">Soundcloud</a>
             
-            <button id="Useless" class="TopUI" onClick="clickUseless()">Useless Button</button>
+            <button id="Useless" class="TopUI" onClick="clickUseless();">Useless Button</button>
         </p>
         
-        <p id="zoomlink" class="Horiz-Center" style="font-size: 0.5em; display: none;">https://www.lexaloffle.com/bbs/?tid=148629&tkey=nn5to6Ctt1e5Ec9JEob7</p>
+        <a id="zoomlink" class="Horiz-Center" href="https://www.lexaloffle.com/bbs/?tid=148629&tkey=nn5to6Ctt1e5Ec9JEob7" style="font-size: 4em; display: none;">📜</a>
         
         <!-- Website Title -->
 		<p class="Horiz-Center">
         	<canvas width="700px" height="200px" id="MainTitle"></canvas>
         </p>
+        
+        <div id="remotediv" style="display: none;">
+        <div style="position: relative; width: 45%; float: left; display:block; "><p></p></div>
+        <div style="position: relative; width: 50%; float: left; display:block; "><a href="https://swordf-official.github.io/tools-toys/tv">
+        	<img width="20%" src="https://www.lexaloffle.com/media/69779/remote.png"></img>
+        </a></div></div>
         
         <!-- An svg graphic 2763 miles long -->
         <p class="Horiz-Center"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="50%" height="400px" viewBox="0,0,99.38143,166.04346"><g transform="translate(-194.37692,-86.50031)"><g data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill-rule="nonzero" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><g><path d="M267.59123,91.47265l1.35578,10.06186c0,0 20.70107,-3.2971 23.51733,17.48819c2.99614,22.11294 -17.89413,24.24377 -17.89413,24.24377l1.17798,8.74227l-12.20619,1.64473c0,0 -4.48386,-17.07373 -5.85606,-27.25747c-1.34628,-9.99131 -2.30086,-33.27863 -2.30086,-33.27863z" fill="#2493fa" stroke="#0a0b14" stroke-width="2" stroke-linecap="butt"/><path d="M256.0595,93.8706l10.46593,-1.3769l1.35579,10.06186c0,0 22.82338,-3.46477 23.58342,17.60494c0.00174,0.04843 -3.0762,-8.35608 -17.01953,-10.99409c-8.96618,-1.69636 -16.95866,3.31805 -16.99709,3.31897c-0.64202,-9.5498 -1.38853,-18.61478 -1.38853,-18.61478z" fill="#0d67bc" stroke="none" stroke-width="0" stroke-linecap="butt"/><path d="M277.06746,130.90518l-12.30473,-5.87471l11.37378,-8.92805l8.13506,7.29644z" fill="#1be4fa" stroke="#0a0b14" stroke-width="2" stroke-linecap="round"/></g><g stroke-width="2" stroke-linecap="round"><path d="M248.5106,180.15198c0,0 4.94157,-6.55576 6.68852,-9.5562c2.72066,-4.6728 6.72736,-15.79262 6.72736,-15.79262l6.03665,0.65851c0,0 -1.68286,19.07544 -7.84848,26.90546c-2.98526,3.79113 -8.24197,5.65594 -10.23019,5.32341" data-paper-data="{&quot;index&quot;:null}" fill="#960537" stroke="#130614"/><path d="M263.63102,170.67185c0,0 -1.53553,6.19666 -4.52584,9.81049c-3.51119,4.24334 -7.92358,5.83327 -7.92358,5.83327" fill="none" stroke="#e81231"/></g><path d="M270.35,151.30001c0,2.85347 -2.38782,5.16667 -5.33334,5.16667c-2.94552,0 -5.33333,-2.3132 -5.33333,-5.16667c0,-2.85347 2.38781,-5.16666 5.33333,-5.16666c2.94552,0 5.33334,2.3132 5.33334,5.16666z" fill="#d1d9dd" stroke="#0f0a15" stroke-width="2" stroke-linecap="butt"/><path d="M224.13938,134.87642c-2.92138,-1.15759 -3.35967,-7.86302 -3.15534,-7.74163c4.35364,2.58637 5.98889,2.36397 8.7139,-1.58808c0.09176,-0.13307 4.38981,4.55331 3.69056,6.54345c-0.8366,4.15026 -7.30408,3.55698 -9.24912,2.78626z" data-paper-data="{&quot;index&quot;:null}" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="butt"/><path d="M249.6844,125.24795c1.1285,-0.6275 2.46247,-0.05047 2.46247,-0.05047c0,0 0.43023,2.25329 0.47275,3.21706c0.03152,0.71457 -0.2406,2.04498 -0.2406,2.04498c0,0 -2.03023,0.71248 -3.3478,-0.02246" data-paper-data="{&quot;index&quot;:null}" fill="#4c7d3f" stroke="#021f0c" stroke-width="1" stroke-linecap="round"/><path d="M245.37138,123.21734c2.51983,-0.5769 4.97115,1.46622 5.1994,4.05982c0.22825,2.59361 -1.57357,3.95575 -4.07968,4.58961c-2.60866,0.6598 -4.19089,-0.40836 -4.74344,-2.95268c-0.6028,-2.77576 1.07995,-5.11436 3.62372,-5.69675z" data-paper-data="{&quot;index&quot;:null}" fill="#4c7d3f" stroke="#021f0c" stroke-width="1" stroke-linecap="butt"/><path d="M241.20868,119.30625c4.32503,-3.40273 9.76626,-0.84988 9.76626,-0.84988l0.28581,4.13669c0,0 -4.39136,3.07901 -8.08678,1.71931" data-paper-data="{&quot;index&quot;:null}" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="round"/><path d="M250.22655,118.36999c1.37551,-0.48829 2.87572,0.20081 3.35082,1.53915c0.4751,1.33834 -0.25484,2.81911 -1.63035,3.3074c-1.37551,0.48829 -2.87572,-0.20081 -3.35082,-1.53915c-0.4751,-1.33834 0.25484,-2.81911 1.63035,-3.3074z" data-paper-data="{&quot;index&quot;:null}" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="butt"/><g data-paper-data="{&quot;index&quot;:null}" stroke-width="2"><path d="M249.76362,246.27121l-8.84996,-34.54873l10.78571,-2.94542l8.84996,34.54874z" fill="#4236fb" stroke="#170124" stroke-linecap="butt"/><path d="M250.07032,242.9607l-6.61691,-27.19146" fill="none" stroke="#3611be" stroke-linecap="round"/></g><path d="M256.89848,242.2521c6.25923,0 9.58333,3.65089 9.58333,6.45834c0,2.80745 -3.9491,2.83333 -10.20833,2.83333c-6.25922,0 -9.61211,-0.53009 -9.45834,-3.33333c0.25,-4.55745 3.82411,-5.95834 10.08334,-5.95834z" data-paper-data="{&quot;index&quot;:null}" fill="#be5410" stroke="#330c03" stroke-width="2" stroke-linecap="butt"/><path d="M254.54095,243.94804c0,0 -0.88799,0.4557 -2.44547,-0.04182c-3.33838,-1.06642 -8.40475,-5.14082 -4.9116,-10.78822c5.10061,-8.24617 7.35706,10.83004 7.35706,10.83004z" data-paper-data="{&quot;index&quot;:null}" fill="none" stroke="#8e8e8e" stroke-width="2" stroke-linecap="round"/><path d="M263.35305,231.493c5.12284,8.28213 -7.98206,12.08004 -7.98206,12.08004c0,0 2.88145,-20.32621 7.98206,-12.08004z" data-paper-data="{&quot;index&quot;:null}" fill="none" stroke="#797979" stroke-width="2" stroke-linecap="round"/><g stroke-width="2"><path d="M226.63952,243.36527l3.8221,-35.47587l11.09519,1.33125l-3.8221,35.47588z" fill="#4236fb" stroke="#170124" stroke-linecap="butt"/><path d="M231.41667,212.61209l-3.33333,27.78966" fill="none" stroke="#3611be" stroke-linecap="round"/></g><path d="M241.91668,182.78335c0,6.81151 -4.46278,13.04266 -11.16666,13.5c-4.88613,0.33334 -8.17368,-3.03992 -10.33333,-9.5c-2.5,-7.47817 2.61386,-16.33334 9.33333,-16.33334c6.71947,0 12.16666,5.52183 12.16666,12.33334z" fill="#960537" stroke="#0f0314" stroke-width="2" stroke-linecap="butt"/><path d="M235.23811,212.5387c0,0 -5.38235,-0.06344 -5.2229,-3.41675c0.27227,-5.72627 0.16658,-24.16974 0.16658,-24.16974l-0.11034,-8.58017l19.30953,-1.66667c0,0 3.84613,24.88472 2.37795,31.89032c-1.39895,6.67526 -7.54462,6.10968 -7.54462,6.10968z" fill="#e81231" stroke="#130614" stroke-width="2" stroke-linecap="butt"/><path d="M257.27896,169.91239c-1.80102,-3.95423 -2.73282,-21.72371 -2.73282,-21.72371l7.45011,0.07738c0,0 0.13603,12.06075 4.40517,15.68224c2.13486,1.81099 0.55029,11.47743 0.55029,11.47743c0,0 -7.87174,-1.55911 -9.67275,-5.51334z" fill="#eb9f1f" stroke="#432e05" stroke-width="2" stroke-linecap="butt"/><path d="M217.23983,160.80739c-0.81648,-12.28095 8.47731,-22.89851 20.75826,-23.71499c0.09421,-0.00627 0.18832,-0.01193 0.28233,-0.01701c1.48015,-0.07993 2.47359,1.90991 3.88905,2.1108c3.01085,0.42733 7.57534,-0.16705 10.1472,1.11767c6.15288,3.07353 8.89457,9.99849 9.39641,17.5468c0.75236,11.31656 -6.91336,21.22071 -17.75713,23.34526c-0.9241,0.18105 -2.37007,6.63895 -3.33446,6.70306c-1.31809,0.08763 -2.28368,-6.27454 -3.55338,-6.41103c-10.56045,-1.13521 -19.09942,-9.71771 -19.82827,-20.68057z" fill="#f9f9f9" stroke="#0f0a15" stroke-width="2" stroke-linecap="butt"/><path d="M229.40201,167.18756c0.29113,4.24199 3.87578,11.73884 3.87578,11.73884c-8.14459,-1.22043 -11.89344,-8.00979 -11.89344,-8.00979c0,0 -2.58348,-6.60413 2.84704,-11.90578c3.23716,-3.16034 12.25879,-5.85785 18.26862,-6.41776c0,0 -13.71532,5.59966 -13.098,14.59449z" fill="#d1d9dd" stroke="#d1d9dd" stroke-width="2" stroke-linecap="round"/><path d="M218.35809,181.01159c0,0 -5.04136,-9.24314 -4.56464,-15.29771c0.11784,-1.49652 2.85856,-1.38234 1.85019,-3.38994c-5.65863,-11.26593 3.58506,-13.44088 3.58506,-13.44088c0,0 -5.48157,-4.94755 15.67378,-11.65348c3.85739,-1.22274 7.82321,1.83011 10.43731,1.14736c11.11671,-2.90344 12.60439,2.77797 12.60439,2.77797c0,0 3.17761,1.17047 4.48011,2.31057c1.16515,1.01988 2.96883,4.20965 2.96883,4.20965c0,0 -3.36216,5.55463 -10.10428,4.0551c-10.15173,-2.25787 -25.31666,4.88003 -30.58312,8.56257c-2.60494,1.82149 2.56708,6.57094 2.50397,14.22333c-0.03665,4.44424 -8.8516,6.49544 -8.8516,6.49544z" fill="#fade23" stroke="#432e05" stroke-width="2" stroke-linecap="butt"/><path d="M251.17009,158.87356c0.1045,2.32514 -0.00247,4.21865 -0.23893,4.22928c-0.23646,0.01063 -0.51285,-1.86566 -0.61735,-4.1908c-0.1045,-2.32514 0.00247,-4.21865 0.23892,-4.22928c0.23646,-0.01063 0.51286,1.86565 0.61736,4.19079z" fill="#0f0a15" stroke="#0f0a15" stroke-width="2" stroke-linecap="butt"/><path d="M240.41668,189.11668l0.66667,23" fill="none" stroke="#130614" stroke-width="2" stroke-linecap="round"/><path d="M240.58335,189.10001c0,-1.27946 1.52969,-2.31666 3.41666,-2.31666c1.88698,0 3.41666,1.03721 3.41666,2.31666c0,1.27946 -1.52969,2.31667 -3.41666,2.31667c-1.88698,0 -3.41666,-1.03721 -3.41666,-2.31667z" fill="#c6c6c6" stroke="#0f0a15" stroke-width="2" stroke-linecap="butt"/><path d="M199.00001,150.61667c0,0 2.91904,-1.69958 5.42947,-4.68808c3.05308,-3.63449 6.10062,-8.75618 10.15386,-9.72859c2.53186,-0.60742 1,11.16667 1,11.16667c0,0 -7.49097,1.75011 -9.29593,3.67483c-1.89616,2.02197 -7.28741,-0.42483 -7.28741,-0.42483z" fill="#fade23" stroke="#432e05" stroke-width="2" stroke-linecap="butt"/><path d="M218.94446,179.43675c-4.22027,-10.78606 -3.35303,-13.30822 -3.35303,-13.30822c0,0 2.18219,-1.5749 2.12868,-2.60367c-0.13263,-2.55003 -2.57033,-6.31715 -2.46439,-7.85206c0.27757,-4.02176 5.68244,-7.1491 5.63318,-7.18048c-0.66117,-0.42119 -1.06279,-2.41596 2.5952,-4.89525c1.18997,-0.80652 6.21159,-4.02267 6.39041,-3.15075c0.21866,1.06623 1.92948,1.48976 3.86207,1.32206c1.19862,-0.10401 4.90937,-0.18072 4.18388,-1.90037c-0.60612,-1.43671 0.02183,-1.22259 0.77559,-1.21975c1.60523,0.00605 4.84168,1.52863 5.40032,1.5044c8.18139,-1.55575 10.02663,-0.95819 12.1208,1.21339" fill="none" stroke="#eb9f1f" stroke-width="2" stroke-linecap="round"/><path d="M213.83335,146.01251c0,0 -1.81131,0.24215 -4.11578,1.43544c-1.62798,0.843 -3.61361,2.32827 -4.51211,2.66733c-1.34298,0.50679 -3.03878,0.34168 -3.03878,0.34168" fill="none" stroke="#eb9f1f" stroke-width="2" stroke-linecap="round"/><path d="M231.72224,209.63056l0.25,-20.66666" fill="none" stroke="#960537" stroke-width="2" stroke-linecap="round"/><path d="M244.55512,207.56441v-7.71429h3.14286v7.71429z" fill="#960537" stroke="#130614" stroke-width="2" stroke-linecap="butt"/><path d="M234.55512,207.85013v-7.71428h3.14286v7.71428z" fill="#960537" stroke="#130614" stroke-width="2" stroke-linecap="butt"/><path d="M238.375,248.08543c0.15377,2.80324 -3.19911,3.33333 -9.45834,3.33333c-6.25922,0 -10.20833,-0.02588 -10.20833,-2.83333c0,-2.80745 3.32411,-6.45834 9.58333,-6.45834c6.25922,0 9.83334,1.40089 10.08334,5.95834z" fill="#be5410" stroke="#330c03" stroke-width="2" stroke-linecap="butt"/><path d="M229.81915,243.44804c0,0 -13.10491,-3.79791 -7.98206,-12.08004c5.10061,-8.24617 7.98206,12.08004 7.98206,12.08004z" fill="none" stroke="#797979" stroke-width="2" stroke-linecap="round"/><path d="M238.00626,232.993c3.49316,5.6474 -1.57322,9.7218 -4.9116,10.78822c-1.55748,0.49752 -2.44547,0.04182 -2.44547,0.04182c0,0 2.25645,-19.07621 7.35706,-10.83004z" data-paper-data="{&quot;index&quot;:null}" fill="none" stroke="#8e8e8e" stroke-width="2" stroke-linecap="round"/><path d="M232.67281,189.29434c0,0 -5.342,6.45628 -7.2621,9.43499c-2.99031,4.63896 -7.59011,15.7924 -7.59011,15.7924l-6.12501,-0.95064c0,0 2.59812,-19.37309 9.24719,-27.07211c3.21933,-3.7277 8.66576,-5.38613 10.67773,-4.95512" fill="#e81231" stroke="#130614" stroke-width="2" stroke-linecap="round"/><path d="M213.86702,211.89444c0,0 1.61823,-15.82032 7.00412,-22.39125c3.64867,-4.45147 9.22197,-6.40105 9.22197,-6.40105" fill="none" stroke="#960537" stroke-width="2" stroke-linecap="round"/><path d="M219.75,215.50001c0,2.85347 -2.38782,5.16667 -5.33334,5.16667c-2.94552,0 -5.33333,-2.3132 -5.33333,-5.16667c0,-2.85347 2.38781,-5.16666 5.33333,-5.16666c2.94552,0 5.33334,2.3132 5.33334,5.16666z" fill="#f9f9f9" stroke="#0f0a15" stroke-width="2" stroke-linecap="butt"/><path d="M238.61453,160.09578c0.1045,2.32514 -0.00247,4.21865 -0.23893,4.22928c-0.23646,0.01063 -0.51285,-1.86566 -0.61735,-4.1908c-0.1045,-2.32514 0.00247,-4.21865 0.23892,-4.22928c0.23646,-0.01063 0.51286,1.86565 0.61736,4.19079z" fill="#0f0a15" stroke="#0f0a15" stroke-width="2" stroke-linecap="butt"/><path d="M244.60527,119.34605c0,0 0.72709,1.32829 1.01157,2.05982c0.32432,0.83396 0.72527,2.3086 0.72527,2.3086" fill="none" stroke="#4c7d3f" stroke-width="1" stroke-linecap="round"/><path d="M234.84018,133.67664c-5.58953,-1.61812 -7.25555,-8.76501 -4.85208,-15.91347c0.00756,-0.63051 9.66227,-2.09973 10.21984,-1.75273c3.85532,2.39932 7.52759,9.33132 4.82913,13.49314c-2.34724,3.62013 -9.23258,4.45221 -10.19689,4.17306z" data-paper-data="{&quot;index&quot;:null}" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="butt"/><path d="M238.2644,125.07291c0,0 -2.61159,-2.12461 -5.39452,-2.68784c-2.88163,-0.58321 -3.9357,-3.19045 -2.8277,-4.55576c0.17874,-0.22025 4.20412,2.31244 7.50074,2.23068c3.08605,-0.07654 4.71721,-2.564 4.71721,-2.564c0,0 3.71467,4.24578 2,4.46581c-2.73117,0.35046 -5.99572,3.11111 -5.99572,3.11111z" fill="#6aaf44" stroke="#0b2508" stroke-width="1" stroke-linecap="butt"/><path d="M237.83171,128.92308c4.34625,4.18644 -2.80713,8.62786 -2.80713,8.62786l-4.369,-0.17924c0,0 -3.58585,-8.09539 -0.18786,-10.18766" data-paper-data="{&quot;index&quot;:null}" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="round"/><path d="M236.33714,135.99906c1.68271,1.54934 1.15868,4.026 1.15868,4.026c0,0 -1.683,0.61135 -2.62119,0.70794c-1.26538,0.13027 -4.28756,0.00331 -4.28756,0.00331c0,0 -1.3504,-2.72875 0.30153,-4.10065" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="round"/><path d="M225.70822,104.1805c0.18382,-0.33397 1.35631,-2.07815 2.60989,-4.86266c1.53192,-3.40277 -0.0317,-11.76516 3.84071,-12.27662c0.7583,-0.10016 1.83563,6.21129 1.84264,8.37273c0.00949,2.92732 -1.71466,9.91521 -1.71466,9.91521c0,0 -6.91375,-0.5397 -6.57858,-1.14866z" data-paper-data="{&quot;index&quot;:null}" fill="#182507" stroke="#000201" stroke-width="1" stroke-linecap="butt"/><path d="M238.52066,117.78503c-0.10226,-0.06151 1.50302,-0.27479 2.34626,-0.65097c1.03474,-0.46161 3.48151,-2.03189 3.63244,-2.0645c4.67637,-1.01065 8.94722,1.00526 8.88495,1.86705c-0.06169,0.85371 -3.49651,1.77015 -7.47633,2.05322c-2.5477,0.18121 -5.46288,-0.04718 -7.38732,-1.20479z" data-paper-data="{&quot;index&quot;:null}" fill="#def2c2" stroke="#333b32" stroke-width="1" stroke-linecap="butt"/><path d="M246.34211,115.6092c0,0 -0.75239,1.01594 -1.3287,1.40301c-0.59831,0.40185 -2.19762,0.96541 -2.19762,0.96541" fill="none" stroke="#b4d892" stroke-width="1" stroke-linecap="round"/><path d="M238.34408,118.40105c-0.08141,0.01132 -4.02814,2.13493 -8.51969,-0.32496c-4.38112,-2.39941 -6.41972,-3.99113 -5.04988,-10.49789c0.88313,-4.19484 4.36956,-8.89979 11.18152,-8.0638c6.81196,0.83599 10.64885,5.16586 10.77306,11.41908c0.1276,6.42454 -5.564,7.72583 -8.385,7.46757z" data-paper-data="{&quot;index&quot;:null}" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="butt"/><path d="M239.6579,119.16447c-3.77076,0.61368 -9.43496,-0.29983 -12.17787,-2.88055c-3.3622,-3.16338 -2.14074,-6.72887 -2.03265,-8.32998l6.78947,-3.21053c0,0 11.82612,3.24744 12.37708,1.73213c0.28477,-0.7832 0.62292,0.42576 0.62292,0.42576" fill="none" stroke="#4c7d3f" stroke-width="1" stroke-linecap="round"/><path d="M233.01472,104.30188c-1.75257,-0.98748 -8.13997,3.15648 -8.23442,3.12127c-0.57055,-0.2127 1.03765,-7.16684 5.96712,-7.17246c0.57368,-0.00065 1.5219,-1.70111 0.24501,-10.68962c-0.00122,-0.00244 -0.37264,-1.03693 0.35253,-1.94295c1.10876,-1.38527 2.14715,-0.0082 2.14715,-0.0082c0,0 3.25966,13.45971 8.09052,13.59371c2.35916,0.16831 3.14671,3.13215 3.16268,3.45673c0.14007,2.84659 -5.20192,5.00378 -5.20192,5.00378c0,0 -4.71384,-2.15845 -6.52868,-5.36225z" data-paper-data="{&quot;index&quot;:null}" fill="#2a3c10" stroke="#021707" stroke-width="1" stroke-linecap="butt"/><path d="M229.06666,119.89049c-5.41217,-0.02062 -6.94835,5.06731 -6.94835,5.06731l2.32035,3.43655c0,0 5.35616,-0.27537 7.43229,-3.62121" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="round"/><path d="M237.97369,124.29341c0,0 -3.34522,-2.71152 -5.29987,-2.67085c-1.87712,0.03906 -2.59486,-3.32915 -2.59486,-3.32915" fill="none" stroke="#2d6e21" stroke-width="1" stroke-linecap="round"/><path d="M228.97369,120.28289c-4.4793,0.25498 -5.52631,3.78948 -5.52631,3.78948" fill="none" stroke="#4c7d3f" stroke-width="1" stroke-linecap="round"/><path d="M229.60264,120.58048c-3.98152,0.25799 -7.50875,-0.18529 -7.68537,-1.02282c-0.17829,-0.84544 2.78053,-3.8752 7.55065,-3.50655c0.15396,0.0119 3.79067,1.69125 4.87836,2.00862c0.88638,0.25863 2.50576,0.25275 2.41276,0.32753c-1.75013,1.40734 -4.60761,2.02807 -7.1564,2.19322z" data-paper-data="{&quot;index&quot;:null}" fill="#def2c2" stroke="#333b32" stroke-width="1" stroke-linecap="butt"/><path d="M241.80825,116.42799l1.51975,-0.50356" data-paper-data="{&quot;index&quot;:null}" fill="none" stroke="#2a3c10" stroke-width="1.5" stroke-linecap="round"/><path d="M236.35586,115.22011l1.77796,1.13945" data-paper-data="{&quot;index&quot;:null}" fill="none" stroke="#2a3c10" stroke-width="1.5" stroke-linecap="round"/><path d="M238.36941,118.2315c-3.33809,0.34503 -8.26828,-1.18447 -9.10503,-2.89295" data-paper-data="{&quot;index&quot;:null}" fill="none" stroke="#021f0c" stroke-width="1" stroke-linecap="round"/><path d="M229.03964,110.8869c-2.35582,-3.84973 2.40251,-5.4459 4.88349,-3.26878c1.96224,1.49948 1.76477,4.98757 1.76477,4.98757c0,0 -5.09136,0.8254 -6.64825,-1.71878z" data-paper-data="{&quot;index&quot;:null}" fill="#2a3c10" stroke="#021707" stroke-width="1" stroke-linecap="round"/><path d="M234.59093,109.96063c0,1.50153 -0.81149,2.71875 -1.8125,2.71875c-1.00101,0 -1.8125,-1.21722 -1.8125,-2.71875c0,-1.50153 0.81149,-2.71875 1.8125,-2.71875c1.00101,0 1.8125,1.21722 1.8125,2.71875z" fill="#f9f9f9" stroke="#251933" stroke-width="1" stroke-linecap="butt"/><path d="M242.48944,112.89091c0,0 0.12716,-3.49113 1.19626,-4.85985c1.36987,-2.01102 3.62485,-0.11234 2.20911,3.57471c-0.93563,2.43667 -3.40536,1.28514 -3.40536,1.28514z" data-paper-data="{&quot;index&quot;:null}" fill="#2a3c10" stroke="#021707" stroke-width="1" stroke-linecap="round"/><path d="M243.22831,112.5612l2.52519,-2.879" data-paper-data="{&quot;index&quot;:null}" fill="none" stroke="#251933" stroke-width="1" stroke-linecap="round"/><path d="M233.7524,140.57913l-0.07143,-2" fill="none" stroke="#021f0c" stroke-width="1" stroke-linecap="round"/><path d="M234.94772,175.66372c0,0.55229 -0.48502,1 -1.08333,1c-0.59831,0 -1.08333,-0.44771 -1.08333,-1c0,-0.55229 0.48502,-1 1.08333,-1c0.59831,0 1.08333,0.44771 1.08333,1z" fill="#0f0a15" stroke="none" stroke-width="0" stroke-linecap="butt"/><path d="M226.22856,126.91211c0,1.42016 -1.18325,2.57143 -2.64286,2.57143c-1.45961,0 -2.64285,-1.15127 -2.64285,-2.57143c0,-1.42016 1.18324,-2.57143 2.64285,-2.57143c1.45961,0 2.64286,1.15127 2.64286,2.57143z" fill="#7f9e66" stroke="#021f0c" stroke-width="1" stroke-linecap="butt"/><path d="M231.15625,140.04802c-1.2089,-1.52781 0.07063,-3.51709 0.02402,-3.62438c-0.82442,-1.89799 -2.25931,-6.88234 -0.14902,-8.81311" fill="none" stroke="#4c7d3f" stroke-width="1" stroke-linecap="round"/><path d="M229.5,116.92499c-3.54487,-0.30585 -5.59615,1.23921 -6.63158,2.36842" fill="none" stroke="#b4d892" stroke-width="1" stroke-linecap="round"/><path d="M233.52843,110.05438l-0.75,1.8125" fill="none" stroke="#e81231" stroke-width="1.5" stroke-linecap="round"/></g></g></svg>
@@ -236,6 +251,8 @@
     	// Globals
         let time = 0;
         let zoomLevel;
+        let mouse = {x: 0, y: 0};
+        let mouseClick = 0;
         
         // Functions
     	var incrementTime = function() {
@@ -245,8 +262,17 @@
             document.getElementById("zoomlink").style.display=zoomLevel<0.51 && "block" || "none";
         };
         
+        // Sound Effects
+        function playSfx(s) {
+        	let sound = document.getElementById("sfx"+s);
+            sound.currentTime = .01;sound.play();
+        }
+        
         
         // Canvas Functions
+        let order=[3,4,2,1,7,0,5];
+        let glow=[0,0,0,0,0,0,0,0];
+        let next=0;
     	var drawTitleCanvas = function() {
         	// Define canvas
             let c = document.getElementById("MainTitle");
@@ -260,19 +286,31 @@
             ctx.fillRect(0,0,700,200);
             
             // Letters
-            ctx.fillStyle = "#1847f0";
             ctx.font = "80px Renogare";
             ctx.textAlign = "center";
             
             for (var i=0; i<letters.length; i++) {
-            	let y = Math.sin( (time+i*8)/9 )*10 + 100;
+            	let x = 380 + i*60 - letters.length*30;
+                let y = Math.sin( (time+i*8)/9 )*10 + 100;
                 let step = (y-90)*5
+                
+                if (next<7 && mouseClick && mouse.x>x-25 && mouse.x<x+25 && mouse.y>y-60 && mouse.y<y) {
+                	glow[i]=100;
+                    if (order[next]===i) {next++;} else {next=0;}
+                    if(next===7){playSfx(3);document.getElementById("remotediv").style.display="block";}else{playSfx(0);}
+                }
                 
                 ctx.fillStyle = `rgb(
                 	${24+step},
                     ${71+step},
                     ${140+step})`;
-				ctx.fillText(letters[i],380 + i*60 - letters.length*30,y);
+				ctx.fillText(letters[i],x,y);
+                
+                if(glow[i]>0){glow[i]-=10;}
+                ctx.fillStyle = "#FFF";
+                ctx.globalAlpha = glow[i]/100;
+                ctx.fillText(letters[i],x,y);
+                ctx.globalAlpha = 1;
             }
             
             // Other Text
@@ -289,38 +327,67 @@
             ctx.fillStyle = "#cdd0f7";
             ctx.font = "15px Renogare";
             ctx.fillText(years+"M He / Him (Straight)",350,190);
+            
+            mouseClick = 0;
         };
         
         // Useless Button
         let clicks = 0;
         let path = "";
         var clickUseless = function() {
-			if (clicks<5) {window.alert("What did you expect?");}
+			playSfx(0);
+            if (clicks<5) {window.alert("What did you expect?");}
             else if (clicks<10) {window.alert("No problem here.");}
             else if (clicks===19) {
-            	let answer = "";
+            	playSfx(1);
+                let answer = "";
                 while (answer!=="yes" && answer!=="no") {
                   answer = window.prompt("Do you actually think I would actually give you something?").toLowerCase()
-                 }
-                if (answer=="yes"){window.alert("Well then sorry to dissapoint, but I don't.");path="consider";}
-                if (answer=="no"){window.alert("Then what are you even looking for?");path="moon";}
+                }
+                if (answer=="yes"){message(2,"Well then sorry to dissapoint, but I don't.");path="consider";}
+                if (answer=="no"){message(2,"Then what are you even looking for?");path="moon";}
             }
             if (path=="moon") {
-              if (clicks===30) {window.alert("At this rate, you'll click until the moon rises from the bottom.");}
-              else if(clicks===31){window.alert("Although, moons don't just appear on webpages...");}
-              else if(clicks===32){window.alert("Or, do they?");}
+              	if (clicks===30) {message(1,"At this rate, you'll click until the moon rises from the bottom.");}
+              	else if(clicks===35){message(1,"Although, moons don't just appear on webpages...");}
+              	else if(clicks===40){message(1,"Or, do they?");}
+                
+                if(clicks===60){message(1,"I would usually go do what any talking button\nwould do, and try to tell you to go away.");message(-1,"But it appears you're still curious...\nAnd, I wouldn't blame you.");}
+                if(clicks===61){message(1,"Well, then there is one thing I might...\nshare, with you if you're so intrested.");}
+                if(clicks===62){message(1,"I'm certain that it is a clue to something I've been looking for.");}
+                if(clicks===63){message(1,"It's a picture, but I can't send it to you through my normal means...");message(1,"But I can try to tell you where I found it.");}
+                if(clicks===64){message(1,"I found it in a really old platformer he made.");message(-1,"I can't remember where it was, but it feels important.");message(-1,"I'll see you later, friend.");document.getElementById("Useless").style.display="none";}
+                
             } else if (path=="consider") {
-                if(clicks===30){window.alert("Well, there is one thing.");}
-                if(clicks===31){window.alert("There are some documents that I would like to know about.");}
-                if(clicks===32){window.alert("But he sliced them, and hid the fragments in unknowable locations.");window.alert("But I know it can be possible to retrive each of them.");}
-                if(clicks===33){window.alert("I want you to find it. He hid them, for a reason.");window.alert("I'll see you later, friend.");document.getElementById("Useless").style.display="none";}
+                if(clicks===30){message(1,"Well, there is one thing.");}
+                if(clicks===31){message(1,"There are some documents that I would like to know about.");}
+                if(clicks===32){message(1,"But he sliced them, and hid the fragments in unknowable locations.");message(0,"But I know it can be possible to retrive each of them.");}
+                if(clicks===33){message(1,"I want you to find it. He hid them, for a reason.");message(0,"I'll see you later, friend.");document.getElementById("Useless").style.display="none";}
             }
             
             clicks++;
         };
         
+        function message(sound,txt) {
+        	if (sound > -1) {playSfx(sound);}
+        	window.alert(txt);
+        }
+        
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
+                y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+            };
+        }
+        
+        function setMouse(e) {mouse = getMousePos(MainTitle, e);}
+        function clickMouse(e) {mouseClick=1;}
+        
         setInterval(incrementTime,16);
         setInterval(drawTitleCanvas,16);
-    	
+    	window.addEventListener('mousemove', setMouse, false);
+        window.addEventListener('click', clickMouse, false);
+        
     </script>
 </html>
