@@ -2584,7 +2584,7 @@ https://www.khanacademy.org/computer-programming/i/6312259968614400
 			};
 			var searchPasscode = function() {
 			    for (var i=1; i<LEVELTABLE.length; i++) {
-			        if (LEVELTABLE[i].password===passcode) {
+			        if (LEVELTABLE[i].password===passcode.toUpperCase()) {
 			            return i;
 			        }
 			    }
