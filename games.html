@@ -2,15 +2,22 @@
 <html>
 	<head>
     	<title>SwordF Official Website</title>
-    	<!-- <link rel="stylesheet" href="style.css"> -->
         
         <!-- Celeste Font because I can -->
     	<link href="https://fonts.cdnfonts.com/css/renogare" rel="stylesheet">
         
+        <!-- Music & Sound Effects -->
+        <audio id="music" preload="auto" autoplay loop><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/music/Lets Play a Game.mp3" type="audio/mpeg"></audio>
+        
+        <audio id="sfx0" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/Click.mp3" type="audio/mpeg"></audio>
+        <audio id="sfx1" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/Notify.mp3" type="audio/mpeg"></audio>
+        
         <style>
-            body {
-        		background-color: #000000;
-        	}
+            html, body {
+                background-color: #000000;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
             p {
             	color: #FFFFFF;
                 font-family: "Renogare", sans-serif;
@@ -34,6 +41,7 @@
             	width:90%;
   				overflow:auto;
                 margin:auto;
+                margin-bottom: 5em;
             }
             div.container .section {
             	width:30%;  
@@ -109,7 +117,9 @@
             
             /* Tooltip text */
             p .tooltip {
-            	visibility: hidden;
+            	visibility: visible;
+                display: none;
+                
             	background-color: black;
             	color: #fff;
             	text-align: center;
@@ -117,23 +127,40 @@
             	border-radius: 5px;
                 margin-left: 10px;
 
-            	content: " ";
+            	content: "";
                 position: absolute;
              	z-index: 1;
             }
 
             a:hover .tooltip {
               visibility: visible;
+              display: block;
+            }
+            
+            #trailCanvas {
+            	pointer-events: none;
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                
+                border: none;
+                outline: none;
+                padding: 0px;
+                margin: 0px;
+                z-index: 0;
             }
         </style>
 	</head>
   
-	<body>
-    	<p class="Horiz-Center">
+	<body id="body">
+    	<canvas width="100" height="100" id="trailCanvas"></canvas>
+        
+        <p class="Horiz-Center">
         	<canvas width="700px" height="200px" id="MainTitle"></canvas>
         </p>
+        
         <p class="Horiz-Center">
-        	<button class="backBtn" onClick="loadMain()">Back to my Website</button>
+        	<button class="backBtn" id="backBtn" onClick="loadMain();">Back to my Website</button>
         </p>
         
         <!-- Section 1 -->
@@ -141,43 +168,43 @@
         	
             <div class="section">
             	<p class="sectionTitle">My Original Games</p>
-                <p><a class="link" href="https://www.lexaloffle.com/bbs/?pid=towerofarcania_v1#p">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://www.lexaloffle.com/bbs/?pid=towerofarcania_v1#p">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Arcania_Wizard.png" width=30px></img>
                     Tower of Arcania
                     <span class="tooltip">A rough and tough multiplayer arcade platformer.<br>Defeat the bad guys on each floor to progess!</span>
-                </a></p>
+                </a></p></div>
                 
-                <div><p><a class="link" href="https://swordf-official.github.io/basically-cyan-1.html">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://swordf-official.github.io/basically-cyan-1.html">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Cyan_George.png" width=30px></img>
                     Basically Cyan
                     <span class="tooltip">A short 12 level game I made in KA's JS engine.<br>The gameplay is stupid simple, however controls are weird.</span>
                 </a></p></div>
                 
-                <div><p><a class="link" href="https://swordf-official.github.io/basically-cyan-2.html">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://swordf-official.github.io/basically-cyan-2.html">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Cyan_Keyblock.png" width=30px></img>
                     Basically Cyan 2
                     <span class="tooltip">An extension of the first game featuring secrets,<br>bigger levels, new gizmos, and even a level editor.</span>
                 </a></p></div>
                 
-                <div><p><a class="link" href="https://swordf-official.github.io/basically-cyan-3.html">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://swordf-official.github.io/basically-cyan-3.html">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Cyan_Marty.png" width=30px></img>
                     Basically Cyan 3
                     <span class="tooltip">The final entry in the series. 30 levels, dangerous enemies, traps,<br>and more other intresting content!</span>
                 </a></p></div>
                 
-                <div><p><a class="link" href="https://swordf-official.github.io/lone-classic.html">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://swordf-official.github.io/lone-classic.html">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/LoneClassic_Tyler.png" width=30px></img>
                     Lone
                     <span class="tooltip">A hard precision-platformer inspired by Celeste Classic, however made<br>way before I ever started on Celeste Classic mods.</span>
                 </a></p></div>
                 
-                <div><p><a class="link" href="https://swordf-official.github.io/reprogram-classic.html">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://swordf-official.github.io/reprogram-classic.html">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Reprogram_GramClassic.svg" width=30px></img>
                     Reprogram Classic
                     <span class="tooltip">A programming puzzle game.<br>Code and debug using a fake (but somewhat simple)<br>programming language to reach the goal of each puzzle.</span>
                 </a></p></div>
                 
-                <div><p><a class="link" href="https://www.lexaloffle.com/bbs/?pid=reprogram_v1_2_1#p">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://www.lexaloffle.com/bbs/?pid=reprogram_v1_2_1#p">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Reprogram_p8Gram.png" width=30px></img>
                     Reprogram (2024 Demake)
                     <span class="tooltip">A Pico-8 demake of Reprogram Classic, code your way through 30 levels.</span>
@@ -191,25 +218,25 @@
             	<p class="sectionTitle" style="margin-bottom: 0em;">Celeste Classic Mods</p>
                 <p class="sectionSubtitle">(at least the ones worth showing)</p>
                 
-                <div><p><a class="link" href="https://www.lexaloffle.com/bbs/?tid=147646">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://www.lexaloffle.com/bbs/?tid=147646">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Celeste_Work.png" width=30px></img>
                     Celeste Maker
                     <span class="tooltip">A Celeste Classic level-pack creator with a lot of features!<br>Build your mountain, and share with with others!</span>
                 </a></p></div>
                 
-                <div><p><a class="link" href="https://www.lexaloffle.com/bbs/?tid=147294">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://www.lexaloffle.com/bbs/?tid=147294">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/MtFua_Sara.png" width=30px></img>
                     Mt. フア
                     <span class="tooltip">A remake of my very first mod. A lot more challenging than<br>the vanilla game, with 3 routes to beat!</span>
                 </a></p></div>
                 
-                <div><p><a class="link" href="https://www.lexaloffle.com/bbs/?tid=145174">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://www.lexaloffle.com/bbs/?tid=145174">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Celeste_SmolMadeline.png" width=30px></img>
                     Celeste Smol
                     <span class="tooltip">Essentially a improved version, but in a tiny screen<br>to replicate 2018 Celeste's Pico-8 minigame.</span>
                 </a></p></div>
                 
-                <div><p><a class="link" href="https://www.lexaloffle.com/bbs/?tid=145174">
+                <div onClick="playSfx(0);"><p><a class="link" href="https://www.lexaloffle.com/bbs/?tid=144688">
                 	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Celeste_GoldFruit.png" width=30px></img>
                     Celeste Randomizer
                     <span class="tooltip">Mix up the vanilla game in a variety of ways!</span>
@@ -218,40 +245,124 @@
             </div> <div class="gap"><br><br></div>
             
             
-            
             <div class="section">
             	<p class="sectionTitle" style="margin-bottom: 0em;">Tools and Toys</p>
-                <div><p><a class="link" href="https://swordf-official.github.io/tools-toys/astrobot">
-                    AstroBot
+                <p class="sectionSubtitle">Dumb and silly tech demos</p>
+                
+                <div onClick="playSfx(0);"><p><a class="link" href="https://swordf-official.github.io/tools-toys/blastrobot">
+                    BlastroBot
                     <span class="tooltip">Program a ship to shoot<br>rocks with simple commands.</span>
                 </a></p></div>
                 
             </div> <div class="gap"><br><br></div>
         </div>
         
-        <div class="wrapper">
+        
+        
+        <!-- Section 2 -->
+        <div class="container">
         	
+            <div class="section">
+            	<p class="sectionTitle" style="margin-bottom: 0em;">Bad Scratch Games</p>
+                <p class="sectionSubtitle">The best that a 11yo could of made I guess...</p>
+                
+                <div onClick="playSfx(0);"><p><a class="link" href="https://scratch.mit.edu/projects/781508169/">
+                    <img src="https://github.com/SwordF-Official/SwordF-Official.github.io/raw/refs/heads/main/images/SwordyFurBlaster.svg" width=30px></img>
+                    Fur Blaster
+                    <span class="tooltip">Shoot those ugly degenerates to the beat!</span>
+                </a></p></div>
+                
+                <div onClick="playSfx(0);"><p><a class="link" href="https://scratch.mit.edu/projects/283653010/">
+                    <img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Red.svg" width=30px>
+                    Red
+                    <span class="tooltip">A game very similar (but much worse than) to Basically Cyan.</span>
+                </a></p></div>
+                
+                <div onClick="playSfx(0);"><p><a class="link" href="https://scratch.mit.edu/projects/303488515/">
+                	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/CoolSquareSwitch.svg" width=30px>
+                    Cool Square
+                    <span class="tooltip">A Run & Gun game inspired by the MegaMan games,<br>but has barely any features of said game and<br>uses a lot of songs from them too.</span>
+                </a></p></div>
+            </div> <div class="gap"><br><br></div>
+            
+            <div class="section">
+            	<p class="sectionTitle" style="margin-bottom: 0em;">Short and Silly Animations</p>
+                <p class="sectionSubtitle">Dumb crap because I felt so.</p>
+                
+                <div onClick="playSfx(0);"><p><a class="link" href="https://scratch.mit.edu/projects/418202653/">
+                	<img src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/images/Familiarizer.svg" width=20px>
+                    Door the Familiarizer
+                    <span class="tooltip">A series I never finished. Meant to be a<br>"parody" to children's cartoons.</span>
+                </a></p></div>
+                
+            </div> <div class="gap"><br><br></div>
         </div>
         
-        <div id="page"style="width: auto; display:none; margin-top: 35em">
-        <div style="float: left; width: 15%; display: block;"><p></p></div>
-        <div style="float: left; width: 70%; display: block;">
-        <p>Page 2</p>
-        <img src="https://www.lexaloffle.com/media/69779/18_Page%202.png"></img>
+        
+        <div id="page"style="width: auto; display:block; margin-top: 500px">
+        	<p class="Horiz-Center"><img id="lockClick" width="200px"; style="display: none;" src="https://www.lexaloffle.com/media/69779/lock.png" onClick="gotoPage();"></img> </p>
         </div></div>
+        
+        
+        
+        
+        
+        
 	</body>
     
     <script>
+    	let state = "lock";
+        const msg = document.querySelector(".msg");
+
+        // Listen for the message event
+        const bc = new BroadcastChannel("channel");
+
+        bc.onmessage = ({ data }) => {
+          if (data === "check") {
+            bc.postMessage("key");
+          } else if (data === "key") {
+            state = "key";
+            
+            document.getElementById("music").pause();
+            const btn = document.getElementById("backBtn");
+            btn.innerHTML = "Unlock";
+          } else if (data === "unlock") {
+            state = "unlock";
+            document.getElementById("lockClick").src="https://www.lexaloffle.com/media/69779/key.png";
+          }
+        };
+
+        // Send a message to the other tab
+        bc.postMessage("check");
+
+        
     	// Globals
-        let time = 0;        
+        let time = 0;
+        var length = 0;
+        
+        let trail = [];
+        let prevMouse = {x:0,y:0};
         
         // Functions
     	var incrementTime = function() {
         	time++;
             time = time%160000;
-            if(window.scrollY>700)document.getElementById("page").style.display="block";
+            
+            // Scroll / Window events
+            var step = window.scrollY/100
+            document.getElementById("body").style.background = `rgb(
+                	${18-step},
+                    ${21-step},
+                    ${37-step})`;
+            //if(window.scrollY>700)document.getElementById("page").style.display="block";
+            if (window.scrollY>10000) {
+            	document.getElementById("lockClick").style.display = "inline";
+            } else if (state !== "key" && window.scrollY>800+length) {
+            	length+=400;
+                document.getElementById("page").style.marginTop = (500+length)+"px";
+            }
+            document.getElementById("music").volume = 1 - window.scrollY*0.0001;
         };
-        
         
         // Canvas Functions
     	var drawTitleCanvas = function() {
@@ -263,8 +374,7 @@
             let letters = "SwordF's";
             
             // Clear
-            ctx.fillStyle = "#000000";
-            ctx.fillRect(0,0,700,200);
+            ctx.clearRect(0,0,700,200);
             
             // Letters
             ctx.fillStyle = "#1847f0";
@@ -287,21 +397,114 @@
             ctx.font = "40px Renogare";
             ctx.fillText("Games, Toys, & Other Silly Stuff",350,160);
         };
+        
+        
+        var drawTrail = function() {
+        	// Define canvas
+            let c = document.getElementById("trailCanvas");
+			let ctx = c.getContext("2d");
+            
+            c.width = document.body.scrollWidth;
+            c.height = document.body.scrollHeight;
+            
+            let w = c.width;
+            let h = c.height;
+            
+            // Clear
+            ctx.clearRect(0,0,w,h);
+            
+            ctx.fillStyle = "#FF0000";
+            
+            let i=0;
+            while (i<trail.length) {
+            	trail[i].life--;
+                let size = trail[i].life/50 * trail[i].maxSize;
+                if (trail[i].life > 0) {
+                	let gradient = ctx.createLinearGradient(trail[i].x-size, trail[i].y-size, trail[i].x+size, trail[i].y+size);
+                    gradient.addColorStop("0",   trailColors[ trail[i].color ] );
+                    gradient.addColorStop("1.0", trailColors[ trail[i].color+1 ] );
+                    
+                    trail[i].fill = gradient;
+                }
+            	
+                if (trail[i].life < 1) {
+                	trail.splice(i,1);
+                } else {
+                	trail[i].x += Math.sin(trail[i].dir)*trail[i].speed;
+                    trail[i].y-= Math.cos(trail[i].dir)*trail[i].speed;
+                	
+                    
+                	ctx.beginPath();
+                    ctx.arc(trail[i].x, trail[i].y, size, 0, 2 * Math.PI);
+                    
+                    ctx.strokeStyle = trail[i].fill;
+                    
+                    
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                	i++;
+                }
+            }
+            
+        };
+        
+        // Intervals & Events
         setInterval(incrementTime,16);
         setInterval(drawTitleCanvas,16);
-        var loadMain = function(n) {window.location.href = "https://swordf-official.github.io";}
+        setInterval(drawTrail,1);
+        var loadMain = function(n) {
+        	playSfx(0);
+            if (state=="key") {
+            	bc.postMessage("unlock");
+            } else {
+            	window.location.href = "https://swordf-official.github.io";
+            }
+        }
         
         
         // tooltips
         var globalOpacity = 0;
         var tooltips = document.querySelectorAll('.link .tooltip');
-        document.addEventListener('mousemove', fn, false);
+        document.addEventListener('mousemove', showToolTip, false);
+        document.addEventListener('mousemove', updateTrail, false);
 
-        function fn(e) {
+        function showToolTip(e) {
             for (var i=tooltips.length; i--;) {
                 tooltips[i].style.left = e.pageX + 'px';
                 tooltips[i].style.top = e.pageY + 'px';
             }
         }
+        
+        const trailColors = ["red","orange","gold","green","teal","blue","purple","magenta","red"];
+        function updateTrail(e) {
+        	trail.push({
+                    x: e.pageX,
+                    y: e.pageY,
+                    
+                    maxSize: Math.random()*7+5,
+                    dir: Math.random()*360,
+                    speed: Math.random(),
+                    
+                    color: Math.floor(Math.random()*(trailColors.length-2)),
+                    
+                    life: 50
+                });
+        }
+        
+        function playSfx(s) {
+        	let sound = document.getElementById("sfx"+s);
+            sound.currentTime = .01;sound.play();
+        }
+        
+        
+        function gotoPage() {
+        	if (state==="unlock") {
+            	window.location.href = "https://www.lexaloffle.com/bbs/?pid=166147&tkey=nQqb6baIBuko57HXLZkv";
+            } else {
+            	playSfx(1);
+                window.alert("Every lock has it's duplicate.");
+            }
+        }
+        
     </script>
 </html>
