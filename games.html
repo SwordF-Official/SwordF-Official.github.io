@@ -357,7 +357,7 @@
             //if(window.scrollY>700)document.getElementById("page").style.display="block";
             if (window.scrollY>10000) {
             	document.getElementById("lockClick").style.display = "inline";
-            } else if (state !== "key" && window.scrollY>800+length) {
+            } else if (state !== "key" && window.scrollY>window.screen.height+length) {
             	length+=400;
                 document.getElementById("page").style.marginTop = (500+length)+"px";
             }
