@@ -9,11 +9,18 @@
         <!-- JQuery Event -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         
-        <!-- Music & Sound Effects -->
+        <!-- Assets -->
         <audio id="music" preload="auto" autoplay loop><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/music/Lets Play a Game.mp3" type="audio/mpeg"></audio>
         
         <audio id="sfx0" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/Click.mp3" type="audio/mpeg"></audio>
         <audio id="sfx1" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/Notify.mp3" type="audio/mpeg"></audio>
+        <audio id="sfx2" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/Lock_Struggle.mp3" type="audio/mpeg"></audio>
+        <audio id="sfx3" preload="auto"><source src="https://raw.githubusercontent.com/SwordF-Official/SwordF-Official.github.io/refs/heads/main/sounds/mystery.mp3" type="audio/mpeg"></audio>
+        
+        <img id="IMG_LOCK" width="200px"; style="display: none;" src="https://www.lexaloffle.com/media/69779/lock.png">
+        <img id="IMG_KEY" width="200px"; style="display: none;" src="https://www.lexaloffle.com/media/69779/key.png">
+        <img id="IMG_BOOK" width="200px"; style="display: none;" src="https://www.lexaloffle.com/media/69779/book.png">
+        
         
         <style>
             html, body {
@@ -35,7 +42,8 @@
             }
             
             .Horiz-Center {
-            	text-align: center;
+            	font-family: "Renogare", sans-serif;
+                text-align: center;
                 margin-top: 0.2em;
   				margin-bottom: 0.2em;
             }
@@ -156,7 +164,8 @@
 	</head>
   
 	<body id="body">
-    	<canvas width="100" height="100" id="trailCanvas"></canvas>
+        
+        <canvas width="100" height="100" id="trailCanvas"></canvas>
         
         <p class="Horiz-Center">
         	<canvas width="700px" height="200px" id="MainTitle"></canvas>
@@ -303,9 +312,12 @@
         
         
         <div id="page"style="width: auto; display:block; margin-top: 500px">
-        	<p class="Horiz-Center"><img id="lockClick" width="200px"; style="display: none;" src="https://www.lexaloffle.com/media/69779/lock.png" onClick="gotoPage();"></img> </p>
+        	<!-- <p class="Horiz-Center"><img id="lockClick" width="200px"; style="display: none;" src="https://www.lexaloffle.com/media/69779/lock.png" onClick="gotoPage();"></img> </p> -->
+            
+            <p class="Horiz-Center" id="lockDesc" style="opacity: 0; font-size: 1.5em; display: none; user-select: none;">Every lock has a duplicate.</br>But where would we find it?</p>
+            <p class="Horiz-Center"> <canvas width="200px" height="200px" id="lockCanvas" style="display:none;" onClick="lockClicked();"></canvas> </p>
+            
         </div></div>
-        
         
         
         
@@ -314,28 +326,40 @@
 	</body>
     
     <script>
-    	let state = "lock";
+    	// Initiation Check
+        let state = "lock";
         const msg = document.querySelector(".msg");
+        
+        let lockClicks = 0;
+        let lockOffset = 0;
+        let lockTxtOpac = 0;
 
         // Listen for the message event
         const bc = new BroadcastChannel("channel");
-
+		
+        // Run this code when a message is sent
         bc.onmessage = ({ data }) => {
           if (data === "check") {
+            // tab 2 communicate to the tab 1 that it exists
             bc.postMessage("key");
           } else if (data === "key") {
+            // tab 1 communicates back to tab 2 that it can now turn into the "key tab"
             state = "key";
             
-            document.getElementById("music").pause();
-            const btn = document.getElementById("backBtn");
-            btn.innerHTML = "Unlock";
+            document.getElementById("music").pause(); // stop music
+            
+            //const btn = document.getElementById("backBtn");
+            //btn.innerHTML = "Unlock";
+            
           } else if (data === "unlock") {
+            // unlock the lock in tab 1 after tab 1 recieves tab 2's message to unlock the lock
             state = "unlock";
-            document.getElementById("lockClick").src="https://www.lexaloffle.com/media/69779/key.png";
+            document.getElementById("lockDesc").innerHTML = "";
+            //document.getElementById("lockClick").src="https://www.lexaloffle.com/media/69779/key.png";
           }
         };
 
-        // Send a message to the other tab
+        // Send a message to the 2nd tab
         bc.postMessage("check");
 
         
@@ -357,9 +381,6 @@
                 	${18-step},
                     ${21-step},
                     ${37-step})`;
-            
-            // volume
-            document.getElementById("music").volume = 1 - window.scrollY*0.0001;
         };
         
         // Canvas Functions
@@ -445,17 +466,53 @@
             }
         };
         
+        var drawLockCanvas = function() {
+        	// update text
+            const lockTxt = document.getElementById("lockDesc");
+            if (lockClicks >= 20) {
+            	lockTxtOpac+=.01;
+                lockTxt.style.opacity = lockTxtOpac;
+            }
+            
+            // Define canvas
+            let c = document.getElementById("lockCanvas");
+			let ctx = c.getContext("2d");
+            
+            let w = c.width;
+            let h = c.height;
+            
+            // Clear
+            ctx.clearRect(0,0,w,h);
+            
+            let img = document.getElementById("IMG_LOCK");
+            if (state == "key") img = document.getElementById("IMG_KEY");
+            if (state == "unlock") img = document.getElementById("IMG_BOOK");
+            
+            if (lockOffset>0) {lockOffset--;}
+            let x = 10 + lockOffset
+            if (lockOffset%2>0) x-=lockOffset*2
+            if (lockClicks > -1) ctx.drawImage(img, x, 10, 180,180);
+            
+            
+            
+            
+        };
+        
         // Intervals & Events
         setInterval(incrementTime,16);
         setInterval(drawTitleCanvas,16);
         setInterval(drawTrail,1);
+        setInterval(drawLockCanvas,16);
+        
         var loadMain = function(n) {
         	playSfx(0);
-            if (state=="key") {
-            	bc.postMessage("unlock");
-            } else {
-            	window.location.href = "https://swordf-official.github.io";
-            }
+            window.location.href = "https://swordf-official.github.io";
+            
+            //if (state=="key") {
+            	//bc.postMessage("unlock");
+            //} else {
+            	//window.location.href = "https://swordf-official.github.io";
+            //}
         }
         
         
@@ -495,13 +552,51 @@
         
         $(window).scroll(function() {
           if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-          	if (window.scrollY>10000) {
-            	document.getElementById("lockClick").style.display = "inline";
+          	if (window.scrollY>12000) {
+            	// discover the lock
+                document.getElementById("lockCanvas").style.display = "inline";
+                document.getElementById("lockDesc").style.display = "block";
             } else {
                 document.getElementById("page").style.marginTop = ( $(document).height() )+"px";
             }
           }
+          
+          // Change the site's music volume
+          let vol = 1 - window.scrollY*0.0004;
+          if (vol<=0) vol=0;
+          document.getElementById("music").volume = vol;
+          
         });
+        
+        
+        function lockClicked() {
+        	if (lockClicks === -1) { return }
+            
+            switch (state) {
+            	case "lock": (function() {
+                	playSfx(2);
+            		lockOffset = 8;
+                    lockClicks++;
+                })();break;
+                
+                case "key": (function() {
+                	bc.postMessage("unlock");
+                    playSfx(0);
+                    playSfx(3);
+                    lockClicks = -1;
+                    
+                })();break;
+                
+                case "unlock": (function() {
+                    playSfx(0);
+                    window.location.href = "https://www.lexaloffle.com/bbs/?pid=166147&tkey=nQqb6baIBuko57HXLZkv";
+                })();break;
+            }
+            
+            
+            
+        }
+        
         
         function gotoPage() {
         	if (state==="unlock") {
